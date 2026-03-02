@@ -1,0 +1,1204 @@
+`timescale 1ns / 1ns
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 2024/06/19 23:51:46
+// Design Name: 
+// Module Name: 
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+module TB_1;
+`define XILINX
+// `define MODELSIM
+`define NO_USE 'd0;
+`define RD_IMG_WAIT_WRITE 2us
+`define WRITE_INTERVAL 500us//500ns
+`define READ_DB_INTERVAL 100ns
+`define READ_STOP_EN 0
+`define READ_STOP_TIME 500us
+`define SIM_STOP_TIME 2ms
+`define AXI_RD_LEN 1
+`ifdef XILINX
+    `define q @(posedge clk);#1ns; 
+`elsif MODELSIM
+    `define q @(posedge clk);
+`else `endif
+
+parameter R_BASE_ADDR_CH1   = 64'h0000_0000_0011_0000;
+parameter R_BASE_ADDR_CH2   = 64'h0000_0000_0012_0000;
+parameter R_BASE_ADDR_CH3   = 64'h0000_0000_0013_0000;
+parameter R_BASE_ADDR_CH4   = 64'h0000_0000_0014_0000;
+parameter R_BASE_ADDR_CH5   = 64'h0000_0000_0015_0000;
+parameter R_BASE_ADDR_CH6   = 64'h0000_0000_0016_0000;
+parameter R_BASE_ADDR_CH7   = 64'h0000_0000_0017_0000;
+parameter R_BASE_ADDR_CH8   = 64'h0000_0000_0018_0000;
+parameter R_BASE_ADDR_CH9   = 64'h0000_0000_0019_0000;
+parameter R_BASE_ADDR_CH10  = 64'h0000_0000_001a_0000;
+parameter R_BASE_ADDR_CH11  = 64'h0000_0000_001b_0000;
+parameter R_BASE_ADDR_CH12  = 64'h0000_0000_001c_0000;
+
+parameter W_BASE_ADDR_CH1   = 64'h0000_0000_0011_0000;
+parameter W_BASE_ADDR_CH2   = 64'h0000_0000_0012_0000;
+parameter W_BASE_ADDR_CH3   = 64'h0000_0000_0013_0000;
+parameter W_BASE_ADDR_CH4   = 64'h0000_0000_0014_0000;
+parameter W_BASE_ADDR_CH5   = 64'h0000_0000_0015_0000;
+parameter W_BASE_ADDR_CH6   = 64'h0000_0000_0016_0000;
+parameter W_BASE_ADDR_CH7   = 64'h0000_0000_0017_0000;
+parameter W_BASE_ADDR_CH8   = 64'h0000_0000_0018_0000;
+parameter W_BASE_ADDR_CH9   = 64'h0000_0000_0019_0000;
+parameter W_BASE_ADDR_CH10  = 64'h0000_0000_001a_0000;
+parameter W_BASE_ADDR_CH11  = 64'h0000_0000_001b_0000;
+parameter W_BASE_ADDR_CH12  = 64'h0000_0000_001c_0000;
+
+parameter [767:0] W_BASE_ADDR = {W_BASE_ADDR_CH12, W_BASE_ADDR_CH11, W_BASE_ADDR_CH10, W_BASE_ADDR_CH9, W_BASE_ADDR_CH8, W_BASE_ADDR_CH7, W_BASE_ADDR_CH6, W_BASE_ADDR_CH5, W_BASE_ADDR_CH4, W_BASE_ADDR_CH3, W_BASE_ADDR_CH2, W_BASE_ADDR_CH1};
+parameter [767:0] R_BASE_ADDR = {R_BASE_ADDR_CH12, R_BASE_ADDR_CH11, R_BASE_ADDR_CH10, R_BASE_ADDR_CH9, R_BASE_ADDR_CH8, R_BASE_ADDR_CH7, R_BASE_ADDR_CH6, R_BASE_ADDR_CH5, R_BASE_ADDR_CH4, R_BASE_ADDR_CH3, R_BASE_ADDR_CH2, R_BASE_ADDR_CH1};
+
+
+logic [4:0] CNT, LOG_SW;
+logic [3:0] SW;
+logic BAR_BD, READ_START;
+logic INIT;
+logic [7:0]	DATA_CNT;
+
+logic 							clk  									;
+logic 							rst 									;
+//
+logic 							interupt_req							;
+logic                           interupt_ack                            ;
+logic   [31:0]                  LOGIC_VERSION                           ;
+logic   [31:0]                  LOGIC_SUB_VERSION                       ;
+
+// pcie->bridge axi-lite-----------------------------------------------------------
+logic   [31 : 0]                s_axi_lite_awaddr                   	;
+logic   [2 : 0]                 s_axi_lite_awprot                   	;
+logic                           s_axi_lite_awvalid                  	;
+logic                          	s_axi_lite_awready                  	;
+
+logic   [31 : 0]                s_axi_lite_wdata                    	;
+logic   [3 : 0]                 s_axi_lite_wstrb                    	;
+logic                           s_axi_lite_wvalid                   	;
+logic                          	s_axi_lite_wready                   	;
+
+logic                          	s_axi_lite_bvalid                   	;
+logic  [1 : 0]                 	s_axi_lite_bresp                    	;
+logic                           s_axi_lite_bready                   	;
+
+logic   [31 : 0]                s_axi_lite_araddr                   	;
+logic   [2 : 0]                 s_axi_lite_arprot                   	;
+logic                           s_axi_lite_arvalid                  	;
+logic                          	s_axi_lite_arready                  	;
+
+logic  [31 : 0]                	s_axi_lite_rdata                    	;
+logic  [1 : 0]                 	s_axi_lite_rresp                    	;
+logic                          	s_axi_lite_rvalid                   	;
+logic                           s_axi_lite_rready                   	;
+//UART---------------------------------------------------------------------------
+logic  [11:0]                  	UART_TX                                 ;  //
+
+genvar i;
+
+logic  	[3 : 0]         FULL_awid    	[11:0]                  ;
+logic  	[63 : 0]        FULL_awaddr  	[11:0]                  ;
+logic  	[7 : 0]         FULL_awlen   	[11:0]                  ;
+logic  	[2 : 0]         FULL_awsize  	[11:0]                  ;
+logic  	[1 : 0]         FULL_awburst 	[11:0]                  ;
+logic  	[2 : 0]         FULL_awprot  	[11:0]                  ;
+logic  	[11 : 0]		FULL_awvalid 	   		                ;
+logic  	[11 : 0]		FULL_awlock				                ;
+logic  	[3 : 0]         FULL_awcache 	[11:0]                  ;
+logic  	[11 : 0]		FULL_awready 		   	                ;
+            
+logic  	[63 : 0]        FULL_wdata   	[11:0]                  ;
+logic  	[7 : 0]         FULL_wstrb   	[11:0]                  ;
+logic  	[11 : 0]		FULL_wlast   	  		                ;
+logic  	[11 : 0]		FULL_wvalid  	  		                ;
+logic  	[11 : 0]		FULL_wready  	  		                ;
+            
+logic  	[3 : 0]         FULL_bid     	[11:0]                  ;
+logic  	[1 : 0]         FULL_bresp   	[11:0]                  ;
+logic  	[11 : 0]		FULL_bvalid				                ;
+logic  	[11 : 0]		FULL_bready				                ;
+            
+logic  	[3 : 0]         FULL_arid    	[11:0]                  ;
+logic  	[63 : 0]        FULL_araddr  	[11:0]                  ;
+logic  	[7 : 0]         FULL_arlen   	[11:0]                  ;
+logic  	[2 : 0]         FULL_arsize  	[11:0]                  ;
+logic  	[1 : 0]         FULL_arburst 	[11:0]                  ;
+logic  	[2 : 0]         FULL_arprot  	[11:0]                  ;
+logic  	[11 : 0]		FULL_arvalid  			                ;
+logic  	[11 : 0]		FULL_arlock   			                ;
+logic  	[3 : 0]         FULL_arcache 	[11:0]                  ;
+logic  	[11 : 0]		FULL_arready 	   		                ;
+            
+logic  	[3 : 0]         FULL_rid     	[11:0]                  ;
+logic  	[63 : 0]        FULL_rdata   	[11:0]                  ;
+logic  	[1 : 0]         FULL_rresp   	[11:0]                  ;
+logic  	[11 : 0]		FULL_rlast   	  		                ;
+logic  	[11 : 0]		FULL_rvalid  	  		                ;
+logic  	[11 : 0]		FULL_rready  	  		                ;
+
+logic  [3 : 0]                 RD_IMG_awid    ;
+logic  [63 : 0]                RD_IMG_awaddr  ;
+logic  [7 : 0]                 RD_IMG_awlen   ;
+logic  [2 : 0]                 RD_IMG_awsize  ;
+logic  [1 : 0]                 RD_IMG_awburst ;
+logic  [2 : 0]                 RD_IMG_awprot  ;
+logic                          RD_IMG_awvalid ;
+logic                          RD_IMG_awlock  ;
+logic  [3 : 0]                 RD_IMG_awcache ;
+logic                          RD_IMG_awready ;
+logic  [63 : 0]                RD_IMG_wdata   ;
+logic  [7 : 0]                 RD_IMG_wstrb   ;
+logic                          RD_IMG_wlast   ;
+logic                          RD_IMG_wvalid  ;
+logic                          RD_IMG_wready  ;
+logic  [3 : 0]                 RD_IMG_bid     ;
+logic  [1 : 0]                 RD_IMG_bresp   ;
+logic                          RD_IMG_bvalid  ;
+logic                          RD_IMG_bready  ;
+logic  [3 : 0]                 RD_IMG_arid    ;
+logic  [63 : 0]                RD_IMG_araddr  ;
+logic  [7 : 0]                 RD_IMG_arlen   ;
+logic  [2 : 0]                 RD_IMG_arsize  ;
+logic  [1 : 0]                 RD_IMG_arburst ;
+logic  [2 : 0]                 RD_IMG_arprot  ;
+logic                          RD_IMG_arvalid ;
+logic                          RD_IMG_arlock  ;
+logic  [3 : 0]                 RD_IMG_arcache ;
+logic                          RD_IMG_arready ;
+logic  [3 : 0]                 RD_IMG_rid     ;
+logic  [63 : 0]                RD_IMG_rdata   ;
+logic  [1 : 0]                 RD_IMG_rresp   ;
+logic                          RD_IMG_rlast   ;
+logic                          RD_IMG_rvalid  ;
+logic                          RD_IMG_rready  ;
+
+logic  [3 : 0]                 WR_IMG_awid    ;
+logic  [63 : 0]                WR_IMG_awaddr  ;
+logic  [7 : 0]                 WR_IMG_awlen   ;
+logic  [2 : 0]                 WR_IMG_awsize  ;
+logic  [1 : 0]                 WR_IMG_awburst ;
+logic  [2 : 0]                 WR_IMG_awprot  ;
+logic                          WR_IMG_awvalid ;
+logic                          WR_IMG_awlock  ;
+logic  [3 : 0]                 WR_IMG_awcache ;
+logic                          WR_IMG_awready ;
+logic  [63 : 0]                WR_IMG_wdata   ;
+logic  [7 : 0]                 WR_IMG_wstrb   ;
+logic                          WR_IMG_wlast   ;
+logic                          WR_IMG_wvalid  ;
+logic                          WR_IMG_wready  ;
+logic  [3 : 0]                 WR_IMG_bid     ;
+logic  [1 : 0]                 WR_IMG_bresp   ;
+logic                          WR_IMG_bvalid  ;
+logic                          WR_IMG_bready  ;
+logic  [3 : 0]                 WR_IMG_arid    ;
+logic  [63 : 0]                WR_IMG_araddr  ;
+logic  [7 : 0]                 WR_IMG_arlen   ;
+logic  [2 : 0]                 WR_IMG_arsize  ;
+logic  [1 : 0]                 WR_IMG_arburst ;
+logic  [2 : 0]                 WR_IMG_arprot  ;
+logic                          WR_IMG_arvalid ;
+logic                          WR_IMG_arlock  ;
+logic  [3 : 0]                 WR_IMG_arcache ;
+logic                          WR_IMG_arready ;
+logic  [3 : 0]                 WR_IMG_rid     ;
+logic  [63 : 0]                WR_IMG_rdata   ;
+logic  [1 : 0]                 WR_IMG_rresp   ;
+logic                          WR_IMG_rlast   ;
+logic                          WR_IMG_rvalid  ;
+logic                          WR_IMG_rready  ;
+
+logic READ_STOP;
+logic AR_SW;
+logic READ_DONE;
+logic STOP;
+logic [3:0] REQ_CHL;
+logic [3:0] W_CNT;
+
+
+/*
+assign RD_IMG_awready = (REQ_CHL != 0) ? FULL_awready[REQ_CHL-1] : 0;
+assign RD_IMG_wready  = (REQ_CHL != 0) ? FULL_wready [REQ_CHL-1] : 0;*/
+assign RD_IMG_arready = (REQ_CHL != 0) ? FULL_arready[REQ_CHL-1] : 0;/*
+assign RD_IMG_bid     = (REQ_CHL != 0) ? FULL_bid    [REQ_CHL-1] : 0;
+assign RD_IMG_bresp   = (REQ_CHL != 0) ? FULL_bresp  [REQ_CHL-1] : 0;
+assign RD_IMG_bvalid  = (REQ_CHL != 0) ? FULL_bvalid [REQ_CHL-1] : 0;*/
+assign RD_IMG_rid     = (REQ_CHL != 0) ? FULL_rid    [REQ_CHL-1] : 0;
+assign RD_IMG_rdata   = (REQ_CHL != 0) ? FULL_rdata  [REQ_CHL-1] : 0;
+assign RD_IMG_rresp   = (REQ_CHL != 0) ? FULL_rresp  [REQ_CHL-1] : 0;
+assign RD_IMG_rlast   = (REQ_CHL != 0) ? FULL_rlast  [REQ_CHL-1] : 0;
+assign RD_IMG_rvalid  = (REQ_CHL != 0) ? FULL_rvalid [REQ_CHL-1] : 0;
+
+/*
+assign FULL_awid    [REQ_CHL] = RD_IMG_awid    ;
+assign FULL_awaddr  [REQ_CHL] = RD_IMG_awaddr  ;
+assign FULL_awlen   [REQ_CHL] = RD_IMG_awlen   ;
+assign FULL_awsize  [REQ_CHL] = RD_IMG_awsize  ;
+assign FULL_awburst [REQ_CHL] = RD_IMG_awburst ;
+assign FULL_awprot  [REQ_CHL] = RD_IMG_awprot  ;
+assign FULL_awvalid [REQ_CHL] = RD_IMG_awvalid ;
+assign FULL_awlock  [REQ_CHL] = RD_IMG_awlock  ;
+assign FULL_awcache [REQ_CHL] = RD_IMG_awcache ;
+
+assign FULL_wdata   [REQ_CHL] = RD_IMG_wdata   ;
+assign FULL_wstrb   [REQ_CHL] = RD_IMG_wstrb   ;
+assign FULL_wlast   [REQ_CHL] = RD_IMG_wlast   ;
+assign FULL_wvalid  [REQ_CHL] = RD_IMG_wvalid  ;
+
+assign FULL_bready  [REQ_CHL] = RD_IMG_bready  ;*/
+generate for (i=0; i < 12; i = i + 1)begin : GF1
+always@* if(REQ_CHL == (i+1)) FULL_arid    [i] <= RD_IMG_arid    ;else FULL_arid    [i] <= 'd0;
+always@* if(REQ_CHL == (i+1)) FULL_araddr  [i] <= RD_IMG_araddr  ;else FULL_araddr  [i] <= 'd0;
+always@* if(REQ_CHL == (i+1)) FULL_arlen   [i] <= RD_IMG_arlen   ;else FULL_arlen   [i] <= 'd0;
+always@* if(REQ_CHL == (i+1)) FULL_arsize  [i] <= RD_IMG_arsize  ;else FULL_arsize  [i] <= 'd0;
+always@* if(REQ_CHL == (i+1)) FULL_arburst [i] <= RD_IMG_arburst ;else FULL_arburst [i] <= 'd0;
+always@* if(REQ_CHL == (i+1)) FULL_arprot  [i] <= RD_IMG_arprot  ;else FULL_arprot  [i] <= 'd0;
+always@* if(REQ_CHL == (i+1)) FULL_arvalid [i] <= RD_IMG_arvalid ;else FULL_arvalid [i] <= 'd0;
+always@* if(REQ_CHL == (i+1)) FULL_arlock  [i] <= RD_IMG_arlock  ;else FULL_arlock  [i] <= 'd0;
+always@* if(REQ_CHL == (i+1)) FULL_arcache [i] <= RD_IMG_arcache ;else FULL_arcache [i] <= 'd0;
+always@* if(REQ_CHL == (i+1)) FULL_rready  [i] <= RD_IMG_rready  ;else FULL_rready  [i] <= 'd0;
+
+always@* if(W_CNT == i) FULL_awid    [i] <= WR_IMG_awid    ; else FULL_awid    [i] <= 'd0;
+always@* if(W_CNT == i) FULL_awaddr  [i] <= WR_IMG_awaddr  ; else FULL_awaddr  [i] <= 'd0;
+always@* if(W_CNT == i) FULL_awlen   [i] <= WR_IMG_awlen   ; else FULL_awlen   [i] <= 'd0;
+always@* if(W_CNT == i) FULL_awsize  [i] <= WR_IMG_awsize  ; else FULL_awsize  [i] <= 'd0;
+always@* if(W_CNT == i) FULL_awburst [i] <= WR_IMG_awburst ; else FULL_awburst [i] <= 'd0;
+always@* if(W_CNT == i) FULL_awprot  [i] <= WR_IMG_awprot  ; else FULL_awprot  [i] <= 'd0;
+always@* if(W_CNT == i) FULL_awvalid [i] <= WR_IMG_awvalid ; else FULL_awvalid [i] <= 'd0;
+always@* if(W_CNT == i) FULL_awlock  [i] <= WR_IMG_awlock  ; else FULL_awlock  [i] <= 'd0;
+always@* if(W_CNT == i) FULL_awcache [i] <= WR_IMG_awcache ; else FULL_awcache [i] <= 'd0;
+
+always@* if(W_CNT == i) FULL_wdata   [i] <= WR_IMG_wdata   ; else FULL_wdata   [i] <= 'd0;
+always@* if(W_CNT == i) FULL_wstrb   [i] <= WR_IMG_wstrb   ; else FULL_wstrb   [i] <= 'd0;
+always@* if(W_CNT == i) FULL_wlast   [i] <= WR_IMG_wlast   ; else FULL_wlast   [i] <= 'd0;
+always@* if(W_CNT == i) FULL_wvalid  [i] <= WR_IMG_wvalid  ; else FULL_wvalid  [i] <= 'd0;
+
+always@* if(W_CNT == i) FULL_bready  [i] <= WR_IMG_bready  ; else FULL_bready  [i] <= 'd0;
+
+end endgenerate 
+assign WR_IMG_awready = FULL_awready [W_CNT];
+assign WR_IMG_wready  = FULL_wready  [W_CNT];/*
+assign WR_IMG_arready = FULL_arready [W_CNT];*/
+assign WR_IMG_bid     = FULL_bid     [W_CNT];
+assign WR_IMG_bresp   = FULL_bresp   [W_CNT];
+assign WR_IMG_bvalid  = FULL_bvalid  [W_CNT];
+
+
+
+
+bridge_top_v2 DUT(
+	.clk  										(clk  											),
+	.rst 										(rst 											),
+
+	.interupt_req								(interupt_req									),
+	.interupt_ack                            	(interupt_ack                            		),
+	.LOGIC_VERSION                           	(LOGIC_VERSION                           		),
+	.LOGIC_SUB_VERSION                       	(LOGIC_SUB_VERSION                       		),
+
+	.s01_axi_awid                          		(FULL_awid                          		[0]),
+	.s01_axi_awaddr                        		(FULL_awaddr                        		[0]),
+	.s01_axi_awlen                         		(FULL_awlen                         		[0]),
+	.s01_axi_awsize                        		(FULL_awsize                        		[0]),
+	.s01_axi_awburst                       		(FULL_awburst                       		[0]),
+	.s01_axi_awprot                        		(FULL_awprot                        		[0]),
+	.s01_axi_awvalid                       		(FULL_awvalid                       		[0]),
+	.s01_axi_awlock                        		(FULL_awlock                        		[0]),
+	.s01_axi_awcache                       		(FULL_awcache                       		[0]),
+	.s01_axi_awready                       		(FULL_awready                       		[0]),
+
+	.s01_axi_wdata                         		(FULL_wdata                         		[0]),
+	.s01_axi_wstrb                         		(FULL_wstrb                         		[0]),
+	.s01_axi_wlast                         		(FULL_wlast                         		[0]),
+	.s01_axi_wvalid                        		(FULL_wvalid                        		[0]),
+	.s01_axi_wready                        		(FULL_wready                        		[0]),
+
+	.s01_axi_bid                           		(FULL_bid                           		[0]),
+	.s01_axi_bresp                         		(FULL_bresp                         		[0]),
+	.s01_axi_bvalid                        		(FULL_bvalid                        		[0]),
+	.s01_axi_bready                        		(FULL_bready                        		[0]),
+
+	.s01_axi_arid                          		(FULL_arid                          		[0]),
+	.s01_axi_araddr                        		(FULL_araddr                        		[0]),
+	.s01_axi_arlen                         		(FULL_arlen                         		[0]),
+	.s01_axi_arsize                        		(FULL_arsize                        		[0]),
+	.s01_axi_arburst                       		(FULL_arburst                       		[0]),
+	.s01_axi_arprot                        		(FULL_arprot                        		[0]),
+	.s01_axi_arvalid                       		(FULL_arvalid                       		[0]),
+	.s01_axi_arlock                        		(FULL_arlock                        		[0]),
+	.s01_axi_arcache                       		(FULL_arcache                       		[0]),
+	.s01_axi_arready                       		(FULL_arready                       		[0]),
+
+	.s01_axi_rid                           		(FULL_rid                           		[0]),
+	.s01_axi_rdata                         		(FULL_rdata                         		[0]),
+	.s01_axi_rresp                         		(FULL_rresp                         		[0]),
+	.s01_axi_rlast                         		(FULL_rlast                         		[0]),
+	.s01_axi_rvalid                        		(FULL_rvalid                        		[0]),
+	.s01_axi_rready                        		(FULL_rready                        		[0]),
+
+	.s02_axi_awid                          		(FULL_awid                          		[1]),
+	.s02_axi_awaddr                        		(FULL_awaddr                        		[1]),
+	.s02_axi_awlen                         		(FULL_awlen                         		[1]),
+	.s02_axi_awsize                        		(FULL_awsize                        		[1]),
+	.s02_axi_awburst                       		(FULL_awburst                       		[1]),
+	.s02_axi_awprot                        		(FULL_awprot                        		[1]),
+	.s02_axi_awvalid                       		(FULL_awvalid                       		[1]),
+	.s02_axi_awlock                        		(FULL_awlock                        		[1]),
+	.s02_axi_awcache                       		(FULL_awcache                       		[1]),
+	.s02_axi_awready                       		(FULL_awready                       		[1]),
+
+	.s02_axi_wdata                         		(FULL_wdata                         		[1]),
+	.s02_axi_wstrb                         		(FULL_wstrb                         		[1]),
+	.s02_axi_wlast                         		(FULL_wlast                         		[1]),
+	.s02_axi_wvalid                        		(FULL_wvalid                        		[1]),
+	.s02_axi_wready                        		(FULL_wready                        		[1]),
+
+	.s02_axi_bid                           		(FULL_bid                           		[1]),
+	.s02_axi_bresp                         		(FULL_bresp                         		[1]),
+	.s02_axi_bvalid                        		(FULL_bvalid                        		[1]),
+	.s02_axi_bready                        		(FULL_bready                        		[1]),
+
+	.s02_axi_arid                          		(FULL_arid                          		[1]),
+	.s02_axi_araddr                        		(FULL_araddr                        		[1]),
+	.s02_axi_arlen                         		(FULL_arlen                         		[1]),
+	.s02_axi_arsize                        		(FULL_arsize                        		[1]),
+	.s02_axi_arburst                       		(FULL_arburst                       		[1]),
+	.s02_axi_arprot                        		(FULL_arprot                        		[1]),
+	.s02_axi_arvalid                       		(FULL_arvalid                       		[1]),
+	.s02_axi_arlock                        		(FULL_arlock                        		[1]),
+	.s02_axi_arcache                       		(FULL_arcache                       		[1]),
+	.s02_axi_arready                       		(FULL_arready                       		[1]),
+
+	.s02_axi_rid                           		(FULL_rid                           		[1]),
+	.s02_axi_rdata                         		(FULL_rdata                         		[1]),
+	.s02_axi_rresp                         		(FULL_rresp                         		[1]),
+	.s02_axi_rlast                         		(FULL_rlast                         		[1]),
+	.s02_axi_rvalid                        		(FULL_rvalid                        		[1]),
+	.s02_axi_rready                        		(FULL_rready                        		[1]),
+
+	.s03_axi_awid                          		(FULL_awid                          		[2]),
+	.s03_axi_awaddr                        		(FULL_awaddr                        		[2]),
+	.s03_axi_awlen                         		(FULL_awlen                         		[2]),
+	.s03_axi_awsize                        		(FULL_awsize                        		[2]),
+	.s03_axi_awburst                       		(FULL_awburst                       		[2]),
+	.s03_axi_awprot                        		(FULL_awprot                        		[2]),
+	.s03_axi_awvalid                       		(FULL_awvalid                       		[2]),
+	.s03_axi_awlock                        		(FULL_awlock                        		[2]),
+	.s03_axi_awcache                       		(FULL_awcache                       		[2]),
+	.s03_axi_awready                       		(FULL_awready                       		[2]),
+
+	.s03_axi_wdata                         		(FULL_wdata                         		[2]),
+	.s03_axi_wstrb                         		(FULL_wstrb                         		[2]),
+	.s03_axi_wlast                         		(FULL_wlast                         		[2]),
+	.s03_axi_wvalid                        		(FULL_wvalid                        		[2]),
+	.s03_axi_wready                        		(FULL_wready                        		[2]),
+
+	.s03_axi_bid                           		(FULL_bid                           		[2]),
+	.s03_axi_bresp                         		(FULL_bresp                         		[2]),
+	.s03_axi_bvalid                        		(FULL_bvalid                        		[2]),
+	.s03_axi_bready                        		(FULL_bready                        		[2]),
+
+	.s03_axi_arid                          		(FULL_arid                          		[2]),
+	.s03_axi_araddr                        		(FULL_araddr                        		[2]),
+	.s03_axi_arlen                         		(FULL_arlen                         		[2]),
+	.s03_axi_arsize                        		(FULL_arsize                        		[2]),
+	.s03_axi_arburst                       		(FULL_arburst                       		[2]),
+	.s03_axi_arprot                        		(FULL_arprot                        		[2]),
+	.s03_axi_arvalid                       		(FULL_arvalid                       		[2]),
+	.s03_axi_arlock                        		(FULL_arlock                        		[2]),
+	.s03_axi_arcache                       		(FULL_arcache                       		[2]),
+	.s03_axi_arready                       		(FULL_arready                       		[2]),
+
+	.s03_axi_rid                           		(FULL_rid                           		[2]),
+	.s03_axi_rdata                         		(FULL_rdata                         		[2]),
+	.s03_axi_rresp                         		(FULL_rresp                         		[2]),
+	.s03_axi_rlast                         		(FULL_rlast                         		[2]),
+	.s03_axi_rvalid                        		(FULL_rvalid                        		[2]),
+	.s03_axi_rready                        		(FULL_rready                        		[2]),
+
+	.s04_axi_awid                          		(FULL_awid                          		[3]),
+	.s04_axi_awaddr                        		(FULL_awaddr                        		[3]),
+	.s04_axi_awlen                         		(FULL_awlen                         		[3]),
+	.s04_axi_awsize                        		(FULL_awsize                        		[3]),
+	.s04_axi_awburst                       		(FULL_awburst                       		[3]),
+	.s04_axi_awprot                        		(FULL_awprot                        		[3]),
+	.s04_axi_awvalid                       		(FULL_awvalid                       		[3]),
+	.s04_axi_awlock                        		(FULL_awlock                        		[3]),
+	.s04_axi_awcache                       		(FULL_awcache                       		[3]),
+	.s04_axi_awready                       		(FULL_awready                       		[3]),
+
+	.s04_axi_wdata                         		(FULL_wdata                         		[3]),
+	.s04_axi_wstrb                         		(FULL_wstrb                         		[3]),
+	.s04_axi_wlast                         		(FULL_wlast                         		[3]),
+	.s04_axi_wvalid                        		(FULL_wvalid                        		[3]),
+	.s04_axi_wready                        		(FULL_wready                        		[3]),
+
+	.s04_axi_bid                           		(FULL_bid                           		[3]),
+	.s04_axi_bresp                         		(FULL_bresp                         		[3]),
+	.s04_axi_bvalid                        		(FULL_bvalid                        		[3]),
+	.s04_axi_bready                        		(FULL_bready                        		[3]),
+
+	.s04_axi_arid                          		(FULL_arid                          		[3]),
+	.s04_axi_araddr                        		(FULL_araddr                        		[3]),
+	.s04_axi_arlen                         		(FULL_arlen                         		[3]),
+	.s04_axi_arsize                        		(FULL_arsize                        		[3]),
+	.s04_axi_arburst                       		(FULL_arburst                       		[3]),
+	.s04_axi_arprot                        		(FULL_arprot                        		[3]),
+	.s04_axi_arvalid                       		(FULL_arvalid                       		[3]),
+	.s04_axi_arlock                        		(FULL_arlock                        		[3]),
+	.s04_axi_arcache                       		(FULL_arcache                       		[3]),
+	.s04_axi_arready                       		(FULL_arready                       		[3]),
+
+	.s04_axi_rid                           		(FULL_rid                           		[3]),
+	.s04_axi_rdata                         		(FULL_rdata                         		[3]),
+	.s04_axi_rresp                         		(FULL_rresp                         		[3]),
+	.s04_axi_rlast                         		(FULL_rlast                         		[3]),
+	.s04_axi_rvalid                        		(FULL_rvalid                        		[3]),
+	.s04_axi_rready                        		(FULL_rready                        		[3]),
+
+	.s05_axi_awid                          		(FULL_awid                          		[4]),
+	.s05_axi_awaddr                        		(FULL_awaddr                        		[4]),
+	.s05_axi_awlen                         		(FULL_awlen                         		[4]),
+	.s05_axi_awsize                        		(FULL_awsize                        		[4]),
+	.s05_axi_awburst                       		(FULL_awburst                       		[4]),
+	.s05_axi_awprot                        		(FULL_awprot                        		[4]),
+	.s05_axi_awvalid                       		(FULL_awvalid                       		[4]),
+	.s05_axi_awlock                        		(FULL_awlock                        		[4]),
+	.s05_axi_awcache                       		(FULL_awcache                       		[4]),
+	.s05_axi_awready                       		(FULL_awready                       		[4]),
+
+	.s05_axi_wdata                         		(FULL_wdata                         		[4]),
+	.s05_axi_wstrb                         		(FULL_wstrb                         		[4]),
+	.s05_axi_wlast                         		(FULL_wlast                         		[4]),
+	.s05_axi_wvalid                        		(FULL_wvalid                        		[4]),
+	.s05_axi_wready                        		(FULL_wready                        		[4]),
+
+	.s05_axi_bid                           		(FULL_bid                           		[4]),
+	.s05_axi_bresp                         		(FULL_bresp                         		[4]),
+	.s05_axi_bvalid                        		(FULL_bvalid                        		[4]),
+	.s05_axi_bready                        		(FULL_bready                        		[4]),
+
+	.s05_axi_arid                          		(FULL_arid                          		[4]),
+	.s05_axi_araddr                        		(FULL_araddr                        		[4]),
+	.s05_axi_arlen                         		(FULL_arlen                         		[4]),
+	.s05_axi_arsize                        		(FULL_arsize                        		[4]),
+	.s05_axi_arburst                       		(FULL_arburst                       		[4]),
+	.s05_axi_arprot                        		(FULL_arprot                        		[4]),
+	.s05_axi_arvalid                       		(FULL_arvalid                       		[4]),
+	.s05_axi_arlock                        		(FULL_arlock                        		[4]),
+	.s05_axi_arcache                       		(FULL_arcache                       		[4]),
+	.s05_axi_arready                       		(FULL_arready                       		[4]),
+
+	.s05_axi_rid                           		(FULL_rid                           		[4]),
+	.s05_axi_rdata                         		(FULL_rdata                         		[4]),
+	.s05_axi_rresp                         		(FULL_rresp                         		[4]),
+	.s05_axi_rlast                         		(FULL_rlast                         		[4]),
+	.s05_axi_rvalid                        		(FULL_rvalid                        		[4]),
+	.s05_axi_rready                        		(FULL_rready                        		[4]),
+
+	.s06_axi_awid                          		(FULL_awid                          		[5]),
+	.s06_axi_awaddr                        		(FULL_awaddr                        		[5]),
+	.s06_axi_awlen                         		(FULL_awlen                         		[5]),
+	.s06_axi_awsize                        		(FULL_awsize                        		[5]),
+	.s06_axi_awburst                       		(FULL_awburst                       		[5]),
+	.s06_axi_awprot                        		(FULL_awprot                        		[5]),
+	.s06_axi_awvalid                       		(FULL_awvalid                       		[5]),
+	.s06_axi_awlock                        		(FULL_awlock                        		[5]),
+	.s06_axi_awcache                       		(FULL_awcache                       		[5]),
+	.s06_axi_awready                       		(FULL_awready                       		[5]),
+
+	.s06_axi_wdata                         		(FULL_wdata                         		[5]),
+	.s06_axi_wstrb                         		(FULL_wstrb                         		[5]),
+	.s06_axi_wlast                         		(FULL_wlast                         		[5]),
+	.s06_axi_wvalid                        		(FULL_wvalid                        		[5]),
+	.s06_axi_wready                        		(FULL_wready                        		[5]),
+
+	.s06_axi_bid                           		(FULL_bid                           		[5]),
+	.s06_axi_bresp                         		(FULL_bresp                         		[5]),
+	.s06_axi_bvalid                        		(FULL_bvalid                        		[5]),
+	.s06_axi_bready                        		(FULL_bready                        		[5]),
+
+	.s06_axi_arid                          		(FULL_arid                          		[5]),
+	.s06_axi_araddr                        		(FULL_araddr                        		[5]),
+	.s06_axi_arlen                         		(FULL_arlen                         		[5]),
+	.s06_axi_arsize                        		(FULL_arsize                        		[5]),
+	.s06_axi_arburst                       		(FULL_arburst                       		[5]),
+	.s06_axi_arprot                        		(FULL_arprot                        		[5]),
+	.s06_axi_arvalid                       		(FULL_arvalid                       		[5]),
+	.s06_axi_arlock                        		(FULL_arlock                        		[5]),
+	.s06_axi_arcache                       		(FULL_arcache                       		[5]),
+	.s06_axi_arready                       		(FULL_arready                       		[5]),
+
+	.s06_axi_rid                           		(FULL_rid                           		[5]),
+	.s06_axi_rdata                         		(FULL_rdata                         		[5]),
+	.s06_axi_rresp                         		(FULL_rresp                         		[5]),
+	.s06_axi_rlast                         		(FULL_rlast                         		[5]),
+	.s06_axi_rvalid                        		(FULL_rvalid                        		[5]),
+	.s06_axi_rready                        		(FULL_rready                        		[5]),
+
+	.s07_axi_awid                          		(FULL_awid                          		[6]),
+	.s07_axi_awaddr                        		(FULL_awaddr                        		[6]),
+	.s07_axi_awlen                         		(FULL_awlen                         		[6]),
+	.s07_axi_awsize                        		(FULL_awsize                        		[6]),
+	.s07_axi_awburst                       		(FULL_awburst                       		[6]),
+	.s07_axi_awprot                        		(FULL_awprot                        		[6]),
+	.s07_axi_awvalid                       		(FULL_awvalid                       		[6]),
+	.s07_axi_awlock                        		(FULL_awlock                        		[6]),
+	.s07_axi_awcache                       		(FULL_awcache                       		[6]),
+	.s07_axi_awready                       		(FULL_awready                       		[6]),
+
+	.s07_axi_wdata                         		(FULL_wdata                         		[6]),
+	.s07_axi_wstrb                         		(FULL_wstrb                         		[6]),
+	.s07_axi_wlast                         		(FULL_wlast                         		[6]),
+	.s07_axi_wvalid                        		(FULL_wvalid                        		[6]),
+	.s07_axi_wready                        		(FULL_wready                        		[6]),
+
+	.s07_axi_bid                           		(FULL_bid                           		[6]),
+	.s07_axi_bresp                         		(FULL_bresp                         		[6]),
+	.s07_axi_bvalid                        		(FULL_bvalid                        		[6]),
+	.s07_axi_bready                        		(FULL_bready                        		[6]),
+
+	.s07_axi_arid                          		(FULL_arid                          		[6]),
+	.s07_axi_araddr                        		(FULL_araddr                        		[6]),
+	.s07_axi_arlen                         		(FULL_arlen                         		[6]),
+	.s07_axi_arsize                        		(FULL_arsize                        		[6]),
+	.s07_axi_arburst                       		(FULL_arburst                       		[6]),
+	.s07_axi_arprot                        		(FULL_arprot                        		[6]),
+	.s07_axi_arvalid                       		(FULL_arvalid                       		[6]),
+	.s07_axi_arlock                        		(FULL_arlock                        		[6]),
+	.s07_axi_arcache                       		(FULL_arcache                       		[6]),
+	.s07_axi_arready                       		(FULL_arready                       		[6]),
+
+	.s07_axi_rid                           		(FULL_rid                           		[6]),
+	.s07_axi_rdata                         		(FULL_rdata                         		[6]),
+	.s07_axi_rresp                         		(FULL_rresp                         		[6]),
+	.s07_axi_rlast                         		(FULL_rlast                         		[6]),
+	.s07_axi_rvalid                        		(FULL_rvalid                        		[6]),
+	.s07_axi_rready                        		(FULL_rready                        		[6]),
+
+	.s08_axi_awid                          		(FULL_awid                          		[7]),
+	.s08_axi_awaddr                        		(FULL_awaddr                        		[7]),
+	.s08_axi_awlen                         		(FULL_awlen                         		[7]),
+	.s08_axi_awsize                        		(FULL_awsize                        		[7]),
+	.s08_axi_awburst                       		(FULL_awburst                       		[7]),
+	.s08_axi_awprot                        		(FULL_awprot                        		[7]),
+	.s08_axi_awvalid                       		(FULL_awvalid                       		[7]),
+	.s08_axi_awlock                        		(FULL_awlock                        		[7]),
+	.s08_axi_awcache                       		(FULL_awcache                       		[7]),
+	.s08_axi_awready                       		(FULL_awready                       		[7]),
+
+	.s08_axi_wdata                         		(FULL_wdata                         		[7]),
+	.s08_axi_wstrb                         		(FULL_wstrb                         		[7]),
+	.s08_axi_wlast                         		(FULL_wlast                         		[7]),
+	.s08_axi_wvalid                        		(FULL_wvalid                        		[7]),
+	.s08_axi_wready                        		(FULL_wready                        		[7]),
+
+	.s08_axi_bid                           		(FULL_bid                           		[7]),
+	.s08_axi_bresp                         		(FULL_bresp                         		[7]),
+	.s08_axi_bvalid                        		(FULL_bvalid                        		[7]),
+	.s08_axi_bready                        		(FULL_bready                        		[7]),
+
+	.s08_axi_arid                          		(FULL_arid                          		[7]),
+	.s08_axi_araddr                        		(FULL_araddr                        		[7]),
+	.s08_axi_arlen                         		(FULL_arlen                         		[7]),
+	.s08_axi_arsize                        		(FULL_arsize                        		[7]),
+	.s08_axi_arburst                       		(FULL_arburst                       		[7]),
+	.s08_axi_arprot                        		(FULL_arprot                        		[7]),
+	.s08_axi_arvalid                       		(FULL_arvalid                       		[7]),
+	.s08_axi_arlock                        		(FULL_arlock                        		[7]),
+	.s08_axi_arcache                       		(FULL_arcache                       		[7]),
+	.s08_axi_arready                       		(FULL_arready                       		[7]),
+
+	.s08_axi_rid                           		(FULL_rid                           		[7]),
+	.s08_axi_rdata                         		(FULL_rdata                         		[7]),
+	.s08_axi_rresp                         		(FULL_rresp                         		[7]),
+	.s08_axi_rlast                         		(FULL_rlast                         		[7]),
+	.s08_axi_rvalid                        		(FULL_rvalid                        		[7]),
+	.s08_axi_rready                        		(FULL_rready                        		[7]),
+
+	.s09_axi_awid                          		(FULL_awid                          		[8]),
+	.s09_axi_awaddr                        		(FULL_awaddr                        		[8]),
+	.s09_axi_awlen                         		(FULL_awlen                         		[8]),
+	.s09_axi_awsize                        		(FULL_awsize                        		[8]),
+	.s09_axi_awburst                       		(FULL_awburst                       		[8]),
+	.s09_axi_awprot                        		(FULL_awprot                        		[8]),
+	.s09_axi_awvalid                       		(FULL_awvalid                       		[8]),
+	.s09_axi_awlock                        		(FULL_awlock                        		[8]),
+	.s09_axi_awcache                       		(FULL_awcache                       		[8]),
+	.s09_axi_awready                       		(FULL_awready                       		[8]),
+
+	.s09_axi_wdata                         		(FULL_wdata                         		[8]),
+	.s09_axi_wstrb                         		(FULL_wstrb                         		[8]),
+	.s09_axi_wlast                         		(FULL_wlast                         		[8]),
+	.s09_axi_wvalid                        		(FULL_wvalid                        		[8]),
+	.s09_axi_wready                        		(FULL_wready                        		[8]),
+
+	.s09_axi_bid                           		(FULL_bid                           		[8]),
+	.s09_axi_bresp                         		(FULL_bresp                         		[8]),
+	.s09_axi_bvalid                        		(FULL_bvalid                        		[8]),
+	.s09_axi_bready                        		(FULL_bready                        		[8]),
+
+	.s09_axi_arid                          		(FULL_arid                          		[8]),
+	.s09_axi_araddr                        		(FULL_araddr                        		[8]),
+	.s09_axi_arlen                         		(FULL_arlen                         		[8]),
+	.s09_axi_arsize                        		(FULL_arsize                        		[8]),
+	.s09_axi_arburst                       		(FULL_arburst                       		[8]),
+	.s09_axi_arprot                        		(FULL_arprot                        		[8]),
+	.s09_axi_arvalid                       		(FULL_arvalid                       		[8]),
+	.s09_axi_arlock                        		(FULL_arlock                        		[8]),
+	.s09_axi_arcache                       		(FULL_arcache                       		[8]),
+	.s09_axi_arready                       		(FULL_arready                       		[8]),
+
+	.s09_axi_rid                           		(FULL_rid                           		[8]),
+	.s09_axi_rdata                         		(FULL_rdata                         		[8]),
+	.s09_axi_rresp                         		(FULL_rresp                         		[8]),
+	.s09_axi_rlast                         		(FULL_rlast                         		[8]),
+	.s09_axi_rvalid                        		(FULL_rvalid                        		[8]),
+	.s09_axi_rready                        		(FULL_rready                        		[8]),
+
+	.s10_axi_awid                          		(FULL_awid                          		[9] ),
+	.s10_axi_awaddr                        		(FULL_awaddr                        		[9] ),
+	.s10_axi_awlen                         		(FULL_awlen                         		[9] ),
+	.s10_axi_awsize                        		(FULL_awsize                        		[9] ),
+	.s10_axi_awburst                       		(FULL_awburst                       		[9] ),
+	.s10_axi_awprot                        		(FULL_awprot                        		[9] ),
+	.s10_axi_awvalid                       		(FULL_awvalid                       		[9] ),
+	.s10_axi_awlock                        		(FULL_awlock                        		[9] ),
+	.s10_axi_awcache                       		(FULL_awcache                       		[9] ),
+	.s10_axi_awready                       		(FULL_awready                       		[9] ),
+
+	.s10_axi_wdata                         		(FULL_wdata                         		[9] ),
+	.s10_axi_wstrb                         		(FULL_wstrb                         		[9] ),
+	.s10_axi_wlast                         		(FULL_wlast                         		[9] ),
+	.s10_axi_wvalid                        		(FULL_wvalid                        		[9] ),
+	.s10_axi_wready                        		(FULL_wready                        		[9] ),
+
+	.s10_axi_bid                           		(FULL_bid                           		[9] ),
+	.s10_axi_bresp                         		(FULL_bresp                         		[9] ),
+	.s10_axi_bvalid                        		(FULL_bvalid                        		[9] ),
+	.s10_axi_bready                        		(FULL_bready                        		[9] ),
+
+	.s10_axi_arid                          		(FULL_arid                          		[9] ),
+	.s10_axi_araddr                        		(FULL_araddr                        		[9] ),
+	.s10_axi_arlen                         		(FULL_arlen                         		[9] ),
+	.s10_axi_arsize                        		(FULL_arsize                        		[9] ),
+	.s10_axi_arburst                       		(FULL_arburst                       		[9] ),
+	.s10_axi_arprot                        		(FULL_arprot                        		[9] ),
+	.s10_axi_arvalid                       		(FULL_arvalid                       		[9] ),
+	.s10_axi_arlock                        		(FULL_arlock                        		[9] ),
+	.s10_axi_arcache                       		(FULL_arcache                       		[9] ),
+	.s10_axi_arready                       		(FULL_arready                       		[9] ),
+
+	.s10_axi_rid                           		(FULL_rid                           		[9] ),
+	.s10_axi_rdata                         		(FULL_rdata                         		[9] ),
+	.s10_axi_rresp                         		(FULL_rresp                         		[9] ),
+	.s10_axi_rlast                         		(FULL_rlast                         		[9] ),
+	.s10_axi_rvalid                        		(FULL_rvalid                        		[9] ),
+	.s10_axi_rready                        		(FULL_rready                        		[9] ),
+
+	.s11_axi_awid                          		(FULL_awid                          		[10]),
+	.s11_axi_awaddr                        		(FULL_awaddr                        		[10]),
+	.s11_axi_awlen                         		(FULL_awlen                         		[10]),
+	.s11_axi_awsize                        		(FULL_awsize                        		[10]),
+	.s11_axi_awburst                       		(FULL_awburst                       		[10]),
+	.s11_axi_awprot                        		(FULL_awprot                        		[10]),
+	.s11_axi_awvalid                       		(FULL_awvalid                       		[10]),
+	.s11_axi_awlock                        		(FULL_awlock                        		[10]),
+	.s11_axi_awcache                       		(FULL_awcache                       		[10]),
+	.s11_axi_awready                       		(FULL_awready                       		[10]),
+
+	.s11_axi_wdata                         		(FULL_wdata                         		[10]),
+	.s11_axi_wstrb                         		(FULL_wstrb                         		[10]),
+	.s11_axi_wlast                         		(FULL_wlast                         		[10]),
+	.s11_axi_wvalid                        		(FULL_wvalid                        		[10]),
+	.s11_axi_wready                        		(FULL_wready                        		[10]),
+
+	.s11_axi_bid                           		(FULL_bid                           		[10]),
+	.s11_axi_bresp                         		(FULL_bresp                         		[10]),
+	.s11_axi_bvalid                        		(FULL_bvalid                        		[10]),
+	.s11_axi_bready                        		(FULL_bready                        		[10]),
+
+	.s11_axi_arid                          		(FULL_arid                          		[10]),
+	.s11_axi_araddr                        		(FULL_araddr                        		[10]),
+	.s11_axi_arlen                         		(FULL_arlen                         		[10]),
+	.s11_axi_arsize                        		(FULL_arsize                        		[10]),
+	.s11_axi_arburst                       		(FULL_arburst                       		[10]),
+	.s11_axi_arprot                        		(FULL_arprot                        		[10]),
+	.s11_axi_arvalid                       		(FULL_arvalid                       		[10]),
+	.s11_axi_arlock                        		(FULL_arlock                        		[10]),
+	.s11_axi_arcache                       		(FULL_arcache                       		[10]),
+	.s11_axi_arready                       		(FULL_arready                       		[10]),
+
+	.s11_axi_rid                           		(FULL_rid                           		[10]),
+	.s11_axi_rdata                         		(FULL_rdata                         		[10]),
+	.s11_axi_rresp                         		(FULL_rresp                         		[10]),
+	.s11_axi_rlast                         		(FULL_rlast                         		[10]),
+	.s11_axi_rvalid                        		(FULL_rvalid                        		[10]),
+	.s11_axi_rready                        		(FULL_rready                        		[10]),
+
+	.s12_axi_awid                          		(FULL_awid                          		[11]),
+	.s12_axi_awaddr                        		(FULL_awaddr                        		[11]),
+	.s12_axi_awlen                         		(FULL_awlen                         		[11]),
+	.s12_axi_awsize                        		(FULL_awsize                        		[11]),
+	.s12_axi_awburst                       		(FULL_awburst                       		[11]),
+	.s12_axi_awprot                        		(FULL_awprot                        		[11]),
+	.s12_axi_awvalid                       		(FULL_awvalid                       		[11]),
+	.s12_axi_awlock                        		(FULL_awlock                        		[11]),
+	.s12_axi_awcache                       		(FULL_awcache                       		[11]),
+	.s12_axi_awready                       		(FULL_awready                       		[11]),
+
+	.s12_axi_wdata                         		(FULL_wdata                         		[11]),
+	.s12_axi_wstrb                         		(FULL_wstrb                         		[11]),
+	.s12_axi_wlast                         		(FULL_wlast                         		[11]),
+	.s12_axi_wvalid                        		(FULL_wvalid                        		[11]),
+	.s12_axi_wready                        		(FULL_wready                        		[11]),
+
+	.s12_axi_bid                           		(FULL_bid                           		[11]),
+	.s12_axi_bresp                         		(FULL_bresp                         		[11]),
+	.s12_axi_bvalid                        		(FULL_bvalid                        		[11]),
+	.s12_axi_bready                        		(FULL_bready                        		[11]),
+
+	.s12_axi_arid                          		(FULL_arid                          		[11]),
+	.s12_axi_araddr                        		(FULL_araddr                        		[11]),
+	.s12_axi_arlen                         		(FULL_arlen                         		[11]),
+	.s12_axi_arsize                        		(FULL_arsize                        		[11]),
+	.s12_axi_arburst                       		(FULL_arburst                       		[11]),
+	.s12_axi_arprot                        		(FULL_arprot                        		[11]),
+	.s12_axi_arvalid                       		(FULL_arvalid                       		[11]),
+	.s12_axi_arlock                        		(FULL_arlock                        		[11]),
+	.s12_axi_arcache                       		(FULL_arcache                       		[11]),
+	.s12_axi_arready                       		(FULL_arready                       		[11]),
+
+	.s12_axi_rid                           		(FULL_rid                           		[11]),
+	.s12_axi_rdata                         		(FULL_rdata                         		[11]),
+	.s12_axi_rresp                         		(FULL_rresp                         		[11]),
+	.s12_axi_rlast                         		(FULL_rlast                         		[11]),
+	.s12_axi_rvalid                        		(FULL_rvalid                        		[11]),
+	.s12_axi_rready                        		(FULL_rready                        		[11]),
+
+	.s_axi_lite_awaddr                   		(s_axi_lite_awaddr                   			),
+	.s_axi_lite_awprot                   		(s_axi_lite_awprot                   			),
+	.s_axi_lite_awvalid                  		(s_axi_lite_awvalid                  			),
+	.s_axi_lite_awready                  		(s_axi_lite_awready                  			),
+
+	.s_axi_lite_wdata                    		(s_axi_lite_wdata                    			),
+	.s_axi_lite_wstrb                    		(s_axi_lite_wstrb                    			),
+	.s_axi_lite_wvalid                   		(s_axi_lite_wvalid                   			),
+	.s_axi_lite_wready                   		(s_axi_lite_wready                   			),
+
+	.s_axi_lite_bvalid                   		(s_axi_lite_bvalid                   			),
+	.s_axi_lite_bresp                    		(s_axi_lite_bresp                    			),
+	.s_axi_lite_bready                   		(s_axi_lite_bready                   			),
+
+	.s_axi_lite_araddr                   		(s_axi_lite_araddr                   			),
+	.s_axi_lite_arprot                   		(s_axi_lite_arprot                   			),
+	.s_axi_lite_arvalid                  		(s_axi_lite_arvalid                  			),
+	.s_axi_lite_arready                  		(s_axi_lite_arready                  			),
+
+	.s_axi_lite_rdata                    		(s_axi_lite_rdata                    			),
+	.s_axi_lite_rresp                    		(s_axi_lite_rresp                    			),
+	.s_axi_lite_rvalid                   		(s_axi_lite_rvalid                   			),
+	.s_axi_lite_rready                   		(s_axi_lite_rready                   			),
+
+	.UART_RX                                 	(UART_TX                                 		),
+	.UART_TX                                 	(UART_TX                                 		)
+);
+
+
+initial begin
+    clk = 1'd1;
+    rst = 1'd1;
+    
+    #200ns
+    `q
+    rst = 1'd0;
+    
+    while(1)
+        if(STOP)
+            break;
+        else
+            @(posedge clk);
+    $stop;
+
+end
+
+initial begin 
+    STOP = 1'd0;
+    
+    #`SIM_STOP_TIME;
+    `q
+    STOP = 1;
+
+end
+
+always #4ns clk = ~clk;
+
+
+//-------------------------------------------------------
+
+initial begin
+    W_CNT = 'd0;
+    SW = 0;
+    CNT = 0;
+	DATA_CNT = 0;
+    BAR_BD = 1'd1;
+    WR_IMG_awid   = `NO_USE; 
+    WR_IMG_awaddr = 'd0; 
+    WR_IMG_awlen  =  `NO_USE;
+    WR_IMG_awsize =  `NO_USE;
+    WR_IMG_awburst=  `NO_USE;
+    WR_IMG_awprot =  `NO_USE;
+    WR_IMG_awvalid=  'd0;
+    WR_IMG_awlock =  `NO_USE;
+    WR_IMG_awcache=  `NO_USE;
+    
+    WR_IMG_wdata   = 'd0;
+    WR_IMG_wstrb   = 'd0;
+    WR_IMG_wlast   = 'd0;
+    WR_IMG_wvalid  = 'd0;
+    
+    WR_IMG_bready  = `NO_USE;
+    
+    WAIT_RESET;
+    
+    #`RD_IMG_WAIT_WRITE;
+    
+    while(1) begin
+        case(SW)
+            0:	begin
+                    `q
+                    if(WR_IMG_awready & BAR_BD) begin
+                        WR_IMG_awaddr  = W_BASE_ADDR[W_CNT*64+:64];
+                        WR_IMG_awvalid = 1'd1;
+                        SW = 1;
+                        if(WR_IMG_wready) begin
+                            // WR_IMG_wdata  = {{$random} % ({32{1'd1}}), {$random} % ({32{1'd1}})};
+							// WR_IMG_wdata  = {(DATA_CNT + 8'd7), (DATA_CNT + 8'd6), (DATA_CNT + 8'd5), (DATA_CNT + 8'd4), (DATA_CNT + 8'd3), (DATA_CNT + 8'd2), (DATA_CNT + 8'd1), (DATA_CNT + 8'd0)};
+							WR_IMG_wdata  = {32'd0, (DATA_CNT + 8'd3), (DATA_CNT + 8'd2), (DATA_CNT + 8'd1), (DATA_CNT + 8'd0)};
+                            WR_IMG_wstrb  = 8'h0f;
+                            // WR_IMG_wlast  = CNT == 15;
+                            WR_IMG_wlast  = 1'd0;
+                            WR_IMG_wvalid = 1'd1;
+							
+							`q
+							WR_IMG_wdata  = {(DATA_CNT + 8'd7), (DATA_CNT + 8'd6), (DATA_CNT + 8'd5), (DATA_CNT + 8'd4), 32'd0};
+                            WR_IMG_wstrb  = 8'hf0;
+                            WR_IMG_wlast  = CNT == 15;
+                            WR_IMG_wvalid = 1'd1;
+							
+							
+                            CNT = CNT + 1;
+							DATA_CNT = DATA_CNT + 8'd8;
+                        end
+                        
+                    end
+                end
+        
+            1:	begin
+                    `q
+                    WR_IMG_awvalid = 1'd0;
+					
+					if(CNT == 16) begin
+						WR_IMG_wdata  = 'd0;
+						WR_IMG_wstrb  = 'd0;
+						WR_IMG_wlast  = 'd0;
+						WR_IMG_wvalid = 'd0;
+						WR_IMG_bready = 1'd1;
+						CNT = 0;
+						SW = 2;
+						@(posedge clk);
+					end
+					else if(WR_IMG_wready) begin
+                         begin
+                            // WR_IMG_wdata  = {{$random} % ({32{1'd1}}), {$random} % ({32{1'd1}})};
+							// WR_IMG_wdata  = {(DATA_CNT + 8'd7), (DATA_CNT + 8'd6), (DATA_CNT + 8'd5), (DATA_CNT + 8'd4), (DATA_CNT + 8'd3), (DATA_CNT + 8'd2), (DATA_CNT + 8'd1), (DATA_CNT + 8'd0)};
+							WR_IMG_wdata  = {32'd0, (DATA_CNT + 8'd3), (DATA_CNT + 8'd2), (DATA_CNT + 8'd1), (DATA_CNT + 8'd0)};
+                            WR_IMG_wstrb  = 8'h0f;
+                            // WR_IMG_wlast  = CNT == 15;
+                            WR_IMG_wlast  = 1'd0;
+                            WR_IMG_wvalid = 1'd1;
+							
+							`q
+							WR_IMG_wdata  = {(DATA_CNT + 8'd7), (DATA_CNT + 8'd6), (DATA_CNT + 8'd5), (DATA_CNT + 8'd4), 32'd0};
+                            WR_IMG_wstrb  = 8'hf0;
+                            WR_IMG_wlast  = CNT == 15;
+                            WR_IMG_wvalid = 1'd1;
+							
+                            CNT = CNT + 1;
+							DATA_CNT = DATA_CNT + 8'd8;
+                        end
+                    end
+                end
+        
+            2:	begin
+                    `q
+                        WR_IMG_bready = 1'd1;
+                        SW = 3;
+                end
+                
+            3:	begin
+                    #`WRITE_INTERVAL;
+                    `q
+					if(W_CNT == 11)
+						W_CNT = 0;
+					else
+						W_CNT = W_CNT + 1;
+                    SW = 0;
+                end			
+
+            default:;
+        endcase
+    end
+end
+
+initial begin
+    READ_DONE = 1'd0;
+    AR_SW = 0;
+    CNT = 0;
+    RD_IMG_arid    = `NO_USE;
+    RD_IMG_araddr  = 'd0;
+    RD_IMG_arlen   = `NO_USE;
+    RD_IMG_arsize  = `NO_USE;
+    RD_IMG_arburst = `NO_USE;
+    RD_IMG_arprot  = `NO_USE;
+    RD_IMG_arvalid = 'd0;
+    RD_IMG_arlock  = `NO_USE;
+    RD_IMG_arcache = `NO_USE;
+    
+    RD_IMG_rready  = 'd0;
+    
+    WAIT_RESET;
+    
+    while(1) begin
+        `q
+        if((!AR_SW) & RD_IMG_arready & READ_START) begin
+            RD_IMG_araddr = R_BASE_ADDR[(REQ_CHL - 1)*64+:64];
+            RD_IMG_arvalid = (!READ_STOP);
+            AR_SW = 1;
+            READ_START = 0;
+            RD_IMG_rready = 1'd1;
+        end
+        else if(AR_SW) begin
+            if(RD_IMG_rlast) begin
+                AR_SW = 0;
+                READ_DONE = 1'd1;
+            end
+            else begin
+                RD_IMG_araddr  = 'd0;	
+                RD_IMG_arvalid = 'd0;
+                READ_DONE = 1'd0;
+            end
+        end
+        else begin
+            RD_IMG_araddr  = 'd0;
+            RD_IMG_arvalid = 'd0;
+            RD_IMG_rready  = 'd0;
+        end
+    end	
+end
+
+initial begin 
+    LOG_SW = 0;
+    REQ_CHL = 0;
+    READ_START = 0;
+    
+    s_axi_lite_awaddr  = 'd0;   
+    s_axi_lite_awprot  = 'd0;   
+    s_axi_lite_awvalid = 'd0;   
+
+    s_axi_lite_wdata   = 'd0;   
+    s_axi_lite_wstrb   = 'd0;   
+    s_axi_lite_wvalid  = 'd0;   
+
+    s_axi_lite_bready  = 'd0;
+
+    s_axi_lite_araddr     = 'd0;
+    s_axi_lite_arprot     = 'd0;
+    s_axi_lite_arvalid    = 'd0;
+
+    s_axi_lite_rready     = 'd0;
+
+    WAIT_RESET;
+	
+	`q
+	LITE_WRITE(32'h0000_0020, 0);
+	`q
+	LITE_WRITE(32'h0000_0024, `AXI_RD_LEN);
+	`q
+	LITE_WRITE(32'h0000_0048, 1000000);
+	`q
+	LITE_WRITE(32'h0000_0040, 1);
+	`q
+	LITE_WRITE(32'h0000_0044, 1);
+	
+	#2us;
+	`q
+	LITE_WRITE(32'h0000_0088, 1000000);
+	`q
+	LITE_WRITE(32'h0000_0080, 1);
+	`q
+	LITE_WRITE(32'h0000_0084, 1);
+	
+	while(1) begin
+        `q `q `q `q
+		@(negedge clk);
+		#1ns;
+		if(s_axi_lite_arready) begin
+			s_axi_lite_araddr = 'h128;
+			s_axi_lite_arvalid = 1'd1;
+			s_axi_lite_rready = 1'd1;
+			@(posedge clk);
+			`q
+			if(s_axi_lite_rvalid & (s_axi_lite_rdata >= `AXI_RD_LEN)) begin
+				//REQ_CHL = 1;
+				s_axi_lite_arvalid = 1'd0;
+				//READ_START = 1;
+				break;
+			end
+			
+			#1ns;
+			s_axi_lite_arvalid = 1'd0;
+			
+		end
+	end
+	
+	//RD1;
+	RD2;
+
+end
+
+initial begin
+    READ_STOP = `READ_STOP_EN;
+    
+    #`READ_STOP_TIME;
+    `q
+    READ_STOP = 1'd0;
+    
+end
+initial begin
+	INIT = 1'd0;
+end
+
+task WAIT_RESET; begin
+    while(1) begin
+        if(rst == 0)
+            break;
+        else
+            @(posedge clk);
+    end
+    
+    repeat(10)
+        @(posedge clk);
+end endtask	
+
+
+task LITE_WRITE(input [31:0] awaddr, input [31:0] wdata); begin
+        
+    `q
+    s_axi_lite_awaddr  = awaddr;
+    s_axi_lite_awvalid = 1'd1;
+    
+    `q
+    s_axi_lite_awaddr  = 'd0;
+    s_axi_lite_awvalid = 'd0;
+    
+    s_axi_lite_wdata   = wdata;
+    s_axi_lite_wstrb   = 4'hf;
+    s_axi_lite_wvalid  = 'd1;
+    s_axi_lite_bready  = 'd1;
+    
+    `q
+    s_axi_lite_wdata   = 'd0;
+    s_axi_lite_wstrb   = 'd0;
+    s_axi_lite_wvalid  = 'd0;
+    s_axi_lite_bready  = 'd1;
+    
+    `q
+    s_axi_lite_bready  = 'd0;
+    
+    `q
+
+end endtask 
+
+task RD1; begin
+
+	while(1) begin
+		`q
+		// if(DUT.GF_CHL[0].UART_R.rx_cnt == 3) begin
+		if(DUT.GF_CHL[0].UART_R.LR_RFF_USEDW == 9) begin
+			REQ_CHL = 1;
+			READ_START = 1;
+			break;
+		end
+	end
+	
+	#500us;
+	`q
+	LITE_WRITE(32'h0000_0024, 16);
+	`q
+	READ_START = 1;
+	
+	#500us;
+	`q
+	LITE_WRITE(32'h0000_0024, 21);
+	`q
+	READ_START = 1;
+
+end endtask
+
+task RD2; begin
+
+	while(1) begin
+		`q
+		// if(DUT.GF_CHL[0].UART_R.rx_cnt == 3) begin
+		if(DUT.GF_CHL[0].UART_R.LR_RFF_USEDW == 9) begin
+			REQ_CHL = 1;
+			READ_START = 1;
+			break;
+		end
+	end
+	
+	#100us;
+	`q
+	LITE_WRITE(32'h0000_0024, 1);
+	`q
+	READ_START = 1;
+	
+	#100us;
+	`q
+	LITE_WRITE(32'h0000_0024, 2);
+	`q
+	READ_START = 1;
+	
+	#100us;
+	`q
+	LITE_WRITE(32'h0000_0024, 3);
+	`q
+	READ_START = 1;
+	
+	#100us;
+	`q
+	LITE_WRITE(32'h0000_0024, 2);
+	`q
+	READ_START = 1;
+	
+	#100us;
+	`q
+	LITE_WRITE(32'h0000_0024, 2);
+	`q
+	READ_START = 1;
+
+end endtask
+
+endmodule
