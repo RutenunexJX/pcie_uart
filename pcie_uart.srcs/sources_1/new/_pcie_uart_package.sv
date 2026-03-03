@@ -1,4 +1,4 @@
-package pcie_uart_pakcage;
+package pcie_uart_package;
 
 import common_package::*;
 
@@ -22,5 +22,26 @@ typedef enum logic [3:0]{
 	E_PARITY_CHECK_SPACE,
 	E_PARITY_CHECK_END
 }parity_check_e;
+
+typedef struct{
+	logic		[31:0]	baud_rate_phase_acc_step_len;
+	logic		[23:0]	baud_rate_phase_acc_frac_step_len;
+	logic		[3:0]	data_width;
+	parity_check_e		parity_check;
+	stop_bit_e			stop_bit_width;
+	logic		[31:0]	fifo_timeout_thrd;
+}rx_para_t;
+
+typedef struct{
+	logic		[31:0]	baud_rate_phase_acc_step_len;
+	logic		[23:0]	baud_rate_phase_acc_frac_step_len;
+	logic		[3:0]	data_width;
+	parity_check_e		parity_check;
+	stop_bit_e			stop_bit_width;
+	logic		[9:0]	frame_interval_unit_s;
+	logic		[9:0]	frame_interval_unit_ms;
+	logic		[9:0]	frame_interval_unit_us;
+	logic		[31:0]	frame_interval_unit_baud_rate;
+}tx_para_t;
 
 endpackage

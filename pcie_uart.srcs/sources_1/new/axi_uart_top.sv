@@ -7,8 +7,8 @@ module axi_uart_top(
 	input	logic			uart_rx				,
 	output	logic			uart_tx				,
 
-	uart_rx_cfg_if.i		i_uart_rx_cfg_if	,
-	uart_tx_cfg_if.i		i_uart_tx_cfg_if	,
+	input	rx_para_t		rx_para				,
+	input	tx_para_t		tx_para				,
 
 	axi_full_if.slave		s_axi_full_if		  //
 );
@@ -20,7 +20,7 @@ axi_uart_rx AXI_UART_RX_U(
 	.uart_rx			(	uart_rx				),
 
 	.sr_axi_full_if		(	s_axi_full_if		),
-	.i_uart_rx_cfg_if	(	i_uart_rx_cfg_if	)
+	.rx_para			(	rx_para				)
 );
 
 axi_uart_tx AXI_UART_TX_U(
@@ -30,7 +30,7 @@ axi_uart_tx AXI_UART_TX_U(
 	.uart_tx			(	uart_tx				),
 
 	.sw_axi_full_if		(	s_axi_full_if		),
-	.i_uart_tx_cfg_if	(	i_uart_tx_cfg_if	)
+	.tx_para			(	tx_para				)
 );
 
 

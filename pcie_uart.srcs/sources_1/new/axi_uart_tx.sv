@@ -1,5 +1,7 @@
 `timescale 1ns / 1ps
+`include "_svh.svh"
 `define DEBUG_axi_uart_tx
+`define TX_PARA_VALIDITY_CHECK
 module axi_uart_tx(
 	input						clk					,
 	input						rst					,
@@ -7,10 +9,16 @@ module axi_uart_tx(
 	output						uart_tx				,
 
 	axi_full_if.slave_write		sw_axi_full_if		,
-	uart_tx_cfg_if.i			i_uart_tx_cfg_if	  //
+	input	tx_para_t			tx_para				  //
 );
 
 `define D `ifdef DEBUG_axi_uart_tx (*mark_debug = "true"*)(*keep = "true"*)`else `endif
+
+logic			awready	;
+logic			wready	;
+logic	[3:0]	bid		;
+logic	[1:0]	bresp	;
+logic			bvalid	;
 
 assign	sw_axi_full_if.awready	= awready;
 assign	sw_axi_full_if.wready	= wready;
@@ -33,37 +41,77 @@ typedef enum logic [3:0]{
 	TX_CHL_CLR
 }tx_st_e;
 
+tx_st_e cs;
+tx_st_e ns;
+
+tx_para_t	new_tx_para = '{default:'0};
+tx_para_t	cur_tx_para = '{default:'0};
+
+always_ff @(posedge clk, posedge rst) begin
+	if(rst) begin
+		new_tx_para.baud_rate_phase_acc_step_len		<= 'd659706;
+		new_tx_para.baud_rate_phase_acc_frac_step_len	<= 'd9766656;
+		new_tx_para.data_width							<= 'd8;
+		new_tx_para.parity_check						<= E_PARITY_CHECK_NONE;
+		new_tx_para.stop_bit_width						<= E_STOP_BIT_1;
+		new_tx_para.frame_interval_unit_s				<= 'd0;
+		new_tx_para.frame_interval_unit_ms				<= 'd0;
+		new_tx_para.frame_interval_unit_us				<= 'd0;
+		new_tx_para.frame_interval_unit_baud_rate		<= 'd1;
+	end
+`ifdef TX_PARA_VALIDITY_CHECK
+	else begin
+		new_tx_para.baud_rate_phase_acc_step_len		<= tx_para.baud_rate_phase_acc_step_len;
+		new_tx_para.baud_rate_phase_acc_frac_step_len	<= (tx_para.baud_rate_phase_acc_frac_step_len <= 24'd10_000_000)	? tx_para.baud_rate_phase_acc_frac_step_len	: '0;
+		new_tx_para.data_width							<= (tx_para.data_width != 4'd0) & (tx_para.data_width <= 4'd8)		? tx_para.data_width						: 4'd8;
+		new_tx_para.parity_check						<= (tx_para.parity_check < E_PARITY_CHECK_END)						? tx_para.parity_check						: E_PARITY_CHECK_NONE;
+		new_tx_para.stop_bit_width						<= (tx_para.stop_bit_width < E_STOP_BIT_END)						? tx_para.stop_bit_width					: E_STOP_BIT_1;
+		new_tx_para.frame_interval_unit_s				<= (tx_para.frame_interval_unit_s < 10'd1000) 						? tx_para.frame_interval_unit_s				: '0;
+		new_tx_para.frame_interval_unit_ms				<= (tx_para.frame_interval_unit_ms < 10'd1000) 						? tx_para.frame_interval_unit_ms			: '0;
+		new_tx_para.frame_interval_unit_us				<= (tx_para.frame_interval_unit_us < 10'd1000)						? tx_para.frame_interval_unit_us			: '0;
+		new_tx_para.frame_interval_unit_baud_rate		<= tx_para.frame_interval_unit_baud_rate;
+	end
+`else
+	else
+		new_tx_para										<= tx_para;
+`endif
+end
+
+always_ff @(posedge clk, posedge rst) begin
+	if(rst) begin
+
+	end
+end
+
 `D	reg r1_UART_TX;
 
 `D	reg [7:0]p_chk_data;
-`D	reg [3:0]cs, ns, tx_cnt, tx_stop_bit_cnt;
+`D	reg [3:0]tx_cnt, tx_stop_bit_cnt;
 `D	reg r1_tx_driv_flag, tx_driv_flag_sft, stop_bit_done;
 `D	reg [1:0] para_cfg_req_post;
 `D	reg [3:0]		tff_rd_strb_cnt;
 `D	wire[3:0]		tff_rd_strb_right_part_zero_cnt [7:0];
-`D	reg 			is_byte_zero;
 `D  reg [15:0] axi_wr_cnt;
 `D  wire [3:0] wstrb_cnt = wstrb[7 ] + wstrb[6 ] + wstrb[5 ] + wstrb[4 ] + wstrb[3 ] + wstrb[2 ] + wstrb[1 ] + wstrb[0 ];
 `D  reg  [7:0] eff_wstrb;
 `D  wire [63:0]eff_wdata;
 `D	wire [3:0] wstrb_right_part_zero_cnt [7:0];
 
-reg 			r1_w_hs;
 wire	[4:0]	strb_cnt;
 reg		[4:0]	strb_cnt_latch;
 wire 	[63:0]	strb_fix_data;
 reg 	[63:0]	strb_fix_data_latch;
 
-`DEBUG_DEF	reg  [71 : 0]	tff_din       ;
-`DEBUG_DEF	reg 			tff_wr_en     ;
-`DEBUG_DEF	wire			tff_rd_en     ;
-`DEBUG_DEF	reg 			tff_rd_en_pre ;
-`DEBUG_DEF	wire [71 : 0]	tff_dout      ;
-`DEBUG_DEF	reg  [71 : 0]	tff_dout_post ;
-`DEBUG_DEF	wire			tff_full      ;
-`DEBUG_DEF	wire			tff_empty     ;
-`DEBUG_DEF	wire [10 : 0]	tff_data_count;
-`DEBUG_DEF	reg  [3:0]		tff_rd_byte_num;
+`D	reg  [71 : 0]	tff_din       ;
+`D	reg 			tff_wr_en     ;
+`D	wire			tff_rd_en     ;
+`D	reg 			tff_rd_en_pre ;
+`D	wire [71 : 0]	tff_dout      ;
+`D	reg  [71 : 0]	tff_dout_post ;
+`D	wire			tff_full      ;
+`D	wire			tff_empty     ;
+`D	wire [10 : 0]	tff_data_count;
+`D	reg  [3:0]		tff_rd_byte_num;
 
 `D	logic	aw_hs		;
 `D	logic	w_hs		;
@@ -74,12 +122,6 @@ assign	aw_hs		= sw_axi_full_if.awready & sw_axi_full_if.awvalid;
 assign	w_hs		= sw_axi_full_if.wvalid & sw_axi_full_if.wready;
 assign	b_hs		= sw_axi_full_if.bvalid & sw_axi_full_if.bready;
 assign	act_wlast	= sw_axi_full_if.wlast & sw_axi_full_if.wvalid;
-
-logic			awready	;
-logic			wready	;
-logic	[3:0]	bid		;
-logic	[1:0]	bresp	;
-logic			bvalid	;
 
 always_ff @(posedge clk, posedge rst) begin
 	if(rst)
@@ -97,43 +139,81 @@ always_ff @(posedge clk, posedge rst) begin
 	bresp <= 'd0;
 end
 
-// _________________________________________________________________________ full awready
-always@(posedge clk, posedge rst) begin
+always_ff @(posedge clk, posedge rst) begin
 	if(rst)
 		awready <= 1'd1;
-	else if (wlast)
+	else if (act_wlast)
 		awready <= 1'd1;
 	else if (aw_hs)
 		awready <= 1'd0;
 	else
 		awready <= awready;
 end
-// _________________________________________________________________________ full wready
-always@(posedge clk, posedge rst) begin
+
+always_ff @(posedge clk, posedge rst) begin
 	if(rst)
 		wready <= 'd0;
 	else if(aw_hs)
 		wready <= 'd1;
-	else if (wlast)
+	else if(act_wlast)
 		wready <= 'd0;
 	else
 		wready <= wready;
 end
 
-always@(posedge clk, posedge rst) begin
-	if(rst) begin
-		r1_w_hs  <= 'd0;
-		r1_wdata <= 'd0;
+always_ff @(posedge clk, posedge rst) begin
+	if(rst)
 		r1_tx_driv_flag <= 'd0;
-	end
-	else begin
-		r1_w_hs  <= w_hs;//fix_w_hs ;
-		r1_wdata <= wdata;//strb_fix_data;
+	else
 		r1_tx_driv_flag <= tx_driv_flag;
-	end
 end
 
-// _________________________________________________________________________ uart_tx
+
+
+reg 	uart_driv_flag          ;
+
+
+reg 	[31:0]	phase_sum		;
+reg  	[31:0]	r1_phase_sum	;
+reg    	[23:0] 	frac_part		;
+wire           	frac_carry_bit	;
+
+localparam FRAC_THRESHOLD = 24'd10_000_000;
+
+
+always_ff @(posedge clk, posedge rst) begin
+	if(rst)
+		phase_sum <= 'd0;
+	else
+		phase_sum <= phase_sum + step_len + frac_carry_bit;
+end
+
+always_ff @(posedge clk, posedge rst) begin
+	if(rst)
+		r1_phase_sum <= 'd0;
+	else
+		r1_phase_sum <= phase_sum;
+end
+
+always_ff @(posedge clk, posedge rst) begin
+	if(rst)
+		frac_part <= 24'd0;
+	else if (frac_part >= FRAC_THRESHOLD)
+		frac_part <= frac_part - FRAC_THRESHOLD + frac_step_len;
+	else
+		frac_part <= frac_part + frac_step_len;
+end
+
+assign frac_carry_bit = (frac_part >= FRAC_THRESHOLD);
+
+always_ff @(posedge clk, posedge rst) begin
+	if(rst)
+		uart_driv_flag <= 'd0;
+	else if(r1_phase_sum[31:24] > phase_sum[31:24])
+		uart_driv_flag <= 1'd1;
+	else
+		uart_driv_flag <= 'd0;
+end
 
 always@(posedge clk, posedge rst) begin
 	if(rst)

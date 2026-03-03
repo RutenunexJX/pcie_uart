@@ -7,7 +7,7 @@ module axi_uart_rx(
 	input					uart_rx				,
 
 	axi_full_if.slave_read	sr_axi_full_if		,
-	uart_rx_cfg_if.i		i_uart_rx_cfg_if	  //
+	input	rx_para_t		rx_para				  //
 );
 
 

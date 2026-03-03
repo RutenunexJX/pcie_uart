@@ -1,2 +1,2 @@
 `include "_interface.sv"
-//import axi_uart_package::*;
+import pcie_uart_package::*;
