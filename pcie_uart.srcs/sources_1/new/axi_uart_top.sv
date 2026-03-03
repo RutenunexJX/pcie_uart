@@ -9,16 +9,28 @@ module axi_uart_top(
 
 	uart_rx_cfg_if.i		i_uart_rx_cfg_if	,
 	uart_tx_cfg_if.i		i_uart_tx_cfg_if	,
+
 	axi_full_if.slave		s_axi_full_if		  //
 );
 
 axi_uart_rx AXI_UART_RX_U(
+	.clk				(	clk					),
+	.rst				(	rst					),
+
+	.uart_rx			(	uart_rx				),
+
 	.sr_axi_full_if		(	s_axi_full_if		),
 	.i_uart_rx_cfg_if	(	i_uart_rx_cfg_if	)
 );
 
 axi_uart_tx AXI_UART_TX_U(
+	.clk				(	clk					),
+	.rst				(	rst					),
 
+	.uart_tx			(	uart_tx				),
+
+	.sw_axi_full_if		(	s_axi_full_if		),
+	.i_uart_tx_cfg_if	(	i_uart_tx_cfg_if	)
 );
 
 
