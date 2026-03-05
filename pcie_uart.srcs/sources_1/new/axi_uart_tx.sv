@@ -21,46 +21,47 @@ module axi_uart_tx(
 localparam P_FRAC_THRD = 24'd10_000_000;
 
 // ----------------------------------------- axi signals
-logic			awready				;
-logic			wready				;
-logic	[3:0]	bid					;
-logic	[1:0]	bresp				;
-logic			bvalid				;
-logic			aw_hs				;
-logic			w_hs				;
-logic			b_hs				;
-logic			act_wlast			;
+logic			awready						;
+logic			wready						;
+logic	[3:0]	bid							;
+logic	[1:0]	bresp						;
+logic			bvalid						;
+logic			aw_hs						;
+logic			w_hs						;
+logic			b_hs						;
+logic			act_wlast					;
 
-logic			uart_tx_pre			;
-logic	[7:0]	parity_check_data	;
-logic	[3:0]	tx_cnt				;
-logic	[3:0]	tx_stop_bit_cnt		;
-logic			r1_tx_driv_flag		;
-logic			tx_driv_flag_sft	;
-logic			stop_bit_done		;
-logic	[3:0]	tff_rd_strb_cnt		;
-logic	[3:0]	tff_rd_strb_right_part_zero_cnt [7:0];
-logic	[15:0]	axi_wr_cnt			;
+logic			uart_tx_pre					;
+logic	[7:0]	parity_check_data			;
+logic	[3:0]	tx_cnt						;
+logic	[3:0]	tx_stop_bit_cnt				;
+logic			r1_tx_driv_flag				;
+logic			tx_driv_flag_sft			;
+logic			stop_bit_done				;
+logic	[3:0]	fifo_rd_strb_cnt			;
+logic	[3:0]	fifo_rd_strb_cnt_sat_dec	;
+logic	[3:0]	fifo_rd_strb_trailing_zeros	;
+logic	[15:0]	axi_wr_cnt					;
 
-logic	[3:0]	wstrb_cnt			;
-logic			tx_driv_flag		;
-logic	[31:0]	phase_sum			;
-logic	[31:0]	r1_phase_sum		;
-logic	[23:0]	frac_part			;
-logic			frac_carry_bit		;
+logic	[3:0]	wstrb_cnt					;
+logic			tx_driv_flag				;
+logic	[31:0]	phase_sum					;
+logic	[31:0]	r1_phase_sum				;
+logic	[23:0]	frac_part					;
+logic			frac_carry_bit				;
 
-logic	[7:0]	eff_wstrb			;
-logic	[63:0]	eff_wdata			;
-logic	[3:0]	wstrb_trailing_zeros;
+logic	[7:0]	eff_wstrb					;
+logic	[63:0]	eff_wdata					;
+logic	[3:0]	wstrb_trailing_zeros		;
 
-logic	[4:0]	strb_cnt			;
-logic	[4:0]	strb_cnt_latch		;
-logic	[63:0]	strb_fix_data		;
-logic	[63:0]	strb_fix_data_latch	;
+logic	[4:0]	strb_cnt					;
+logic	[4:0]	strb_cnt_latch				;
+logic	[63:0]	strb_fix_data				;
+logic	[63:0]	strb_fix_data_latch			;
 
-logic			fifo_rd_en_pre		;
-logic	[71:0]	fifo_dout_post		;
-logic	[3:0]	fifo_rd_byte_num	;
+logic			fifo_rd_en_pre				;
+logic	[71:0]	fifo_dout_post				;
+logic	[3:0]	fifo_rd_byte_num			;
 // ----------------------------------------- fsm state
 typedef enum logic [3:0]{
 	TX_IDLE				,
@@ -95,23 +96,25 @@ tx_para_t	cur_tx_para	= '{default:'0};
 flag_t		flag		= '{default:'0};
 
 // ----------------------------------------- assignment
-assign	sw_axi_full_if.awready	= awready;
-assign	sw_axi_full_if.wready	= wready;
-assign	sw_axi_full_if.bid		= bid;
-assign	sw_axi_full_if.bresp	= bresp;
-assign	sw_axi_full_if.bvalid	= bvalid;
-assign	aw_hs					= sw_axi_full_if.awready & sw_axi_full_if.awvalid;
-assign	w_hs					= sw_axi_full_if.wvalid & sw_axi_full_if.wready;
-assign	b_hs					= sw_axi_full_if.bvalid & sw_axi_full_if.bready;
-assign	act_wlast				= sw_axi_full_if.wlast & sw_axi_full_if.wvalid;
-assign	wstrb_cnt				= 4'($countones(sw_axi_full_if.wstrb));
-assign	uart_tx					= uart_tx_pre;
-assign	strb_cnt				= w_hs ? (strb_cnt_latch + wstrb_cnt) : strb_cnt_latch;
-assign	flag.ready_to_cfg		= ((cs == TX_STOP_BIT) & (ns != TX_STOP_BIT))
-								| ((cs == TX_IDLE) & (ns != TX_IDLE));
-assign	wstrb_trailing_zeros	= get_trailing_zeros(sw_axi_full_if.wstrb);
+assign	sw_axi_full_if.awready		= awready;
+assign	sw_axi_full_if.wready		= wready;
+assign	sw_axi_full_if.bid			= bid;
+assign	sw_axi_full_if.bresp		= bresp;
+assign	sw_axi_full_if.bvalid		= bvalid;
+assign	aw_hs						= sw_axi_full_if.awready & sw_axi_full_if.awvalid;
+assign	w_hs						= sw_axi_full_if.wvalid & sw_axi_full_if.wready;
+assign	b_hs						= sw_axi_full_if.bvalid & sw_axi_full_if.bready;
+assign	act_wlast					= sw_axi_full_if.wlast & sw_axi_full_if.wvalid;
+assign	wstrb_cnt					= 4'($countones(sw_axi_full_if.wstrb));
+assign	uart_tx						= uart_tx_pre;
+assign	strb_cnt					= w_hs ? (strb_cnt_latch + wstrb_cnt) : strb_cnt_latch;
+assign	flag.ready_to_cfg			= ((cs == TX_STOP_BIT) & (ns != TX_STOP_BIT))
+									| ((cs == TX_IDLE) & (ns != TX_IDLE));
+assign	wstrb_trailing_zeros		= 4'(get_trailing_zeros(128'(sw_axi_full_if.wstrb), 8));
+assign	fifo_rd_strb_cnt_sat_dec	= 4'(sat_dec(32'(fifo_rd_strb_cnt)));
+assign	fifo_rd_strb_trailing_zeros	= 4'(get_trailing_zeros(128'(tx_fifo.dout[71:64]), 8));
+assign	frac_carry_bit				= (frac_part >= P_FRAC_THRD);
 
-`define BYTE_CNT_THRD ((tff_rd_strb_cnt > 0) ? (tff_rd_strb_cnt - 1) : 0)
 `define EFF_STRB_SFT (8 - ((axi_wr_eff_len - axi_wr_cnt) + wstrb_trailing_zeros))
 
 always_ff @(posedge clk, posedge rst) begin
@@ -249,8 +252,6 @@ always_ff @(posedge clk, posedge rst) begin
 		frac_part <= frac_part + cur_tx_para.baud_rate_phase_acc_frac_step_len;
 end
 
-assign frac_carry_bit = (frac_part >= P_FRAC_THRD);
-
 always_ff @(posedge clk, posedge rst) begin
 	if(rst)
 		tx_driv_flag <= 'd0;
@@ -293,7 +294,7 @@ always_ff @(posedge clk, posedge rst) begin
 	if(rst)
 		fifo_dout_post <= tx_fifo.dout;
 	else if(fifo_rd_en_pre)
-		fifo_dout_post <= {(tx_fifo.dout[71:64] >> tff_rd_strb_right_part_zero_cnt[7]), (tx_fifo.dout[63:0] >> (tff_rd_strb_right_part_zero_cnt[7]*8))};
+		fifo_dout_post <= {(tx_fifo.dout[71:64] >> fifo_rd_strb_trailing_zeros), (tx_fifo.dout[63:0] >> (fifo_rd_strb_trailing_zeros * 8))};
 	else
 		fifo_dout_post <= fifo_dout_post;
 end
@@ -321,7 +322,7 @@ always_ff @(posedge clk, posedge rst) begin
 		if(cs == TX_IDLE)
 			fifo_rd_en_pre <= (!tx_fifo.empty) & (fifo_rd_byte_num == 4'd0) & r1_tx_driv_flag & tx_driv_flag_sft;
 		else if(cs == TX_STOP_BIT)
-			fifo_rd_en_pre <= stop_bit_done & (!tx_fifo.empty) & (fifo_rd_byte_num == `BYTE_CNT_THRD);
+			fifo_rd_en_pre <= stop_bit_done & (!tx_fifo.empty) & (fifo_rd_byte_num == fifo_rd_strb_cnt_sat_dec);
 	else
 		fifo_rd_en_pre <= (!tx_fifo.empty) & (cs == TX_IDLE) & (fifo_rd_byte_num == 4'd0) & r1_tx_driv_flag & tx_driv_flag_sft;
 end
@@ -355,7 +356,7 @@ always_comb begin
 
 		TX_STOP_BIT:
 			if(stop_bit_done)
-				if(fifo_rd_byte_num < `BYTE_CNT_THRD)
+				if(fifo_rd_byte_num < fifo_rd_strb_cnt_sat_dec)
 					ns = TX_DATA;
 				else
 					ns = (~flag.no_tx_interval) ? TX_IDLE : fifo_rd_en_pre ? TX_DATA : TX_IDLE;
@@ -394,7 +395,7 @@ end
 always_ff @(posedge clk, posedge rst) begin
 	if(rst)
 		fifo_rd_byte_num <= 'd0;
-	else if(fifo_rd_byte_num >= tff_rd_strb_cnt)
+	else if(fifo_rd_byte_num >= fifo_rd_strb_cnt)
 		fifo_rd_byte_num <= 'd0;
 	else if((cs == TX_STOP_BIT) & stop_bit_done)
 		fifo_rd_byte_num <= fifo_rd_byte_num + 1'd1;
@@ -451,21 +452,15 @@ end
 for(genvar i = 0; i < 8; i = i + 1) begin : GF_STRB
 	assign strb_fix_data[8*i+:8] = (w_hs && sw_axi_full_if.wstrb[i]) ? sw_axi_full_if.wdata[8*i+:8] : strb_fix_data_latch[8*i+:8];
 	assign eff_wdata[8*i+:8] = (w_hs & eff_wstrb[i]) ? sw_axi_full_if.wdata[8*i+:8] : '0;
-	always_comb begin
-		if(i == 0)
-			tff_rd_strb_right_part_zero_cnt[i] = (!fifo_rd_en_pre) ? 4'd0 : {3'd0, (!tx_fifo.dout[64+i])};
-		else
-			tff_rd_strb_right_part_zero_cnt[i] = (!fifo_rd_en_pre) ? 4'd0 : (tff_rd_strb_right_part_zero_cnt[i-1] != i) ? tff_rd_strb_right_part_zero_cnt[i-1] : (tff_rd_strb_right_part_zero_cnt[i-1] + (!tx_fifo.dout[64+i]));
-	end
 end: GF_STRB
 
 always_ff @(posedge clk, posedge rst) begin
 	if(rst)
-		tff_rd_strb_cnt <= 'd0;
+		fifo_rd_strb_cnt <= 'd0;
 	else if(fifo_rd_en_pre)
-		tff_rd_strb_cnt <= 4'($countones(tx_fifo.dout[71:64]));
+		fifo_rd_strb_cnt <= 4'($countones(tx_fifo.dout[71:64]));
 	else
-		tff_rd_strb_cnt <= tff_rd_strb_cnt;
+		fifo_rd_strb_cnt <= fifo_rd_strb_cnt;
 end
 
 always_ff @(posedge clk, posedge rst) begin
