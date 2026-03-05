@@ -14,6 +14,9 @@ module axi_uart_tx(
 	input	logic	[15:0]		axi_wr_max_len		,
 	input	logic	[15:0]		axi_wr_eff_len		,
 	output	logic	[10:0]		tx_fifo_usedw		  //
+`ifdef GLOBAL_DEBUG
+	,debug_if.tx				tx_debug_if			  //
+`else `endif
 );
 
 `define D `ifdef DEBUG_axi_uart_tx (*mark_debug = "true"*)(*keep = "true"*)`else `endif
@@ -53,11 +56,6 @@ logic			frac_carry_bit				;
 logic	[7:0]	eff_wstrb					;
 logic	[63:0]	eff_wdata					;
 logic	[3:0]	wstrb_trailing_zeros		;
-
-logic	[4:0]	strb_cnt					;
-logic	[4:0]	strb_cnt_latch				;
-logic	[63:0]	strb_fix_data				;
-logic	[63:0]	strb_fix_data_latch			;
 
 logic			fifo_rd_en_pre				;
 logic	[71:0]	fifo_dout_post				;
@@ -107,7 +105,6 @@ assign	b_hs						= sw_axi_full_if.bvalid & sw_axi_full_if.bready;
 assign	act_wlast					= sw_axi_full_if.wlast & sw_axi_full_if.wvalid;
 assign	wstrb_cnt					= 4'($countones(sw_axi_full_if.wstrb));
 assign	uart_tx						= uart_tx_pre;
-assign	strb_cnt					= w_hs ? (strb_cnt_latch + wstrb_cnt) : strb_cnt_latch;
 assign	flag.ready_to_cfg			= ((cs == TX_STOP_BIT) & (ns != TX_STOP_BIT))
 									| ((cs == TX_IDLE) & (ns != TX_IDLE));
 assign	wstrb_trailing_zeros		= 4'(get_trailing_zeros(128'(sw_axi_full_if.wstrb), 8));
@@ -440,17 +437,7 @@ always_ff @(posedge clk, posedge rst) begin
 		uart_tx_pre <= uart_tx_pre;
 end
 
-always_ff @(posedge clk, posedge rst) begin
-	if(rst)
-		strb_cnt_latch <= 'd0;
-	else if(strb_cnt >= 8)
-		strb_cnt_latch <= 'd0;
-	else
-		strb_cnt_latch <= strb_cnt;
-end
-
 for(genvar i = 0; i < 8; i = i + 1) begin : GF_STRB
-	assign strb_fix_data[8*i+:8] = (w_hs && sw_axi_full_if.wstrb[i]) ? sw_axi_full_if.wdata[8*i+:8] : strb_fix_data_latch[8*i+:8];
 	assign eff_wdata[8*i+:8] = (w_hs & eff_wstrb[i]) ? sw_axi_full_if.wdata[8*i+:8] : '0;
 end: GF_STRB
 
@@ -461,13 +448,6 @@ always_ff @(posedge clk, posedge rst) begin
 		fifo_rd_strb_cnt <= 4'($countones(tx_fifo.dout[71:64]));
 	else
 		fifo_rd_strb_cnt <= fifo_rd_strb_cnt;
-end
-
-always_ff @(posedge clk, posedge rst) begin
-	if(rst)
-		strb_fix_data_latch <= 'd0;
-	else
-		strb_fix_data_latch <= strb_fix_data;
 end
 
 always_ff @(posedge clk, posedge rst) begin
@@ -490,6 +470,11 @@ always_comb begin
 	else
 		eff_wstrb = sw_axi_full_if.wstrb;
 end
+
+// debug
+`ifdef GLOBAL_DEBUG
+//ERROR_SPARSE_STROBES
+`else `endif
 
 `ifdef D
 `undef D
