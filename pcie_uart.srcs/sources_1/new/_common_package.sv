@@ -56,5 +56,15 @@ function automatic int unsigned onehot_to_idx(input logic [31:0] onehot);
 	return 0;
 endfunction
 
+function automatic logic [9:0] get_trailing_zeros(
+	input logic	[1023:0]	val				,
+	input int				actual_width	  //
+);
+	if(val == '0)
+		return 10'(actual_width);
+	else
+		return 10'($clog2(val & (-val)));
+endfunction
+
 
 endpackage

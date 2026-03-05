@@ -51,7 +51,7 @@ logic			frac_carry_bit		;
 
 logic	[7:0]	eff_wstrb			;
 logic	[63:0]	eff_wdata			;
-logic	[3:0]	wstrb_right_part_zero_cnt [7:0];
+logic	[3:0]	wstrb_trailing_zeros;
 
 logic	[4:0]	strb_cnt			;
 logic	[4:0]	strb_cnt_latch		;
@@ -109,10 +109,10 @@ assign	uart_tx					= uart_tx_pre;
 assign	strb_cnt				= w_hs ? (strb_cnt_latch + wstrb_cnt) : strb_cnt_latch;
 assign	flag.ready_to_cfg		= ((cs == TX_STOP_BIT) & (ns != TX_STOP_BIT))
 								| ((cs == TX_IDLE) & (ns != TX_IDLE));
+assign	wstrb_trailing_zeros	= get_trailing_zeros(sw_axi_full_if.wstrb);
 
-`define CFG_DONE_CDN (((para_cfg_req_post == 2'd1) & (LR_CFG_DONE > 2'd1)) || ((para_cfg_req_post == 2'd2) & chl_clr_done))
 `define BYTE_CNT_THRD ((tff_rd_strb_cnt > 0) ? (tff_rd_strb_cnt - 1) : 0)
-`define EFF_STRB_SFT (8 - ((axi_wr_eff_len - axi_wr_cnt) + wstrb_right_part_zero_cnt[7]))
+`define EFF_STRB_SFT (8 - ((axi_wr_eff_len - axi_wr_cnt) + wstrb_trailing_zeros))
 
 always_ff @(posedge clk, posedge rst) begin
 	if(rst)
@@ -456,13 +456,6 @@ for(genvar i = 0; i < 8; i = i + 1) begin : GF_STRB
 			tff_rd_strb_right_part_zero_cnt[i] = (!fifo_rd_en_pre) ? 4'd0 : {3'd0, (!tx_fifo.dout[64+i])};
 		else
 			tff_rd_strb_right_part_zero_cnt[i] = (!fifo_rd_en_pre) ? 4'd0 : (tff_rd_strb_right_part_zero_cnt[i-1] != i) ? tff_rd_strb_right_part_zero_cnt[i-1] : (tff_rd_strb_right_part_zero_cnt[i-1] + (!tx_fifo.dout[64+i]));
-	end
-
-	always_comb begin
-		if(i == 0)
-			wstrb_right_part_zero_cnt[i] = (!w_hs) ? 4'd0 : {3'd0, (!sw_axi_full_if.wstrb[i])};
-		else
-			wstrb_right_part_zero_cnt[i] = (!w_hs) ? 4'd0 : (wstrb_right_part_zero_cnt[i-1] != i) ? wstrb_right_part_zero_cnt[i-1] : (wstrb_right_part_zero_cnt[i-1] + (!sw_axi_full_if.wstrb[i]));
 	end
 end: GF_STRB
 
