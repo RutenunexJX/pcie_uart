@@ -89,8 +89,8 @@ typedef	struct{
 tx_st_e		cs;
 tx_st_e		ns;
 tx_fifo_t	tx_fifo;
-tx_para_t	new_tx_para	= '{default:'0};
-tx_para_t	cur_tx_para	= '{default:'0};
+tx_para_t	new_tx_para;
+tx_para_t	cur_tx_para;
 flag_t		flag		= '{default:'0};
 
 // ----------------------------------------- combinational logic

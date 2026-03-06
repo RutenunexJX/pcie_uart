@@ -1,7 +1,6 @@
 package pcie_uart_package;
 
 import common_package::*;
-export common_package::*;
 
 typedef struct{
 	logic	rx_fsm_deadlock;
