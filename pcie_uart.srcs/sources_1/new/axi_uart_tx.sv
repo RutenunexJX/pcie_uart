@@ -93,7 +93,7 @@ tx_para_t	new_tx_para	= '{default:'0};
 tx_para_t	cur_tx_para	= '{default:'0};
 flag_t		flag		= '{default:'0};
 
-// ----------------------------------------- assignment
+// ----------------------------------------- combinational logic
 assign	sw_axi_full_if.awready		= awready;
 assign	sw_axi_full_if.wready		= wready;
 assign	sw_axi_full_if.bid			= bid;
@@ -116,13 +116,12 @@ assign	frac_carry_bit				= (frac_part >= P_FRAC_THRD);
 
 always_ff @(posedge clk, posedge rst) begin
 	if(rst)
-		flag.no_tx_interval <= 'd0;
+		flag.no_tx_interval	<= 'd0;
 	else if(flag.ready_to_cfg)
-		flag.no_tx_interval <=
-								 ((new_tx_para.frame_interval_unit_s == '0)
-								& (new_tx_para.frame_interval_unit_ms == '0)
-								& (new_tx_para.frame_interval_unit_us == '0)
-								& (new_tx_para.frame_interval_unit_baud_rate == '0));
+		flag.no_tx_interval	<= ((new_tx_para.frame_interval_unit_s == '0)
+							&	(new_tx_para.frame_interval_unit_ms == '0)
+							&	(new_tx_para.frame_interval_unit_us == '0)
+							&	(new_tx_para.frame_interval_unit_baud_rate == '0));
 	else
 		flag.no_tx_interval <= flag.no_tx_interval;
 end
