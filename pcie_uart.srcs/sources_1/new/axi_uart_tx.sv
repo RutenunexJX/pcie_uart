@@ -146,7 +146,7 @@ always_ff @(posedge clk, posedge rst) begin
 		new_tx_para <= '{
 			baud_rate_phase_acc_step_len		: tx_para.baud_rate_phase_acc_step_len,
 			baud_rate_phase_acc_frac_step_len	: (tx_para.baud_rate_phase_acc_frac_step_len <= P_FRAC_THRD)	? tx_para.baud_rate_phase_acc_frac_step_len	: '0,
-			data_width							: (tx_para.data_width != 4'd0) & (tx_para.data_width <= 4'd8)	? tx_para.data_width						: 4'd8,
+			data_width							: ((tx_para.data_width != 4'd0) & (tx_para.data_width <= 4'd8))	? tx_para.data_width						: 4'd8,
 			parity_check						: (tx_para.parity_check < E_PARITY_CHECK_END)					? tx_para.parity_check						: E_PARITY_CHECK_NONE,
 			stop_bit_width						: (tx_para.stop_bit_width < E_STOP_BIT_END)						? tx_para.stop_bit_width					: E_STOP_BIT_1,
 			frame_interval_unit_s				: (tx_para.frame_interval_unit_s < 10'd1000) 					? tx_para.frame_interval_unit_s				: '0,
