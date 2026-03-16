@@ -2,9 +2,16 @@ package pcie_uart_package;
 
 import common_package::*;
 
+// ---------- global ctrl enum
+typedef enum logic[3:0]{
+	E_RX_MODE_POLLING,
+	E_RX_MODE_INTERRUPT,
+	E_RX_MODE_CUSTOM
+}_rx_mode_e;
+
 typedef struct{
-	logic	rx_fsm_deadlock;
-	logic	tx_fsm_deadlock;
+	logic	rx_status;
+	logic	tx_status;
 }debug_status_t;
 
 typedef enum logic [3:0]{
@@ -31,6 +38,17 @@ typedef struct{
 	stop_bit_e			stop_bit_width;
 	logic		[31:0]	fifo_timeout_thrd;
 }rx_para_t;
+
+typedef struct{
+	logic				global_ena;
+	logic				global_rst;
+	logic		[15:0]	axi_rd_len;
+	logic		[15:0]	axi_intrp_thrd;
+}rx_ctrl_t;
+
+typedef struct{
+	logic		[15:0]	fifo_usedw;
+}rx_status_t;
 
 typedef struct{
 	logic		[31:0]	baud_rate_phase_acc_step_len;

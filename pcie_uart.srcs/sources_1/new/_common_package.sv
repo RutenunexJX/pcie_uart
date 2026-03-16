@@ -30,11 +30,17 @@ typedef enum logic [1:0] {
 	E_BURST_WRAP  = 2'b10
 }burst_e;
 
-parameter	P_ENABLE	= 1'd1;
-parameter	P_DISABLE	= 1'd0;
+parameter	bit	P_ENABLE	= 1'd1;
+parameter	bit	P_DISABLE	= 1'd0;
 
-parameter	P_YES		= 1'd1;
-parameter	P_NO		= 1'd0;
+parameter	bit	P_YES		= 1'd1;
+parameter	bit	P_NO		= 1'd0;
+
+parameter	bit	P_TRUE		= 1'd1;
+parameter	bit	P_FALSE		= 1'd0;
+
+parameter	bit	P_ON		= 1'd1;
+parameter	bit	P_OFF		= 1'd0;
 
 function automatic int max(input int a, input int b);
 	return (a > b) ? a : b;

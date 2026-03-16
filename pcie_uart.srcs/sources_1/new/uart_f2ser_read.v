@@ -1,30 +1,30 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
+// Company:
 // Engineer: Xuqinjun
-// 
+//
 // Create Date: 2024/07/22
-// Design Name: 
-// Module Name: 
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
+// Design Name:
+// Module Name:
+// Project Name:
+// Target Devices:
+// Tool Versions:
 // Description: axi-full to serial signal
-// 
-// Dependencies: 
-// 
+//
+// Dependencies:
+//
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
-// 
+//
 //////////////////////////////////////////////////////////////////////////////////
 //`define USE_BRUST_REG
 //`define DEBUG_uart_f2ser_read
 module uart_f2ser_read(
 	//
     input               clk                 	    	,
-    input               rst                 	    	,	
-	//	
+    input               rst                 	    	,
+	//
 	input 				rx_driv_flag					,
 	output 				is_start_bit					,
 	output reg			got_whole_brust_pkt				,
@@ -68,11 +68,11 @@ module uart_f2ser_read(
 	//
 	input 							UART_RX								  //
 );
-`define DEBUG_DEF `ifdef DEBUG_uart_f2ser_read (*mark_debug = "true"*)(*keep = "true"*)`else `endif 
+`define DEBUG_DEF `ifdef DEBUG_uart_f2ser_read (*mark_debug = "true"*)(*keep = "true"*)`else `endif
 
 `ifdef USE_BRUST_REG
 	`define POST_BRUST_LEN  (para_axi_brust_len - 1)
-`else 
+`else
 	`define POST_BRUST_LEN  (LR_AXI_RD_LEN[15:3]+ (LR_AXI_RD_LEN[2:0] != 0) - 1)
 `endif
 
@@ -146,7 +146,7 @@ wire p_chk_cdn = ((para_parity_chk == P_CHK_ODD  ) ? (^p_chk_data)
 `DEBUG_DEF	wire [3:0]		rff_wr_strb_cnt = rff_din[71] + rff_din[70] + rff_din[69] + rff_din[68] + rff_din[67] + rff_din[66] + rff_din[65] + rff_din[64];
 reg					pad, pad1;
 
-// _________________________________________________________________________ full read data	
+// _________________________________________________________________________ full read data
 reg [3 : 0]   		rid   					;
 `DEBUG_DEF	reg  [63 : 0] 		rdata 					;
 reg [1 : 0]   		rresp 					;
@@ -163,14 +163,14 @@ assign s_axi_rlast  = rlast ;
 assign s_axi_rvalid = rvalid;
 
 // _________________________________________________________________________ full read addr
-wire [3 : 0] 		arid    = s_axi_arid   		;   
-wire [63 : 0]		araddr  = s_axi_araddr 		; 
-wire [7 : 0] 		arlen   = s_axi_arlen  		;  
-wire [2 : 0] 		arsize  = s_axi_arsize 		; 
+wire [3 : 0] 		arid    = s_axi_arid   		;
+wire [63 : 0]		araddr  = s_axi_araddr 		;
+wire [7 : 0] 		arlen   = s_axi_arlen  		;
+wire [2 : 0] 		arsize  = s_axi_arsize 		;
 wire [1 : 0] 		arburst = s_axi_arburst		;
-wire [2 : 0] 		arprot  = s_axi_arprot 		; 
+wire [2 : 0] 		arprot  = s_axi_arprot 		;
 wire         		arvalid = s_axi_arvalid		;
-wire         		arlock  = s_axi_arlock 		; 
+wire         		arlock  = s_axi_arlock 		;
 wire [3 : 0] 		arcache = s_axi_arcache		;
 reg          		arready						;
 `DEBUG_DEF	wire			 	ar_hs = arready & arvalid	;
@@ -199,23 +199,23 @@ always@(posedge clk, posedge rst) begin
 		rid    <= 'd0;
 		rdata  <= rdata_window[63:0];
 		rresp  <= 'd0;
-		
+
 		rlast_cdn <= `RLAST_CDN;
-		
+
 		//rlast  <= (rlast_cdn & (r1_rdata_window_remdr != 0) & (rdata_window_remdr == 0)) || ((~rlast_cdn) & (((r1_rff_rd_cnt + r1_rff_rd_strb_cnt) >= LR_AXI_RD_LEN) & (r1_rff_rd_cnt < LR_AXI_RD_LEN) & r1_rff_rd_en) & (rdata_window_remdr == 0));
-		
+
 		if((rdata_window_remdr == 0) & rlast_cdn & (r1_rdata_window_remdr != 0))
 			rlast <= 1'd1;
-		else 
+		else
 			rlast <= `RLAST_CDN & (rdata_window_remdr == 0);
-		
-		
+
+
 		if((`RLAST_CDN & (rdata_window_remdr != 0)) || ((`RLAST_CDN == 1'd0) & (~((rdata_window_remdr == 0) & rlast_cdn & (r1_rdata_window_remdr != 0)))))
-			rvalid <= ((r1_rdata_window_remdr + r1_rff_rd_strb_cnt) >= 8) & r1_rff_rd_en & (LR_AXI_RD_LEN > 8);			
+			rvalid <= ((r1_rdata_window_remdr + r1_rff_rd_strb_cnt) >= 8) & r1_rff_rd_en & (LR_AXI_RD_LEN > 8);
 		else
 			rvalid <= ((rdata_window_remdr == 0) & rlast_cdn & (r1_rdata_window_remdr != 0)) || (`RLAST_CDN & (rdata_window_remdr == 0));
 	end
-	else begin 
+	else begin
 		rid   		<= 'd0;
 		rdata		<= 'd0;
 		rresp 		<= 'd0;
@@ -249,7 +249,7 @@ end
 
 assign is_start_bit_wire = ((cs == IDLE) || (cs == STOP_BIT) || (cs == PARA_CFG)) & ({r_UART_RX[1], r_UART_RX[0]} == 2'b10);// negedge
 assign is_start_bit = is_start_bit_wire;
-       				
+
 always@(posedge clk, posedge rst) begin
 	if(rst) begin
 		para_stop_bit         <= STOP_BIT_1;
@@ -306,7 +306,7 @@ uart_ff_8k RFF_8K (
 );
 
 always@(posedge clk, posedge rst) begin
-	if(rst) 
+	if(rst)
 		rff_wr_byte_num <= 'd0;
 	else if(rff_wr_en)
 		if(rx_cnt == 9)
@@ -335,21 +335,21 @@ end
 assign rff_din = rff_wr_en ? {rff_din_strb_pre, rff_din_data_eff} : 0;
 
 always@(posedge clk, posedge rst) begin
-	if(rst) 
+	if(rst)
 		{pad1, rff_din_strb_pre} <= 'd0;
 	else if(rff_wr_en)
-		if(rx_cnt == 9)	
+		if(rx_cnt == 9)
 			{pad1, rff_din_strb_pre} <= 'd1;
-		else 
+		else
 			{pad1, rff_din_strb_pre} <= 'd0;
 	else if(rx_cnt == 9)
 		{pad1, rff_din_strb_pre} <= {rff_din_strb_pre, 1'd1};
-	else 
+	else
 		{pad1, rff_din_strb_pre} <= {pad1, rff_din_strb_pre};
 end
 
 always@(posedge clk, posedge rst) begin
-	if(rst) 
+	if(rst)
 		rff_wr_en <= 1'd0;
 	else if(((rx_cnt == 9) & (rff_wr_byte_num == 4'd7)) | (timeout_cnt >= LR_TIMEOUT_THRD_reg))
 		rff_wr_en <= (!rff_full) & (rff_din_strb_pre != 0);
@@ -364,7 +364,7 @@ always@(posedge clk, posedge rst) begin
 		rff_rd_cnt <= 'd0;
 	else if(rff_rd_en)
 		rff_rd_cnt <= rff_rd_cnt + rff_rd_strb_cnt;
-	else 
+	else
 		rff_rd_cnt <= rff_rd_cnt;
 end
 
@@ -375,24 +375,24 @@ always@(posedge clk, posedge rst) begin
 		rd_start <= 'd0;
 	else if((!rd_start) & ar_hs)
 		rd_start <= 'd1;
-	else 
+	else
 		rd_start <= rd_start;
 end
 
 always@(posedge clk, posedge rst) begin
-	if(rst) 
+	if(rst)
 		rff_rd_en <= 'd0;
 	else if(((rff_rd_cnt + rff_rd_strb_cnt) <= LR_AXI_RD_LEN) & (rff_rd_strb_cnt != 0) & rd_start)
 		if(!rff_rd_en)
 			rff_rd_en <= ((rff_rd_cnt + rff_rd_strb_cnt) <= LR_AXI_RD_LEN);
-		else 
+		else
 			rff_rd_en <= ((rff_rd_cnt + rff_rd_strb_cnt) < LR_AXI_RD_LEN);
 	else
 		rff_rd_en <= 'd0;
 end
 
 always@(posedge clk, posedge rst) begin
-	if(rst) 
+	if(rst)
 		rdata_window <= 'd0;
 	else if(rlast)
 		rdata_window <= 'd0;
@@ -406,18 +406,18 @@ always@(posedge clk, posedge rst) begin
 end
 
 always@(posedge clk, posedge rst) begin
-	if(rst) 
+	if(rst)
 		rdata_window_remdr <= 'd0;
 	else if(`RLAST_CDN)
 		rdata_window_remdr <= 'd0;
-	else if(rff_rd_en) 
+	else if(rff_rd_en)
 		rdata_window_remdr <= ((rdata_window_remdr + rff_rd_strb_cnt) >= 8) ? ((rdata_window_remdr + rff_rd_strb_cnt) - 8) : (rdata_window_remdr + rff_rd_strb_cnt);
 	else
 		rdata_window_remdr <= rdata_window_remdr;
 end
 
 always@(posedge clk, posedge rst) begin
-	if(rst) 
+	if(rst)
 		rx_cnt <= 'd0;
 	else if(cs == RX_DATA)
 		rx_cnt <=  (r1_rx_driv_flag & rx_driv_flag_sft) ? (rx_cnt + 1'd1) : rx_cnt;
@@ -437,7 +437,7 @@ always@(posedge clk, posedge rst) begin
 end
 
 always@(posedge clk, posedge rst) begin
-	if(rst) 
+	if(rst)
 		rx_stop_bit_cnt <= 'd0;
 	else if(cs == STOP_BIT)
 		rx_stop_bit_cnt <= r1_rx_driv_flag ? (rx_stop_bit_cnt + 1'd1) : rx_stop_bit_cnt;
@@ -446,19 +446,19 @@ always@(posedge clk, posedge rst) begin
 end
 
 always@(posedge clk, posedge rst) begin
-	if(rst) 
+	if(rst)
 		stop_bit_done <= 'd0;
 	else
 		stop_bit_done <= (rx_stop_bit_cnt == (para_stop_bit + 1)) & r1_rx_driv_flag;
 end
 
 always@(posedge clk, posedge rst) begin
-	if(rst) 
+	if(rst)
 		p_chk_data <= 'd0;
 	else if(para_parity_chk != P_CHK_NONE)
 		p_chk_data <= (cs == RX_DATA) ? rff_din[(rff_wr_byte_num*8)+:8] : p_chk_data;
 	else
-		p_chk_data <= 'd0;		
+		p_chk_data <= 'd0;
 end
 
 always@(posedge clk, posedge rst) begin
@@ -472,7 +472,7 @@ end
 
 /* is to avoid : 1. the UART terminal sends data without intervals and stop bit is too short(0.5buad < stop bit < setting stop bit)
                  2. the new start bit comes when modifying parameters(not include baud rate)*/
-always@(posedge clk, posedge rst) begin 
+always@(posedge clk, posedge rst) begin
 	if(rst)
 		force_jump <= 'd0;
 	else if(cs == STOP_BIT)
@@ -493,7 +493,7 @@ always@(posedge clk, posedge rst) begin
 			para_cfg_req_post <= 2'd2;
 		else
 			para_cfg_req_post <= para_cfg_req_post;
-		
+
 		1: if(chl_clr_req == 2'd1)
 			para_cfg_req_post <= 2'd2;
 		else if((cs == PARA_CFG) & (LR_CFG_DONE > 2'd1))
@@ -505,7 +505,7 @@ always@(posedge clk, posedge rst) begin
 			para_cfg_req_post <= 2'd0;
 		else
 			para_cfg_req_post <= para_cfg_req_post;
-		
+
 		default:para_cfg_req_post <= para_cfg_req_post;
 	endcase
 end
@@ -525,7 +525,7 @@ always@* begin
 						ns <= RX_DATA;
 					else
 						ns <= para_cfg_req_post ? PARA_CFG : IDLE;
-		
+
 		RX_DATA	:	if((rx_cnt == 8) & r1_rx_driv_flag & rx_driv_flag_sft)
 						if(para_parity_chk == P_CHK_NONE)
 							ns <= STOP_BIT;
@@ -533,12 +533,12 @@ always@* begin
 							ns <= PARITY_CHK;
 					else
 						ns <= RX_DATA;
-		
+
 		PARITY_CHK: if(r1_rx_driv_flag & rx_driv_flag_sft)
 						ns <= STOP_BIT;
 					else
 						ns <= PARITY_CHK;
-		
+
 		STOP_BIT:	if(force_jump)
 						ns <= RX_DATA;
 					else if(LR_STOP_PCHK_ENA == 1'd0)
@@ -547,7 +547,7 @@ always@* begin
 						ns <= para_cfg_req_post ? PARA_CFG : IDLE;
 					else
 						ns <= STOP_BIT;
-		
+
 		PARA_CFG:	if(para_cfg_req_post == 2'd1)
 						if(LR_CFG_DONE > 2'd1)
 							ns <= force_jump ? RX_DATA : IDLE;
@@ -558,16 +558,16 @@ always@* begin
 							ns <= IDLE;
 						else
 							ns <= PARA_CFG;
-					else 
+					else
 						ns <= PARA_CFG;
-						
+
 		default: ns <= IDLE;
 	endcase
 end
 
 
 always@(posedge clk, posedge rst) begin
-	if(rst) 
+	if(rst)
 		rff_din_data_pre <= 'd0;
 	else if(rff_wr_en)//((((rx_cnt == 9) & (rff_wr_byte_num == 4'd7)) | (timeout_cnt >= LR_TIMEOUT_THRD_reg)) & (!rff_full) & (rff_din_strb_pre != 0))
 		rff_din_data_pre <= {56'd0, rff_din_data_pre[(rff_wr_byte_num*8)+:8]};

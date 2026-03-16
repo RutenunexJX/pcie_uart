@@ -1,8 +1,10 @@
 `timescale 1ns / 1ps
 `include "_svh.svh"
 `define	DEBUG_axi_uart_rx
-`define RX_PARA_VALIDITY_CHECK
-module axi_uart_rx(
+module axi_uart_rx #(
+	parameter	_rx_mode_e	P_RX_MODE				= E_RX_MODE_POLLING,
+	parameter	bit			P_PARA_VALIDITY_CHECK	= P_DISABLE
+)(
 	input	logic			clk					,
 	input	logic			rst					,
 
@@ -27,12 +29,11 @@ always_ff @(posedge clk, posedge rst) begin
 			baud_rate_phase_acc_step_len		: 'd659706,
 			baud_rate_phase_acc_frac_step_len	: 'd9766656,
 			data_width							: 'd8,
-			parity_check						: cur_rx_para.parity_check,
+			parity_check						: E_PARITY_CHECK_NONE,
 			stop_bit_width						: E_STOP_BIT_1,
 			fifo_timeout_thrd					: 'd5600
 		};
-`ifdef RX_PARA_VALIDITY_CHECK
-	else
+	else if(P_PARA_VALIDITY_CHECK == P_ENABLE)
 		new_rx_para <= '{
 			baud_rate_phase_acc_step_len		: rx_para.baud_rate_phase_acc_step_len,
 			baud_rate_phase_acc_frac_step_len	: (rx_para.baud_rate_phase_acc_frac_step_len <= E_PARITY_CHECK_END)	? rx_para.baud_rate_phase_acc_frac_step_len	: '0,
@@ -41,11 +42,8 @@ always_ff @(posedge clk, posedge rst) begin
 			stop_bit_width						: (rx_para.stop_bit_width < E_STOP_BIT_END)							? rx_para.stop_bit_width					: E_STOP_BIT_1,
 			fifo_timeout_thrd					: rx_para.fifo_timeout_thrd
 		};
-
-`else
 	else
 		new_rx_para <= new_rx_para;
-`endif
 end
 
 //	input	[15:0]		axi_rd_len					,
