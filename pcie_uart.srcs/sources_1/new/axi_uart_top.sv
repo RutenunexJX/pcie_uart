@@ -10,9 +10,11 @@ module axi_uart_top(
 	input	rx_para_t		rx_para				,
 	input	tx_para_t		tx_para				,
 
-	input	logic	[15:0]	axi_wr_max_len		,
-	input	logic	[15:0]	axi_wr_eff_len		,
-	output	logic	[10:0]	tx_fifo_usedw		,
+	input	rx_ctrl_t		rx_ctrl				,
+	input	tx_ctrl_t		tx_ctrl				,
+
+	output	rx_status_t		rx_status			,
+	output	tx_status_t		tx_status			,
 
 	axi_full_if.slave		s_axi_full_if		  //
 );
@@ -23,23 +25,30 @@ axi_uart_rx AXI_UART_RX_U(
 
 	.uart_rx			(	uart_rx				),
 
-	.sr_axi_full_if		(	s_axi_full_if		),
-	.rx_para			(	rx_para				)
+	.rx_para			(	rx_para				),
+	.rx_ctrl			(	rx_ctrl				),
+	.rx_status			(	rx_status			),
+
+	.sr_axi_full_if		(	s_axi_full_if		)
 );
 
-axi_uart_tx AXI_UART_TX_U(
+axi_uart_tx #(
+	.P_PARA_VALIDITY_CHECK(	),
+	.P_DEBUG0('{
+		DEBUG_ENA_TX_OVERFLOW_ERROR		: P_ENABLE,
+		DEBUG_ENA_TX_OVERFLOW_WARNING	: P_ENABLE})
+)AXI_UART_TX_U(
 	.clk				(	clk					),
 	.rst				(	rst					),
 
 	.uart_tx			(	uart_tx				),
 
-	.sw_axi_full_if		(	s_axi_full_if		),
 	.tx_para			(	tx_para				),
-	.axi_wr_max_len		(	axi_wr_max_len		),
-	.axi_wr_eff_len		(	axi_wr_eff_len		),
-	.tx_fifo_usedw		(	tx_fifo_usedw		)
-);
+	.tx_ctrl			(	tx_ctrl				),
+	.tx_status			(	tx_status			),
 
+	.sw_axi_full_if		(	s_axi_full_if		)
+);
 
 endmodule
 

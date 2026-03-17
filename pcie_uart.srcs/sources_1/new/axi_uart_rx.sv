@@ -10,10 +10,11 @@ module axi_uart_rx #(
 
 	input	logic			uart_rx				,
 
-	axi_full_if.slave_read	sr_axi_full_if		,
 	input	rx_para_t		rx_para				,
-	input	logic	[15:0]	axi_rd_len			,
-	output	logic	[15:0]	rx_fifo_usedw		  //
+	input	rx_ctrl_t		rx_ctrl				,
+	output	rx_status_t		rx_status			,
+
+	axi_full_if.slave_read	sr_axi_full_if		  //
 );
 `define D `ifdef DEBUG_axi_uart_rx (*mark_debug = "true"*)(*keep = "true"*)`else `endif
 `define RLAST_CDN (((r1_rff_rd_cnt + r1_rff_rd_strb_cnt) >= axi_rd_len) & (r1_rff_rd_cnt < axi_rd_len) & r1_rx_fifo_rd_en)
@@ -31,7 +32,8 @@ always_ff @(posedge clk, posedge rst) begin
 			data_width							: 'd8,
 			parity_check						: E_PARITY_CHECK_NONE,
 			stop_bit_width						: E_STOP_BIT_1,
-			fifo_timeout_thrd					: 'd5600
+			fifo_timeout_thrd					: 'd5600,
+			default								:'0
 		};
 	else if(P_PARA_VALIDITY_CHECK == P_ENABLE)
 		new_rx_para <= '{
@@ -40,7 +42,8 @@ always_ff @(posedge clk, posedge rst) begin
 			data_width							: ((rx_para.data_width != 4'd0) & (rx_para.data_width <= 4'd8))		? rx_para.data_width						: 4'd8,
 			parity_check						: (rx_para.parity_check < E_PARITY_CHECK_END)						? rx_para.parity_check						: cur_rx_para.parity_check,
 			stop_bit_width						: (rx_para.stop_bit_width < E_STOP_BIT_END)							? rx_para.stop_bit_width					: E_STOP_BIT_1,
-			fifo_timeout_thrd					: rx_para.fifo_timeout_thrd
+			fifo_timeout_thrd					: rx_para.fifo_timeout_thrd,
+			default								: '0
 		};
 	else
 		new_rx_para <= new_rx_para;

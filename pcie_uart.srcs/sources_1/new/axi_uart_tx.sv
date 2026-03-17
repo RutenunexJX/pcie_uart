@@ -1,29 +1,44 @@
 `timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////
+//
+// File Name           : axi_uart_tx
+// Description         :
+// Author              : xqj
+// Date                : 2026-03-17 11:47:55
+// Version             : 1.0
+// Modification History:
+// Date                   Author    Version    Description
+// 2026-03-17 11:47:55    xqj       1.0        Initial Creation
+//
+//////////////////////////////////////////////////////////////////////////
 `include "_svh.svh"
-
 `define DEBUG_axi_uart_tx
-`define TX_PARA_VALIDITY_CHECK
-module axi_uart_tx(
+module axi_uart_tx #(
+	parameter	bit			P_PARA_VALIDITY_CHECK = P_DISABLE,
+	parameter	debug0_t	P_DEBUG0 = '0
+)(
 	input	logic				clk					,
 	input	logic				rst					,
 
 	output	logic				uart_tx				,
 
-	axi_full_if.slave_write		sw_axi_full_if		,
 	input	tx_para_t			tx_para				,
-	input	logic	[15:0]		axi_wr_max_len		,
-	input	logic	[15:0]		axi_wr_eff_len		,
-	output	logic	[10:0]		tx_fifo_usedw		  //
-`ifdef GLOBAL_DEBUG
-	,debug_if.tx				tx_debug_if			  //
-`else `endif
+	input	tx_ctrl_t			tx_ctrl				,
+	output	tx_status_t			tx_status			,
+
+	axi_full_if.slave_write		sw_axi_full_if		  //
 );
 
 `define D `ifdef DEBUG_axi_uart_tx (*mark_debug = "true"*)(*keep = "true"*)`else `endif
-
 localparam P_FRAC_THRD = 24'd10_000_000;
 
-// ----------------------------------------- axi signals
+// ================================================================================
+//                               logic definition
+// ================================================================================
+
+// ---------------------------------------------------
+// axi signals
+// ---------------------------------------------------
 logic			awready						;
 logic			wready						;
 logic	[3:0]	bid							;
@@ -34,6 +49,9 @@ logic			w_hs						;
 logic			b_hs						;
 logic			act_wlast					;
 
+// ---------------------------------------------------
+//
+// ---------------------------------------------------
 logic			uart_tx_pre					;
 logic	[7:0]	parity_check_data			;
 logic	[3:0]	tx_cnt						;
@@ -54,13 +72,27 @@ logic	[23:0]	frac_part					;
 logic			frac_carry_bit				;
 
 logic	[7:0]	eff_wstrb					;
+logic	[15:0]	eff_wstrb_sft				;
 logic	[63:0]	eff_wdata					;
 logic	[3:0]	wstrb_trailing_zeros		;
 
 logic			fifo_rd_en_pre				;
 logic	[71:0]	fifo_dout_post				;
 logic	[3:0]	fifo_rd_byte_num			;
-// ----------------------------------------- fsm state
+
+// ---------------------------------------------------
+//
+// ---------------------------------------------------
+logic	[15:0]	act_axi_wr_eff_len			;
+logic	[15:0]	act_axi_wr_max_len			;
+
+// ================================================================================
+//                               struct and enum definition
+// ================================================================================
+
+// ---------------------------------------------------
+// fsm state
+// ---------------------------------------------------
 typedef enum logic [3:0]{
 	TX_IDLE				,
 	TX_DATA				,
@@ -68,13 +100,17 @@ typedef enum logic [3:0]{
 	TX_PARITY_CHECK
 }tx_st_e;
 
-// ----------------------------------------- flag struct
+// ---------------------------------------------------
+// flag struct
+// ---------------------------------------------------
 typedef struct{
 	logic	no_tx_interval;
 	logic	ready_to_cfg;
 }flag_t;
 
-// ----------------------------------------- fifo struct
+// ---------------------------------------------------
+// fifo struct
+// ---------------------------------------------------
 typedef	struct{
 	logic	[71:0]	din			;
 	logic			wr_en		;
@@ -85,7 +121,9 @@ typedef	struct{
 	logic	[10:0]	data_count	;
 }tx_fifo_t;
 
-// -----------------------------------------
+// ---------------------------------------------------
+// enum and struct var
+// ---------------------------------------------------
 tx_st_e		cs;
 tx_st_e		ns;
 tx_fifo_t	tx_fifo;
@@ -93,26 +131,42 @@ tx_para_t	new_tx_para;
 tx_para_t	cur_tx_para;
 flag_t		flag		= '{default:'0};
 
-// ----------------------------------------- combinational logic
+// ================================================================================
+//                               combinational assignment
+// ================================================================================
+
+// ---------------------------------------------------
+// interface assignment
+// ---------------------------------------------------
 assign	sw_axi_full_if.awready		= awready;
 assign	sw_axi_full_if.wready		= wready;
 assign	sw_axi_full_if.bid			= bid;
 assign	sw_axi_full_if.bresp		= bresp;
 assign	sw_axi_full_if.bvalid		= bvalid;
+
+// ---------------------------------------------------
+// axi handshake
+// ---------------------------------------------------
 assign	aw_hs						= sw_axi_full_if.awready & sw_axi_full_if.awvalid;
 assign	w_hs						= sw_axi_full_if.wvalid & sw_axi_full_if.wready;
 assign	b_hs						= sw_axi_full_if.bvalid & sw_axi_full_if.bready;
 assign	act_wlast					= sw_axi_full_if.wlast & sw_axi_full_if.wvalid;
-assign	wstrb_cnt					= 4'($countones(sw_axi_full_if.wstrb));
-assign	uart_tx						= uart_tx_pre;
-assign	flag.ready_to_cfg			= ((cs == TX_STOP_BIT) & (ns != TX_STOP_BIT))
-									| ((cs == TX_IDLE) & (ns != TX_IDLE));
+
+// ---------------------------------------------------
+// function assignment
+// ---------------------------------------------------
 assign	wstrb_trailing_zeros		= 4'(get_trailing_zeros(128'(sw_axi_full_if.wstrb), 8));
 assign	fifo_rd_strb_cnt_sat_dec	= 4'(sat_dec(32'(fifo_rd_strb_cnt)));
 assign	fifo_rd_strb_trailing_zeros	= 4'(get_trailing_zeros(128'(tx_fifo.dout[71:64]), 8));
 assign	frac_carry_bit				= (frac_part >= P_FRAC_THRD);
 
-`define EFF_STRB_SFT (8 - ((axi_wr_eff_len - axi_wr_cnt) + wstrb_trailing_zeros))
+// ---------------------------------------------------
+// other assignment
+// ---------------------------------------------------
+assign	wstrb_cnt					= 4'($countones(sw_axi_full_if.wstrb));
+assign	uart_tx						= uart_tx_pre;
+assign	flag.ready_to_cfg			= ((cs == TX_STOP_BIT) & (ns != TX_STOP_BIT))
+									| ((cs == TX_IDLE) & (ns != TX_IDLE));
 
 always_ff @(posedge clk, posedge rst) begin
 	if(rst)
@@ -126,11 +180,18 @@ always_ff @(posedge clk, posedge rst) begin
 		flag.no_tx_interval <= flag.no_tx_interval;
 end
 
+// ================================================================================
+//                               parameter
+// ================================================================================
+
+// ---------------------------------------------------
+// new tx parameter
+// ---------------------------------------------------
 always_ff @(posedge clk, posedge rst) begin
-	if(rst) begin
+	if(rst)
 		new_tx_para <= '{
-			baud_rate_phase_acc_step_len		: 'd659706,
-			baud_rate_phase_acc_frac_step_len	: 'd9766656,
+			baud_rate_phase_acc_step_len		: 'd659706, // @9600 bps; @125MHz
+			baud_rate_phase_acc_frac_step_len	: 'd9766656, // @9600 bps; @125MHz
 			data_width							: 'd8,
 			parity_check						: E_PARITY_CHECK_NONE,
 			stop_bit_width						: E_STOP_BIT_1,
@@ -140,9 +201,7 @@ always_ff @(posedge clk, posedge rst) begin
 			frame_interval_unit_baud_rate		: 'd1,
 			default								: '0
 		};
-	end
-`ifdef TX_PARA_VALIDITY_CHECK
-	else begin
+	else if(P_PARA_VALIDITY_CHECK == P_ENABLE)
 		new_tx_para <= '{
 			baud_rate_phase_acc_step_len		: tx_para.baud_rate_phase_acc_step_len,
 			baud_rate_phase_acc_frac_step_len	: (tx_para.baud_rate_phase_acc_frac_step_len <= P_FRAC_THRD)	? tx_para.baud_rate_phase_acc_frac_step_len	: '0,
@@ -155,18 +214,18 @@ always_ff @(posedge clk, posedge rst) begin
 			frame_interval_unit_baud_rate		: tx_para.frame_interval_unit_baud_rate,
 			default								: '0
 		};
-	end
-`else
 	else
 		new_tx_para <= tx_para;
-`endif
 end
 
+// ---------------------------------------------------
+// current tx parameter
+// ---------------------------------------------------
 always_ff @(posedge clk, posedge rst) begin
 	if(rst) begin
 		cur_tx_para <= '{
-			baud_rate_phase_acc_step_len		: 'd659706,
-			baud_rate_phase_acc_frac_step_len	: 'd9766656,
+			baud_rate_phase_acc_step_len		: 'd659706, // @9600 bps; @125MHz
+			baud_rate_phase_acc_frac_step_len	: 'd9766656, // @9600 bps; @125MHz
 			data_width							: 'd8,
 			parity_check						: E_PARITY_CHECK_NONE,
 			stop_bit_width						: E_STOP_BIT_1,
@@ -181,6 +240,21 @@ always_ff @(posedge clk, posedge rst) begin
 		cur_tx_para <= new_tx_para;
 	else
 		cur_tx_para <= cur_tx_para;
+end
+
+// ================================================================================
+//                               axi
+// ================================================================================
+
+always_ff @(posedge clk, posedge rst) begin
+	if(rst) begin
+		act_axi_wr_max_len <= 'd0;
+		act_axi_wr_eff_len <= 'd0;
+	end
+	else begin
+		act_axi_wr_max_len <= tx_ctrl.axi_wr_max_len;
+		act_axi_wr_eff_len <= (tx_ctrl.axi_wr_eff_len > tx_ctrl.axi_wr_max_len) ? tx_ctrl.axi_wr_max_len : tx_ctrl.axi_wr_eff_len;
+	end
 end
 
 always_ff @(posedge clk, posedge rst) begin
@@ -220,6 +294,10 @@ always_ff @(posedge clk, posedge rst) begin
 	else
 		wready <= wready;
 end
+
+// ================================================================================
+//                               phase accmulator
+// ================================================================================
 
 always_ff @(posedge clk, posedge rst) begin
 	if(rst)
@@ -268,6 +346,10 @@ always_ff @(posedge clk, posedge rst) begin
 		tx_driv_flag_sft <= tx_driv_flag_sft;
 end
 
+// ================================================================================
+//                               fifo
+// ================================================================================
+
 uart_ff_8k TFF_8K (
 	.clk		(	clk					),
 	.din		(	tx_fifo.din       	),
@@ -304,9 +386,9 @@ end
 
 always_ff @(posedge clk, posedge rst) begin
 	if(rst)
-		tx_fifo_usedw <= 'd0;
+		tx_status.fifo_usedw <= 'd0;
 	else
-		tx_fifo_usedw <= tx_fifo.data_count;
+		tx_status.fifo_usedw <= 16'(tx_fifo.data_count);
 end
 
 assign tx_fifo.rd_en = fifo_rd_en_pre;
@@ -322,6 +404,10 @@ always_ff @(posedge clk, posedge rst) begin
 	else
 		fifo_rd_en_pre <= (!tx_fifo.empty) & (cs == TX_IDLE) & (fifo_rd_byte_num == 4'd0) & r1_tx_driv_flag & tx_driv_flag_sft;
 end
+
+// ================================================================================
+//                               FSM
+// ================================================================================
 
 always_ff @(posedge clk, posedge rst) begin
 	if(rst)
@@ -453,7 +539,7 @@ always_ff @(posedge clk, posedge rst) begin
 	if(rst)
 		axi_wr_cnt <= 'd0;
 	else if(w_hs)
-		if((axi_wr_cnt + wstrb_cnt) >= axi_wr_max_len)
+		if((axi_wr_cnt + wstrb_cnt) >= act_axi_wr_max_len)
 			axi_wr_cnt <= 'd0;
 		else
 			axi_wr_cnt <= axi_wr_cnt + wstrb_cnt;
@@ -462,18 +548,26 @@ always_ff @(posedge clk, posedge rst) begin
 end
 
 always_comb begin
-	if(w_hs & (axi_wr_cnt >= axi_wr_eff_len))
+	if(w_hs & (axi_wr_cnt >= act_axi_wr_eff_len))
 		eff_wstrb = 'd0;
-	else if(w_hs & ((axi_wr_cnt + wstrb_cnt) >= axi_wr_eff_len) & (axi_wr_cnt < axi_wr_eff_len))
-		eff_wstrb = sw_axi_full_if.wstrb & (8'hff >> `EFF_STRB_SFT);
+	else if(w_hs & ((axi_wr_cnt + wstrb_cnt) >= act_axi_wr_eff_len) & (axi_wr_cnt < act_axi_wr_eff_len))
+		eff_wstrb = sw_axi_full_if.wstrb & (8'hff >> eff_wstrb_sft);
 	else
 		eff_wstrb = sw_axi_full_if.wstrb;
 end
 
-// debug
-`ifdef GLOBAL_DEBUG
-//ERROR_SPARSE_STROBES
-`else `endif
+always_comb begin
+	eff_wstrb_sft = (8 - ((act_axi_wr_eff_len - axi_wr_cnt) + wstrb_trailing_zeros));
+end
+
+// ================================================================================
+//                               debug
+// ================================================================================
+
+
+// ================================================================================
+//                               undef
+// ================================================================================
 
 `ifdef D
 `undef D
