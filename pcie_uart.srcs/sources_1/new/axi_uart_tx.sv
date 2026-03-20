@@ -15,7 +15,7 @@
 `define DEBUG_axi_uart_tx
 module axi_uart_tx #(
 	parameter	bit			P_PARA_VALIDITY_CHECK = P_DISABLE,
-	parameter	debug0_t	P_DEBUG0 = '0
+	parameter	debug_tx_t	P_DEBUG0 = '0
 )(
 	input	logic				clk					,
 	input	logic				rst					,
@@ -26,7 +26,9 @@ module axi_uart_tx #(
 	input	tx_ctrl_t			tx_ctrl				,
 	output	tx_status_t			tx_status			,
 
-	axi_full_if.slave_write		sw_axi_full_if		  //
+	axi_full_if.slave_write		sw_axi_full_if		,
+
+	debug_tx_if.s				s_debug_tx_if		  // *
 );
 
 `define D `ifdef DEBUG_axi_uart_tx (*mark_debug = "true"*)(*keep = "true"*)`else `endif
@@ -563,8 +565,15 @@ end
 // ================================================================================
 //                               debug
 // ================================================================================
+if(s_debug_rx_if.P_DEBUG_ENABLE == P_DISABLE) begin: GI_DEBUG_RX_DIS
+assign s_debug_rx_if.axis_tready = '0;
+assign s_debug_rx_if.byte_stream_ready = '0;
+end: GI_DEBUG_RX_DIS
+else begin: GI_DEBUG_RX_ENA
 
 
+
+end: GI_DEBUG_RX_ENA
 // ================================================================================
 //                               undef
 // ================================================================================

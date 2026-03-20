@@ -1,6 +1,8 @@
 `ifndef _INTERFACE
 `define _INTERFACE
 
+import common_package::*;
+
 interface axi_lite_if #(
     parameter int ADDR_W = 32,
     parameter int DATA_W = 32
@@ -185,24 +187,52 @@ interface axi_full_if #(
 
 endinterface : axi_full_if
 
-interface debug_if #(
+interface debug_rx_if #(
 	parameter	P_DEBUG_ENABLE = 0
 );
-	logic			ext_uart_rx_enable;
-	logic	[7:0]	ext_uart_rx_data;
-	logic			ext_uart_rx_data_vld;
-	logic	[7:0]	ext_uart_rx_data_mask;
-	logic	[7:0]	monitor_uart_tx_data;
-	logic			monitor_uart_tx_data_vld;
-	logic	[7:0]	monitor_uart_tx_data_mask;
+	logic	[63:0]			axis_tdata;
+	logic	[7:0]			axis_tkeep;
+	logic					axis_tvalid;
+	logic					axis_tlast;
+	logic					axis_tready;
+	logic	[31:0]			axis_tuser;
 
-	logic			internal_stim_enable;
+	logic	[7:0]			byte_stream_data;
+	logic					byte_stream_valid;
+	logic					byte_stream_ready;
 
-	debug_status_t	status;
+	modport s(
+		output axis_tdata, axis_tkeep, axis_tvalid, axis_tlast, axis_tuser,
+		input  axis_tready,
+		output byte_stream_data, byte_stream_valid,
+		input  byte_stream_ready
+	);
+endinterface: debug_rx_if
 
-//	modport s(
-//		);
+interface debug_tx_if #(
+	parameter	P_DEBUG_ENABLE = P_DISABLE
+);
+	logic					internal_stim_enable;
+	internal_stim_type_e	internal_stim_type;
 
-endinterface: debug_if
+	logic	[63:0]			axis_tdata;
+	logic	[7:0]			axis_tkeep;
+	logic					axis_tvalid;
+	logic					axis_tlast;
+	logic					axis_tready;
+	logic	[31:0]			axis_tuser;
+
+	logic	[7:0]			byte_stream_data;
+	logic					byte_stream_valid;
+	logic					byte_stream_ready;
+
+	modport s(
+		input  internal_stim_enable, internal_stim_type,
+		input  axis_tdata, axis_tkeep, axis_tvalid, axis_tlast, axis_tuser,
+		output axis_tready,
+		input  byte_stream_data, byte_stream_valid,
+		output byte_stream_ready
+	);
+endinterface: debug_tx_if
 
 `else `endif

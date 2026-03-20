@@ -16,7 +16,10 @@ module axi_uart_top(
 	output	rx_status_t		rx_status			,
 	output	tx_status_t		tx_status			,
 
-	axi_full_if.slave		s_axi_full_if		  //
+	axi_full_if.slave		s_axi_full_if		,
+
+	debug_rx_if.s			s_debug_rx_if		,
+	debug_tx_if.s			s_debug_tx_if		  //
 );
 
 axi_uart_rx AXI_UART_RX_U(
@@ -29,14 +32,16 @@ axi_uart_rx AXI_UART_RX_U(
 	.rx_ctrl			(	rx_ctrl				),
 	.rx_status			(	rx_status			),
 
-	.sr_axi_full_if		(	s_axi_full_if		)
+	.sr_axi_full_if		(	s_axi_full_if		),
 );
 
 axi_uart_tx #(
-	.P_PARA_VALIDITY_CHECK(	),
+	.P_PARA_VALIDITY_CHECK(P_DISABLE),
 	.P_DEBUG0('{
-		DEBUG_ENA_TX_OVERFLOW_ERROR		: P_ENABLE,
-		DEBUG_ENA_TX_OVERFLOW_WARNING	: P_ENABLE})
+		TX_PROGM_INTERFACE		: E_PROGM_INTERFACE_AXI_FULL,
+		ENA_TX_OVERFLOW_ERROR	: P_ENABLE,
+		ENA_TX_OVERFLOW_WARNING	: P_ENABLE,
+		default					: P_DISABLE})
 )AXI_UART_TX_U(
 	.clk				(	clk					),
 	.rst				(	rst					),
