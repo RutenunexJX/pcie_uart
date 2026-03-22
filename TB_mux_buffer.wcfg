@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="TB_mux_buffer_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="TB_mux_buffer" />
+            <top_module name="glbl" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="549.601 ns"></ZoomEndTime>
+      <Cursor1Time time="75.800 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="422"></NameColumnWidth>
+      <ValueColumnWidth column_width="206"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="3" />
+   <wvobject fp_name="group63" type="group">
+      <obj_property name="label">DUT</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/TB_mux_buffer/DUT/clk" type="logic">
+         <obj_property name="ElementShortName">clk</obj_property>
+         <obj_property name="ObjectShortName">clk</obj_property>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/DUT/rst" type="logic">
+         <obj_property name="ElementShortName">rst</obj_property>
+         <obj_property name="ObjectShortName">rst</obj_property>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/DUT/byte_cnt" type="array">
+         <obj_property name="ElementShortName">byte_cnt[2:0]</obj_property>
+         <obj_property name="ObjectShortName">byte_cnt[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/DUT/unexp_err" type="logic">
+         <obj_property name="ElementShortName">unexp_err</obj_property>
+         <obj_property name="ObjectShortName">unexp_err</obj_property>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/DUT/byte_stream_last_asserting" type="logic">
+         <obj_property name="ElementShortName">byte_stream_last_asserting</obj_property>
+         <obj_property name="ObjectShortName">byte_stream_last_asserting</obj_property>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/DUT/byte_stream_last_asserted" type="logic">
+         <obj_property name="ElementShortName">byte_stream_last_asserted</obj_property>
+         <obj_property name="ObjectShortName">byte_stream_last_asserted</obj_property>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/DUT/byte_stream_hs" type="logic">
+         <obj_property name="ElementShortName">byte_stream_hs</obj_property>
+         <obj_property name="ObjectShortName">byte_stream_hs</obj_property>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/DUT/u64_pre_complete" type="logic">
+         <obj_property name="ElementShortName">u64_pre_complete</obj_property>
+         <obj_property name="ObjectShortName">u64_pre_complete</obj_property>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/DUT/ready_to_wr_fifo" type="logic">
+         <obj_property name="ElementShortName">ready_to_wr_fifo</obj_property>
+         <obj_property name="ObjectShortName">ready_to_wr_fifo</obj_property>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/DUT/fifo" type="array">
+         <obj_property name="ElementShortName">fifo</obj_property>
+         <obj_property name="ObjectShortName">fifo</obj_property>
+         <obj_property name="isExpanded"></obj_property>
+         <wvobject fp_name="/TB_mux_buffer/DUT/fifo.din" type="array">
+            <obj_property name="ElementShortName">.din[64:0]</obj_property>
+            <obj_property name="ObjectShortName">.din[64:0]</obj_property>
+            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+         <wvobject fp_name="/TB_mux_buffer/DUT/fifo.wr_en" type="logic">
+            <obj_property name="ElementShortName">.wr_en</obj_property>
+            <obj_property name="ObjectShortName">.wr_en</obj_property>
+            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+         <wvobject fp_name="/TB_mux_buffer/DUT/fifo.rd_en" type="logic">
+            <obj_property name="ElementShortName">.rd_en</obj_property>
+            <obj_property name="ObjectShortName">.rd_en</obj_property>
+            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+         <wvobject fp_name="/TB_mux_buffer/DUT/fifo.dout" type="array">
+            <obj_property name="ElementShortName">.dout[64:0]</obj_property>
+            <obj_property name="ObjectShortName">.dout[64:0]</obj_property>
+            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+         <wvobject fp_name="/TB_mux_buffer/DUT/fifo.full" type="logic">
+            <obj_property name="ElementShortName">.full</obj_property>
+            <obj_property name="ObjectShortName">.full</obj_property>
+            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+         <wvobject fp_name="/TB_mux_buffer/DUT/fifo.empty" type="logic">
+            <obj_property name="ElementShortName">.empty</obj_property>
+            <obj_property name="ObjectShortName">.empty</obj_property>
+            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+         <wvobject fp_name="/TB_mux_buffer/DUT/fifo.data_count" type="array">
+            <obj_property name="ElementShortName">.data_count[10:0]</obj_property>
+            <obj_property name="ObjectShortName">.data_count[10:0]</obj_property>
+            <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+            <obj_property name="UseCustomSignalColor">true</obj_property>
+         </wvobject>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/DUT/u64_stream_hs" type="logic">
+         <obj_property name="ElementShortName">u64_stream_hs</obj_property>
+         <obj_property name="ObjectShortName">u64_stream_hs</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group76" type="group">
+      <obj_property name="label">s_byte</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <obj_property name="isExpanded"></obj_property>
+      <wvobject fp_name="/TB_mux_buffer/s_byte_stream_if/s/data" type="array">
+         <obj_property name="ElementShortName">data[7:0]</obj_property>
+         <obj_property name="ObjectShortName">data[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/s_byte_stream_if/s/valid" type="logic">
+         <obj_property name="ElementShortName">valid</obj_property>
+         <obj_property name="ObjectShortName">valid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/s_byte_stream_if/s/last" type="logic">
+         <obj_property name="ElementShortName">last</obj_property>
+         <obj_property name="ObjectShortName">last</obj_property>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/s_byte_stream_if/s/ready" type="logic">
+         <obj_property name="ElementShortName">ready</obj_property>
+         <obj_property name="ObjectShortName">ready</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group77" type="group">
+      <obj_property name="label">m_u64</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/TB_mux_buffer/m_u64_stream_if/m/data" type="array">
+         <obj_property name="ElementShortName">data[63:0]</obj_property>
+         <obj_property name="ObjectShortName">data[63:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/m_u64_stream_if/m/valid" type="logic">
+         <obj_property name="ElementShortName">valid</obj_property>
+         <obj_property name="ObjectShortName">valid</obj_property>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/m_u64_stream_if/m/last" type="logic">
+         <obj_property name="ElementShortName">last</obj_property>
+         <obj_property name="ObjectShortName">last</obj_property>
+      </wvobject>
+      <wvobject fp_name="/TB_mux_buffer/m_u64_stream_if/m/ready" type="logic">
+         <obj_property name="ElementShortName">ready</obj_property>
+         <obj_property name="ObjectShortName">ready</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

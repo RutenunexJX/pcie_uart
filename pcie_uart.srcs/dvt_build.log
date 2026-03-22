@@ -1,0 +1,841 @@
+*** Start analyzing build configuration ***
+Auto-config - Scanning: E:\pcie_uart\pcie_uart\pcie_uart.srcs
+Auto-config - VLOG: E:\pcie_uart\pcie_uart\pcie_uart.srcs
+Auto-config - Wrote:
+    E:\pcie_uart\pcie_uart\pcie_uart.srcs\.dvt\default.build.auto.1
+*** List of included argument files ***
+    Build configuration file:  E:\pcie_uart\pcie_uart\pcie_uart.srcs\.dvt\default.build
+    -f E:\pcie_uart\pcie_uart\pcie_uart.srcs\.dvt\default.build.auto.1
+*** List of invocations ***
+Invocation #1 +dvt_init+dvt in E:\pcie_uart\pcie_uart\pcie_uart.srcs\.dvt\default.build.auto.1 at line 9
+*** Done analyzing build configuration [147 ms] ***
+
+*** Start SystemVerilog build ***
+*** Invocation #1***
+Loading (1) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [12 ms, 639 lines, Verilog_2001] ...
+Loading (2) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [7 ms, 642 lines, Verilog_2001] ...
+Loading (3) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [7 ms, 592 lines, Verilog_2001] ...
+Loading (4) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\bridge_top_v2.v ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\bridge_top_v2.v [15 ms, 1491 lines, Verilog_2001] ...
+Loading (5) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_common_package.sv ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_common_package.sv [1 ms, 80 lines, SystemVerilog_2012] ...
+Loading (6) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_pcie_uart_package.sv ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_pcie_uart_package.sv [3 ms, 304 lines, SystemVerilog_2012] ...
+Loading (7) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\mux_buffer.sv ...
+Loading (8) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_svh.svh ...
+Loading (9) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_interface.sv ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_interface.sv [3 ms, 325 lines, SystemVerilog_2012] ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_svh.svh [0 ms, 4 lines, SystemVerilog_2012] ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\mux_buffer.sv [0 ms, 153 lines, SystemVerilog_2012] ...
+Loading (10) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_tx.sv ...
+Loading (11) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_svh.svh ...
+Loading (12) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_interface.sv ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_interface.sv [0 ms, 325 lines, SystemVerilog_2012] ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_svh.svh [0 ms, 4 lines, SystemVerilog_2012] ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_tx.sv [7 ms, 589 lines, SystemVerilog_2012] ...
+Loading (13) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_top.sv ...
+Loading (14) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_svh.svh ...
+Optimizing (15) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_interface.sv ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_svh.svh [0 ms, 4 lines, SystemVerilog_2012] ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_top.sv [1 ms, 60 lines, SystemVerilog_2012] ...
+Loading (16) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv ...
+Loading (17) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_svh.svh ...
+Optimizing (18) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_interface.sv ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_svh.svh [0 ms, 4 lines, SystemVerilog_2012] ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [5 ms, 495 lines, SystemVerilog_2012] ...
+Loading (19) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv ...
+Loading (20) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_svh.svh ...
+Optimizing (21) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_interface.sv ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_svh.svh [0 ms, 4 lines, SystemVerilog_2012] ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [1 ms, 107 lines, SystemVerilog_2012] ...
+Loading (22) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_mux_buffer.sv ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_mux_buffer.sv [0 ms, 29 lines, SystemVerilog_2012] ...
+Loading (23) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\pcie_uart.v ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\pcie_uart.v [0 ms, 76 lines, Verilog_2001] ...
+Loading (24) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [16 ms, 1252 lines, SystemVerilog_2012] ...
+Loading (25) E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v ...
+Done E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [46 ms, 2903 lines, Verilog_2001] ...
+*** Done invocation #1 [178 ms] ***
+*** Done parsing [LT 110 ms, PT 178.0 ms] ***
+*** Total number of lines [10 082] ***
+*** Warning: VERILOG_2001: Redefinition of macro name: DEBUG_DEF
+    at line 78 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 1][invocation 1]
+*** Warning: VERILOG_2001: Redefinition of macro name: DEBUG_DEF
+    at line 59 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 1][invocation 1]
+*** Error: SYSTEM_VERILOG_2012: Unexpected token ','
+    at line 35 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_top.sv [compile index 13][invocation 1]
+*** Warning: SYSTEM_VERILOG_2012: Redefinition of macro name: RLAST_CDN
+    at line 20 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 1][invocation 1]
+*** Warning: SYSTEM_VERILOG_2012: Redefinition of macro name: POST_BRUST_LEN
+    at line 55 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 1][invocation 1]
+*** Warning: SYSTEM_VERILOG_2012: Redefinition of macro name: q
+    at line 33 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 1][invocation 1]
+Performing post full build actions ...
+Performing post full build step 1 (SRI) [0 ms] ...
+Performing post full build step 2 (RI) [1 ms] ...
+Performing post full build step 3 (RCP) [0 ms] ...
+*** Files summary [25 total, 17 unique, 3 optimized] ***
+*** Done SystemVerilog build [188 ms] ***
+
+*** Start mixed mode extension build ***
+Performing mixed post full build step (VLOG - RI) [1 ms] ...
+*** Warning: UNSPECIFIED_TOP: Please specify a -top module/entity/configuration in the project build file
+*** Top design candidates: work.axi_uart_top, work.TB_mux_buffer, work.pcie_uart, work.TB_1
+Performing mixed post full build step (MIXED - ELAB) [391 ms] ...
+Performing mixed post full build step (MIXED - UNEL) [52 ms] ...
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 169 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 173 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 186 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 190 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 199 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 200 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 201 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 203 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'rx_driv_flag' is not declared
+    at line 221 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'PARA_CFG' is not declared
+    at line 230 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 321 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 323 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 325 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 335 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 347 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'rx_driv_flag' is not declared
+    at line 369 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'rx_fifo_usedw' is not declared
+    at line 474 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'rx_fifo_usedw' is not declared
+    at line 476 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'rx_fifo_usedw' is not declared
+    at line 478 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'rx_fifo_usedw' is not declared
+    at line 480 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'rx_fifo_usedw' is not declared
+    at line 482 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Warning: UNDECLARED_MODULE: Module 'uart_ff_8k' is not declared
+    at line 233 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Warning: MISSING_PORT_CONNECTION: Instance 'AXI_UART_TX_U' of module 'axi_uart_tx' is missing port connection to interface 's_debug_tx_if'
+    at line 38 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_top.sv [compile index 13]
+*** Warning: UNDECLARED_MODULE: Module 'uart_ff_8k' is not declared
+    at line 355 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_tx.sv [compile index 10]
+*** Warning: UNDECLARED_MODULE: Module 'ff_65x1024' is not declared
+    at line 67 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\mux_buffer.sv [compile index 7]
+*** Warning: UNDECLARED_MODULE: Module 'IBUFDS_GTE2' is not declared
+    at line 46 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\pcie_uart.v [compile index 23]
+*** Warning: UNDECLARED_MODULE: Module 'design_1_wrapper' is not declared
+    at line 56 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\pcie_uart.v [compile index 23]
+*** Warning: UNDECLARED_MODULE: Module 'fix2sgl_float' is not declared
+    at line 251 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: UNDECLARED_MODULE: Module 'float_div' is not declared
+    at line 266 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: UNDECLARED_MODULE: Module 'sgl_float2fix' is not declared
+    at line 286 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 189 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 191 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 193 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 196 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 198 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 201 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 203 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 206 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 208 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 211 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 213 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 216 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 218 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 221 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 226 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'mns' in combinational logic (use blocking assignment)
+    at line 228 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns[i]' in combinational logic (use blocking assignment)
+    at line 435 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns[i]' in combinational logic (use blocking assignment)
+    at line 437 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns[i]' in combinational logic (use blocking assignment)
+    at line 440 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns[i]' in combinational logic (use blocking assignment)
+    at line 442 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns[i]' in combinational logic (use blocking assignment)
+    at line 445 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns[i]' in combinational logic (use blocking assignment)
+    at line 447 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns[i]' in combinational logic (use blocking assignment)
+    at line 450 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns[i]' in combinational logic (use blocking assignment)
+    at line 452 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns[i]' in combinational logic (use blocking assignment)
+    at line 455 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns[i]' in combinational logic (use blocking assignment)
+    at line 457 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns[i]' in combinational logic (use blocking assignment)
+    at line 460 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns[i]' in combinational logic (use blocking assignment)
+    at line 462 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns[i]' in combinational logic (use blocking assignment)
+    at line 465 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns[i]' in combinational logic (use blocking assignment)
+    at line 467 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'chl_clr_req[i * 2 +: 2]' of '2-bit' type and item expression '0' of '32-bit' type
+    at line 534 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'chl_clr_req[i * 2 +: 2]' of '2-bit' type and item expression '1' of '32-bit' type
+    at line 542 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'chl_clr_req[i * 2 +: 2]' of '2-bit' type and item expression '2' of '32-bit' type
+    at line 543 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: UNDECLARED_MODULE: Module 'uart_ff_8k' is not declared
+    at line 297 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'rff_din_data_eff' in combinational logic (use blocking assignment)
+    at line 327 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'rx_cnt' of '4-bit' type and item expression '0' of '32-bit' type
+    at line 329 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'rff_din_data_eff' in combinational logic (use blocking assignment)
+    at line 329 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'rx_cnt' of '4-bit' type and item expression '9' of '32-bit' type
+    at line 330 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'rff_din_data_eff' in combinational logic (use blocking assignment)
+    at line 330 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'rff_din_data_eff' in combinational logic (use blocking assignment)
+    at line 331 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'para_cfg_req_post' of '2-bit' type and item expression '0' of '32-bit' type
+    at line 490 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'para_cfg_req_post' of '2-bit' type and item expression '1' of '32-bit' type
+    at line 497 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'para_cfg_req_post' of '2-bit' type and item expression '2' of '32-bit' type
+    at line 504 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 525 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 527 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 531 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 533 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 535 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 538 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 540 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 543 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 545 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 547 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 549 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 553 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 555 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 558 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 560 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 562 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 564 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'rx_cnt' of '4-bit' type and item expression '0' of '32-bit' type
+    at line 576 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'rx_cnt' of '4-bit' type and item expression '1' of '32-bit' type
+    at line 577 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'rx_cnt' of '4-bit' type and item expression '2' of '32-bit' type
+    at line 578 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'rx_cnt' of '4-bit' type and item expression '3' of '32-bit' type
+    at line 579 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'rx_cnt' of '4-bit' type and item expression '4' of '32-bit' type
+    at line 580 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'rx_cnt' of '4-bit' type and item expression '5' of '32-bit' type
+    at line 581 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'rx_cnt' of '4-bit' type and item expression '6' of '32-bit' type
+    at line 582 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'rx_cnt' of '4-bit' type and item expression '7' of '32-bit' type
+    at line 583 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'rx_cnt' of '4-bit' type and item expression '8' of '32-bit' type
+    at line 584 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: WIDTH_MISMATCH_PADDING: Assignment to 'LITE_REG_TX_TFF_USEDW[i]' of '16-bit' type from 'LR_TFF_USEDW' of '11-bit' type
+    at line 988 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\bridge_top_v2.v [compile index 4]
+*** Warning: UNDECLARED_MODULE: Module 'uart_ff_8k' is not declared
+    at line 369 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'para_cfg_req_post' of '2-bit' type and item expression '0' of '32-bit' type
+    at line 311 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'para_cfg_req_post' of '2-bit' type and item expression '1' of '32-bit' type
+    at line 318 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'para_cfg_req_post' of '2-bit' type and item expression '2' of '32-bit' type
+    at line 325 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 437 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 439 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 443 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 445 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 447 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 450 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 452 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 456 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 458 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 460 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 465 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 467 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 469 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 473 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 475 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 477 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 479 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 481 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'tx_cnt' of '4-bit' type and item expression '0' of '32-bit' type
+    at line 535 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'tx_cnt' of '4-bit' type and item expression '1' of '32-bit' type
+    at line 536 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'tx_cnt' of '4-bit' type and item expression '2' of '32-bit' type
+    at line 537 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'tx_cnt' of '4-bit' type and item expression '3' of '32-bit' type
+    at line 538 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'tx_cnt' of '4-bit' type and item expression '4' of '32-bit' type
+    at line 539 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'tx_cnt' of '4-bit' type and item expression '5' of '32-bit' type
+    at line 540 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'tx_cnt' of '4-bit' type and item expression '6' of '32-bit' type
+    at line 541 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'tx_cnt' of '4-bit' type and item expression '7' of '32-bit' type
+    at line 542 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'tx_cnt' of '4-bit' type and item expression '8' of '32-bit' type
+    at line 543 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'eff_wstrb' in combinational logic (use blocking assignment)
+    at line 629 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'eff_wstrb' in combinational logic (use blocking assignment)
+    at line 631 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'eff_wstrb' in combinational logic (use blocking assignment)
+    at line 633 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_arid[i]' in combinational logic (use blocking assignment)
+    at line 265 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_araddr[i]' in combinational logic (use blocking assignment)
+    at line 266 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_arlen[i]' in combinational logic (use blocking assignment)
+    at line 267 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_arsize[i]' in combinational logic (use blocking assignment)
+    at line 268 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_arburst[i]' in combinational logic (use blocking assignment)
+    at line 269 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_arprot[i]' in combinational logic (use blocking assignment)
+    at line 270 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_arvalid[i]' in combinational logic (use blocking assignment)
+    at line 271 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_arlock[i]' in combinational logic (use blocking assignment)
+    at line 272 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_arcache[i]' in combinational logic (use blocking assignment)
+    at line 273 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_rready[i]' in combinational logic (use blocking assignment)
+    at line 274 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_awid[i]' in combinational logic (use blocking assignment)
+    at line 276 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_awaddr[i]' in combinational logic (use blocking assignment)
+    at line 277 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_awlen[i]' in combinational logic (use blocking assignment)
+    at line 278 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_awsize[i]' in combinational logic (use blocking assignment)
+    at line 279 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_awburst[i]' in combinational logic (use blocking assignment)
+    at line 280 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_awprot[i]' in combinational logic (use blocking assignment)
+    at line 281 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_awvalid[i]' in combinational logic (use blocking assignment)
+    at line 282 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_awlock[i]' in combinational logic (use blocking assignment)
+    at line 283 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_awcache[i]' in combinational logic (use blocking assignment)
+    at line 284 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_wdata[i]' in combinational logic (use blocking assignment)
+    at line 286 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_wstrb[i]' in combinational logic (use blocking assignment)
+    at line 287 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_wlast[i]' in combinational logic (use blocking assignment)
+    at line 288 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_wvalid[i]' in combinational logic (use blocking assignment)
+    at line 289 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'FULL_bready[i]' in combinational logic (use blocking assignment)
+    at line 291 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'SW' of '4-bit' type and item expression '0' of '32-bit' type
+    at line 883 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'SW' of '4-bit' type and item expression '1' of '32-bit' type
+    at line 904 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'SW' of '4-bit' type and item expression '2' of '32-bit' type
+    at line 945 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: CASE_ITEM_WIDTH_MISMATCH: Comparison between case expression 'SW' of '4-bit' type and item expression '3' of '32-bit' type
+    at line 951 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[R1_RFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_R1_RFF_USEDW}' of '37-bit' type
+    at line 1829 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[R2_RFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_R2_RFF_USEDW}' of '37-bit' type
+    at line 1833 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[R3_RFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_R3_RFF_USEDW}' of '37-bit' type
+    at line 1837 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[R4_RFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_R4_RFF_USEDW}' of '37-bit' type
+    at line 1841 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[R5_RFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_R5_RFF_USEDW}' of '37-bit' type
+    at line 1845 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[R6_RFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_R6_RFF_USEDW}' of '37-bit' type
+    at line 1849 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[R7_RFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_R7_RFF_USEDW}' of '37-bit' type
+    at line 1853 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[R8_RFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_R8_RFF_USEDW}' of '37-bit' type
+    at line 1857 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[R9_RFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_R9_RFF_USEDW}' of '37-bit' type
+    at line 1861 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[R10_RFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_R10_RFF_USEDW...' of '37-bit' type
+    at line 1865 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[R11_RFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_R11_RFF_USEDW...' of '37-bit' type
+    at line 1869 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[R12_RFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_R12_RFF_USEDW...' of '37-bit' type
+    at line 1873 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[T1_TFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_T1_TFF_USEDW}' of '37-bit' type
+    at line 1875 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[T2_TFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_T2_TFF_USEDW}' of '37-bit' type
+    at line 1876 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[T3_TFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_T3_TFF_USEDW}' of '37-bit' type
+    at line 1877 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[T4_TFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_T4_TFF_USEDW}' of '37-bit' type
+    at line 1878 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[T5_TFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_T5_TFF_USEDW}' of '37-bit' type
+    at line 1879 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[T6_TFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_T6_TFF_USEDW}' of '37-bit' type
+    at line 1880 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[T7_TFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_T7_TFF_USEDW}' of '37-bit' type
+    at line 1881 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[T8_TFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_T8_TFF_USEDW}' of '37-bit' type
+    at line 1882 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[T9_TFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_T9_TFF_USEDW}' of '37-bit' type
+    at line 1883 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[T10_TFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_T10_TFF_USEDW...' of '37-bit' type
+    at line 1884 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[T11_TFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_T11_TFF_USEDW...' of '37-bit' type
+    at line 1885 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: WIDTH_MISMATCH_TRUNCATION: Assignment to 'bar_reg[T12_TFF_USEDW]' of '32-bit' type from '{21'd0, LITE_REG_T12_TFF_USEDW...' of '37-bit' type
+    at line 1886 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 2870 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 2872 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 2874 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 2876 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 2880 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 2882 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 2885 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 2887 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 2890 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 2892 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 2895 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 2897 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: ASSIGNMENT_NON_BLOCKING: Non-blocking assignment of 'ns' in combinational logic (use blocking assignment)
+    at line 2898 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: UNELABORATED_INTERFACE: Interface 'work.axi_lite_if' is not elaborated
+    at line 6 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_interface.sv [compile index 9]
+*** Warning: UNELABORATED_INTERFACE: Interface 'work.axi_full_if' is not elaborated
+    at line 75 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_interface.sv [compile index 9]
+*** Warning: UNELABORATED_INTERFACE: Interface 'work.debug_rx_if' is not elaborated
+    at line 276 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_interface.sv [compile index 9]
+*** Warning: UNELABORATED_INTERFACE: Interface 'work.debug_tx_if' is not elaborated
+    at line 298 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\_interface.sv [compile index 9]
+*** Error: NON_EXISTING_TYPE: Non existing type 'axi_mux_ctrl_t'
+    at line 12 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: NON_EXISTING_TYPE: Non existing type 'axi_mux_status_t'
+    at line 13 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 57 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rff_rd_cnt' is not declared
+    at line 57 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rff_rd_strb_cnt' is not declared
+    at line 57 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rx_fifo_rd_en' is not declared
+    at line 57 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'rdata_window' is not declared
+    at line 59 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 72 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rff_rd_cnt' is not declared
+    at line 72 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rff_rd_strb_cnt' is not declared
+    at line 72 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rx_fifo_rd_en' is not declared
+    at line 72 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'rdata_window_remdr' is not declared
+    at line 73 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'rlast_cdn' is not declared
+    at line 73 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rdata_window_remdr' is not declared
+    at line 73 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 76 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rff_rd_cnt' is not declared
+    at line 76 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rff_rd_strb_cnt' is not declared
+    at line 76 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rx_fifo_rd_en' is not declared
+    at line 76 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'rdata_window_remdr' is not declared
+    at line 76 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 85 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rff_rd_cnt' is not declared
+    at line 85 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rff_rd_strb_cnt' is not declared
+    at line 85 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rx_fifo_rd_en' is not declared
+    at line 85 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 86 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rff_rd_cnt' is not declared
+    at line 86 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rff_rd_strb_cnt' is not declared
+    at line 86 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rx_fifo_rd_en' is not declared
+    at line 86 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'rdata_window_remdr' is not declared
+    at line 86 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'rlast_cdn' is not declared
+    at line 86 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rdata_window_remdr' is not declared
+    at line 86 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rdata_window_remdr' is not declared
+    at line 87 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rff_rd_strb_cnt' is not declared
+    at line 87 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rx_fifo_rd_en' is not declared
+    at line 87 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 87 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'axi_rd_len' is not declared
+    at line 89 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rff_rd_cnt' is not declared
+    at line 89 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rff_rd_strb_cnt' is not declared
+    at line 89 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rx_fifo_rd_en' is not declared
+    at line 89 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'rdata_window_remdr' is not declared
+    at line 89 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'rlast_cdn' is not declared
+    at line 89 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Error: UNDECLARED_IDENTIFIER: Identifier 'r1_rdata_window_remdr' is not declared
+    at line 89 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Warning: UNELABORATED_MODULE: Module 'work.axi_mux' is not elaborated
+    at line 4 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+Performing mixed post full build step (VLOG - RD) [1 ms] ...
+Performing mixed post full build step (VLOG - US) [52 ms] ...
+*** Warning: SIGNAL_NEVER_USED: Signal 'got_whole_brust_pkt' is never used
+    at line 30 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: SIGNAL_NEVER_USED: Signal 'LR_FSM_RST_REQ' is never used
+    at line 38 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: SIGNAL_NEVER_WRITTEN: Signal 'LR_FSM_RST_DONE' is never written
+    at line 43 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: PARAMETER_NEVER_USED: Parameter 'STOP_BIT_1P5' is never used
+    at line 92 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: SIGNAL_NEVER_READ: Signal 'timeout_flag' is never read
+    at line 103 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: SIGNAL_NEVER_READ: Signal 'r1_rx_cnt' is never read
+    at line 110 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: SIGNAL_NEVER_READ: Signal 'LR_AXI_RD_LEN_wire' is never read
+    at line 114 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: SIGNAL_NEVER_READ: Signal 'LR_RFF_USEDW_wire' is never read
+    at line 115 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: SIGNAL_NEVER_USED: Signal 'pad' is never used
+    at line 147 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: SIGNAL_NEVER_READ: Signal 'arid' is never read
+    at line 166 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: SIGNAL_NEVER_READ: Signal 'araddr' is never read
+    at line 167 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: SIGNAL_NEVER_READ: Signal 'arlen' is never read
+    at line 168 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: SIGNAL_NEVER_READ: Signal 'arsize' is never read
+    at line 169 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: SIGNAL_NEVER_READ: Signal 'arburst' is never read
+    at line 170 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: SIGNAL_NEVER_READ: Signal 'arprot' is never read
+    at line 171 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: SIGNAL_NEVER_READ: Signal 'arlock' is never read
+    at line 173 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: SIGNAL_NEVER_READ: Signal 'arcache' is never read
+    at line 174 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: OUTPUT_PORT_READ: Reading from output port 'is_start_bit' is not recommended
+    at line 246 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: OUTPUT_PORT_READ: Reading from output port 'is_start_bit' is not recommended
+    at line 431 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: OUTPUT_PORT_READ: Reading from output port 'is_start_bit' is not recommended
+    at line 479 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: OUTPUT_PORT_READ: Reading from output port 'is_start_bit' is not recommended
+    at line 481 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: OUTPUT_PORT_READ: Reading from output port 'is_start_bit' is not recommended
+    at line 524 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: OUTPUT_PORT_READ: Reading from output port 'is_start_bit' is not recommended
+    at line 597 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_read.v [compile index 1]
+*** Warning: PARAMETER_NEVER_USED: Parameter 'BASE_ADDR' is never used
+    at line 24 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: PARAMETER_NEVER_USED: Parameter 'CHL_CLR' is never used
+    at line 92 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: SIGNAL_NEVER_READ: Signal 'LR_AXI_WR_MAX_LEN_wire' is never read
+    at line 109 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: SIGNAL_NEVER_READ: Signal 'LR_AXI_WR_EFF_LEN_wire' is never read
+    at line 110 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: SIGNAL_NEVER_USED: Signal 'is_byte_zero' is never used
+    at line 118 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: SIGNAL_NEVER_READ: Signal 'r1_w_hs' is never read
+    at line 132 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: SIGNAL_NEVER_READ: Signal 'awid' is never read
+    at line 150 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: SIGNAL_NEVER_READ: Signal 'awaddr' is never read
+    at line 151 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: SIGNAL_NEVER_READ: Signal 'awlen' is never read
+    at line 152 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: SIGNAL_NEVER_READ: Signal 'awsize' is never read
+    at line 153 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: SIGNAL_NEVER_READ: Signal 'awburst' is never read
+    at line 154 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: SIGNAL_NEVER_READ: Signal 'awprot' is never read
+    at line 155 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: SIGNAL_NEVER_READ: Signal 'awlock' is never read
+    at line 157 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: SIGNAL_NEVER_READ: Signal 'awcache' is never read
+    at line 158 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: SIGNAL_NEVER_READ: Signal 'fix_w_hs' is never read
+    at line 173 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: SIGNAL_NEVER_READ: Signal 'r1_wdata' is never read
+    at line 174 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_f2ser_write.v [compile index 2]
+*** Warning: PARAMETER_NEVER_USED: Parameter '_125M_FLOAT' is never used
+    at line 64 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: PARAMETER_NEVER_USED: Parameter '_250M_FLOAT' is never used
+    at line 65 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: PARAMETER_NEVER_USED: Parameter 'INDEX' is never used
+    at line 67 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: SIGNAL_NEVER_READ: Signal 'is_baud_sync_wire' is never read
+    at line 80 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: SIGNAL_NEVER_READ: Signal 'baud0_wire' is never read
+    at line 81 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: SIGNAL_NEVER_READ: Signal 'baud12_wire' is never read
+    at line 82 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: SIGNAL_NEVER_USED: Signal 'fix2flt_o_tvalid_post' is never used
+    at line 135 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: SIGNAL_NEVER_USED: Signal 'div_o_tvalid_post' is never used
+    at line 135 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\uart_driv_flag_gen.v [compile index 3]
+*** Warning: PARAMETER_NEVER_USED: Parameter 'R_BASE_ADDR' is never used
+    at line 572 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\bridge_top_v2.v [compile index 4]
+*** Warning: SIGNAL_NEVER_USED: Signal 'test_tx_flag' is never used
+    at line 616 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\bridge_top_v2.v [compile index 4]
+*** Warning: SIGNAL_NEVER_USED: Signal 'test_rx_flag' is never used
+    at line 617 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\bridge_top_v2.v [compile index 4]
+*** Warning: SIGNAL_NEVER_USED: Signal 'LITE_REG_TX_AXI_WR_MAX_LEN' is never used
+    at line 668 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\bridge_top_v2.v [compile index 4]
+*** Warning: SIGNAL_NOT_RESET: Signal 'tx_tff_usedw' is not reset
+    at line 905 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\bridge_top_v2.v [compile index 4]
+*** Warning: IMPLICIT_DECLARATION: Implicit declaration of 'u64_stream_hs' using `default_nettype set to wire
+    at line 37 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\mux_buffer.sv [compile index 7]
+*** Warning: SIGNAL_NEVER_READ: Signal 'u64_stream_hs' is never read
+    at line 37 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\mux_buffer.sv [compile index 7]
+*** Warning: PARAMETER_NEVER_USED: Parameter 'P_DEBUG0' is never used
+    at line 18 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_tx.sv [compile index 10]
+*** Warning: SIGNAL_NEVER_USED: Signal 's_debug_tx_if' is never used
+    at line 31 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_tx.sv [compile index 10]
+*** Warning: SIGNAL_NEVER_USED: Signal 's_debug_rx_if' is never used
+    at line 21 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_top.sv [compile index 13]
+*** Warning: SIGNAL_NEVER_USED: Signal 's_debug_tx_if' is never used
+    at line 22 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_top.sv [compile index 13]
+*** Warning: PARAMETER_NEVER_USED: Parameter 'P_RX_MODE' is never used
+    at line 5 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Warning: SIGNAL_NEVER_USED: Signal 'rx_ctrl' is never used
+    at line 14 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Warning: SIGNAL_NEVER_USED: Signal 'rx_status' is never used
+    at line 15 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Warning: PARAMETER_NEVER_USED: Parameter 'P_FRAC_THRD' is never used
+    at line 22 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Warning: SIGNAL_NEVER_WRITTEN: Signal 'cur_rx_para' is never written
+    at line 25 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Warning: SIGNAL_NEVER_READ: Signal 'parity_check_cdn' is never read
+    at line 79 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Warning: IMPLICIT_DECLARATION: Implicit declaration of 'is_start_bit' using `default_nettype set to wire
+    at line 231 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_uart_rx.sv [compile index 16]
+*** Warning: SIGNAL_NEVER_USED: Signal 'axi_mux_ctrl' is never used
+    at line 12 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Warning: SIGNAL_NEVER_USED: Signal 'axi_mux_status' is never used
+    at line 13 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Warning: SIGNAL_NEVER_USED: Signal 's_byte_stream_if' is never used
+    at line 15 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\axi_mux.sv [compile index 19]
+*** Warning: SIGNAL_NEVER_WRITTEN: Signal 'rst' is never written (connected to sub-instance input port)
+    at line 6 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_mux_buffer.sv [compile index 22]
+*** Warning: SIGNAL_NEVER_READ: Signal 'LOG_SW' is never read
+    at line 68 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 'INIT' is never read
+    at line 71 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 'WR_WALT' is never read
+    at line 72 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 'interupt_req' is never read (connected to sub-instance output port)
+    at line 80 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_WRITTEN: Signal 'interupt_ack' is never written (connected to sub-instance input port)
+    at line 81 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_WRITTEN: Signal 'LOGIC_VERSION' is never written (connected to sub-instance input port)
+    at line 82 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_WRITTEN: Signal 'LOGIC_SUB_VERSION' is never written (connected to sub-instance input port)
+    at line 83 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 's_axi_lite_awready' is never read (connected to sub-instance output port)
+    at line 89 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 's_axi_lite_wready' is never read (connected to sub-instance output port)
+    at line 94 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 's_axi_lite_bvalid' is never read (connected to sub-instance output port)
+    at line 96 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 's_axi_lite_bresp' is never read (connected to sub-instance output port)
+    at line 97 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 's_axi_lite_rdata' is never read (connected to sub-instance output port)
+    at line 105 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 's_axi_lite_rresp' is never read (connected to sub-instance output port)
+    at line 106 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_awid' is never used
+    at line 154 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_awaddr' is never used
+    at line 155 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_awlen' is never used
+    at line 156 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_awsize' is never used
+    at line 157 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_awburst' is never used
+    at line 158 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_awprot' is never used
+    at line 159 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_awvalid' is never used
+    at line 160 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_awlock' is never used
+    at line 161 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_awcache' is never used
+    at line 162 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_awready' is never used
+    at line 163 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_wdata' is never used
+    at line 164 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_wstrb' is never used
+    at line 165 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_wlast' is never used
+    at line 166 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_wvalid' is never used
+    at line 167 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_wready' is never used
+    at line 168 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_bid' is never used
+    at line 169 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_bresp' is never used
+    at line 170 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_bvalid' is never used
+    at line 171 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'RD_IMG_bready' is never used
+    at line 172 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 'RD_IMG_rid' is never read
+    at line 183 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 'RD_IMG_rdata' is never read
+    at line 184 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 'RD_IMG_rresp' is never read
+    at line 185 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 'RD_IMG_rvalid' is never read
+    at line 187 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 'WR_IMG_bid' is never read
+    at line 205 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 'WR_IMG_bresp' is never read
+    at line 206 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 'WR_IMG_bvalid' is never read
+    at line 207 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_arid' is never used
+    at line 209 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_araddr' is never used
+    at line 210 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_arlen' is never used
+    at line 211 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_arsize' is never used
+    at line 212 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_arburst' is never used
+    at line 213 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_arprot' is never used
+    at line 214 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_arvalid' is never used
+    at line 215 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_arlock' is never used
+    at line 216 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_arcache' is never used
+    at line 217 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_arready' is never used
+    at line 218 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_rid' is never used
+    at line 219 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_rdata' is never used
+    at line 220 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_rresp' is never used
+    at line 221 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_rlast' is never used
+    at line 222 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_rvalid' is never used
+    at line 223 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_USED: Signal 'WR_IMG_rready' is never used
+    at line 224 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 'READ_DONE' is never read
+    at line 228 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sim_1\new\TB_1.sv [compile index 24]
+*** Warning: SIGNAL_NEVER_READ: Signal 'awprot' is never read
+    at line 1024 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: SIGNAL_NEVER_READ: Signal 'wstrb' is never read
+    at line 1032 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Warning: SIGNAL_NEVER_READ: Signal 'arprot' is never read
+    at line 1048 in E:\pcie_uart\pcie_uart\pcie_uart.srcs\sources_1\new\xdma_bar_ctrl.v [compile index 25]
+*** Done mixed mode extension build [600 ms] ***
+*** Start adding/validating the DVT Auto-Linked resources ***
+*** Done adding/validating the DVT Auto-Linked resources [2 ms] ***
+*** Total build time [1s.034ms] ***

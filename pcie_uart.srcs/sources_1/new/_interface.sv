@@ -187,52 +187,101 @@ interface axi_full_if #(
 
 endinterface : axi_full_if
 
-interface debug_rx_if #(
-	parameter	P_DEBUG_ENABLE = 0
-);
-	logic	[63:0]			axis_tdata;
-	logic	[7:0]			axis_tkeep;
-	logic					axis_tvalid;
-	logic					axis_tlast;
-	logic					axis_tready;
-	logic	[31:0]			axis_tuser;
+interface byte_stream_if;
 
-	logic	[7:0]			byte_stream_data;
-	logic					byte_stream_valid;
-	logic					byte_stream_ready;
+	logic	[7:0]	data;
+	logic			valid;
+	logic			last;
+	logic			ready;
+
+	modport m(
+		output	data, valid, last,
+		input	ready
+	);
 
 	modport s(
-		output axis_tdata, axis_tkeep, axis_tvalid, axis_tlast, axis_tuser,
-		input  axis_tready,
-		output byte_stream_data, byte_stream_valid,
-		input  byte_stream_ready
+		input	data, valid, last,
+		output	ready
 	);
-endinterface: debug_rx_if
 
-interface debug_tx_if #(
-	parameter	P_DEBUG_ENABLE = P_DISABLE
-);
-	logic					internal_stim_enable;
-	internal_stim_type_e	internal_stim_type;
+endinterface: byte_stream_if
 
-	logic	[63:0]			axis_tdata;
-	logic	[7:0]			axis_tkeep;
-	logic					axis_tvalid;
-	logic					axis_tlast;
-	logic					axis_tready;
-	logic	[31:0]			axis_tuser;
+interface u64_stream_if;
 
-	logic	[7:0]			byte_stream_data;
-	logic					byte_stream_valid;
-	logic					byte_stream_ready;
+	logic	[63:0]	data;
+	logic			valid;
+	logic			last;
+	logic			ready;
+
+	modport m(
+		output	data, valid, last,
+		input	ready
+	);
 
 	modport s(
-		input  internal_stim_enable, internal_stim_type,
-		input  axis_tdata, axis_tkeep, axis_tvalid, axis_tlast, axis_tuser,
-		output axis_tready,
-		input  byte_stream_data, byte_stream_valid,
-		output byte_stream_ready
+		input	data, valid, last,
+		output	ready
 	);
-endinterface: debug_tx_if
+
+endinterface: u64_stream_if
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//  ______   ________  ______  _____  _____   ______
+// |_   _ `.|_   __  ||_   _ \|_   _||_   _|.' ___  |
+//   | | `. \ | |_ \_|  | |_) | | |    | | / .'   \_|
+//   | |  | | |  _| _   |  __'. | '    ' | | |   ____
+//  _| |_.' /_| |__/ | _| |__) | \ \__/ /  \ `.___]  |
+// |______.'|________||_______/   `.__.'    `._____.'
+interface mux_buffer_debug_if;
+	logic	err_byte_stream_no_gap;
+	logic	err_fifo_overflow;
+
+	modport	source(
+		output err_byte_stream_no_gap, err_fifo_overflow
+	);
+
+	modport monitor(
+		input err_byte_stream_no_gap, err_fifo_overflow
+
+	);
+
+endinterface: mux_buffer_debug_if
 
 `else `endif

@@ -1,22 +1,22 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
+// Company:
+// Engineer:
+//
 // Create Date: 2024/07/19 19:44:55
-// Design Name: 
+// Design Name:
 // Module Name: uart_driv_flag_gen
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
+// Project Name:
+// Target Devices:
+// Tool Versions:
+// Description:
+//
+// Dependencies:
+//
 // Revision:
 // Revision 0.01 - File Created
 // Additional Comments:
-// 
+//
 //////////////////////////////////////////////////////////////////////////////////
 //rx 0-11, tx 12-23
 //`define DEBUG
@@ -56,13 +56,13 @@ module uart_driv_flag_gen (
     input       [23:0]      chl_clr_done            ,
     output  reg [23:0]		uart_driv_flag          //
 );
-`define DEBUG_DEF `ifdef DEBUG (*mark_debug = "true"*)(*keep = "true"*)`else `endif 
+`define DEBUG_DEF `ifdef DEBUG (*mark_debug = "true"*)(*keep = "true"*)`else `endif
 
 genvar i;
 
 localparam _62p5M_FLOAT = 64'h418D_CD65_0000_0000;// double, phase sum's step len = (baud_rate * 2^32) / (125_000_000 / 2), generate the flag that its period = 0.5*baud_rate
-localparam _125M_FLOAT = 64'h419D_CD65_0000_0000;// double 
-localparam _250M_FLOAT = 64'h41AD_CD65_0000_0000;// double 
+localparam _125M_FLOAT = 64'h419D_CD65_0000_0000;// double
+localparam _250M_FLOAT = 64'h41AD_CD65_0000_0000;// double
 localparam FRAC_THRESHOLD = 24'd10_000_000;
 localparam [119:0] INDEX = {5'd23, 5'd22, 5'd21, 5'd20, 5'd19, 5'd18, 5'd17, 5'd16, 5'd15, 5'd14, 5'd13, 5'd12, 5'd11, 5'd10, 5'd9, 5'd8, 5'd7, 5'd6, 5'd5, 5'd4, 5'd3, 5'd2, 5'd1, 5'd0};
 
@@ -146,7 +146,7 @@ wire           	frac_carry_bit		[23:0];
 always @(posedge clk, posedge rst) begin
 	if(rst)
 		chl_cnt_sft <= 'd0;
-	else 
+	else
 		chl_cnt_sft <= ~chl_cnt_sft;
 end
 
@@ -155,7 +155,7 @@ always @(posedge clk, posedge rst) begin
 		chl_cnt <= 'd0;
 	//else if((cs[chl_cnt] == IDLE) & (ns[chl_cnt] == FIX2FLOAT))
 	//	chl_cnt <= chl_cnt;
-	else 
+	else
 		chl_cnt <= (chl_cnt >= 23) ? 5'd0 : (chl_cnt + 1'd1);
 end
 
@@ -191,35 +191,35 @@ always@* begin
 				mns <= BAUD_LOAD;
 			else
 				mns <= IDLE;
-		
+
 		FIX2FLOAT : if(fix2flt_i_tvalid & fix2flt_i_tready)
 				mns <= DIV;
 			else
 				mns <= FIX2FLOAT;
-		
+
 		DIV : if(div_i_tvalid & div_i_tready)
 				mns <= FINAL_CAL;
 			else
 				mns <= DIV;
-		
+
 		FINAL_CAL : if(final_i_tvalid & final_i_tready)
 				mns <= FINAL_CAL_DONE;
 			else
 				mns <= FINAL_CAL;
-		
+
 		FINAL_CAL_DONE : if(final_o_tvalid & final_o_tready)
 				mns <= CHL_RST;
 			else
 				mns <= FINAL_CAL_DONE;
-				
+
 		CHL_RST : if((direc & (chl_clr_done[23:12] == {12{1'd1}})) || ((!direc) & (chl_clr_done[11:0] == {12{1'd1}})))
 				mns <= LOAD_NEW_STEP_LEN;
 			else
 				mns <= CHL_RST;
-		
+
 		LOAD_NEW_STEP_LEN:
 				mns <= IDLE;
-		
+
 		//
 		BAUD_LOAD: if(((is_baud_sync == 2'd1) & (crt_rx_sync_baud != LR_BAUD[0]))
 		      || ((is_baud_sync == 2'd2) & (crt_tx_sync_baud != LR_BAUD[12])))
@@ -259,43 +259,43 @@ fix2sgl_float BAUD_FIX2FLOAT (
     .m_axis_result_tvalid ( fix2flt_o_tvalid	),
     .m_axis_result_tready ( fix2flt_o_tready	),
     .m_axis_result_tdata  ( fix2flt_o_tdata		),
-    .m_axis_result_tuser  ( fix2flt_o_tuser		) 
+    .m_axis_result_tuser  ( fix2flt_o_tuser		)
 );
 assign fix2flt_o_tready = 1'd1;
 
 float_div BAUD_FLOAT_DIV(
-    .aclk                 ( clk                 ), 
+    .aclk                 ( clk                 ),
 	.aresetn			  (	~rst				),
 
-    .s_axis_a_tvalid      ( div_i_tvalid		), 
-    .s_axis_a_tready      ( div_i_tready		), 
-    .s_axis_a_tdata       ( div_i_tdata			), 
-    .s_axis_a_tuser       ( div_i_tuser			), 
+    .s_axis_a_tvalid      ( div_i_tvalid		),
+    .s_axis_a_tready      ( div_i_tready		),
+    .s_axis_a_tdata       ( div_i_tdata			),
+    .s_axis_a_tuser       ( div_i_tuser			),
 
-    .s_axis_b_tvalid      ( 1'd1                ), 
-    .s_axis_b_tready      (                     ), 
-    .s_axis_b_tdata       ( _62p5M_FLOAT		), 
+    .s_axis_b_tvalid      ( 1'd1                ),
+    .s_axis_b_tready      (                     ),
+    .s_axis_b_tdata       ( _62p5M_FLOAT		),
 
-    .m_axis_result_tvalid ( div_o_tvalid		), 
-    .m_axis_result_tready ( div_o_tready		), 
+    .m_axis_result_tvalid ( div_o_tvalid		),
+    .m_axis_result_tready ( div_o_tready		),
     .m_axis_result_tdata  ( div_o_tdata			),
-    .m_axis_result_tuser  ( div_o_tuser			)  
+    .m_axis_result_tuser  ( div_o_tuser			)
 );
 assign div_o_tready = 1'd1;
 
 sgl_float2fix BAUD_FLOAT2FIX (
-    .aclk                 ( clk					), 
+    .aclk                 ( clk					),
 	.aresetn			  (	~rst				),
-	
-    .s_axis_a_tvalid      ( final_i_tvalid    	), 
-    .s_axis_a_tready      ( final_i_tready    	), 
+
+    .s_axis_a_tvalid      ( final_i_tvalid    	),
+    .s_axis_a_tready      ( final_i_tready    	),
     .s_axis_a_tdata       ( final_i_tdata     	),
     .s_axis_a_tuser       ( final_i_tuser     	),
 
-    .m_axis_result_tvalid ( final_o_tvalid    	), 
-    .m_axis_result_tready ( final_o_tready    	), 
+    .m_axis_result_tvalid ( final_o_tvalid    	),
+    .m_axis_result_tready ( final_o_tready    	),
     .m_axis_result_tdata  ( final_o_tdata     	),
-    .m_axis_result_tuser  ( final_o_tuser     	)  
+    .m_axis_result_tuser  ( final_o_tuser     	)
 );
 
 assign final_o_tready = 1'd1;
@@ -309,7 +309,7 @@ always @(posedge clk, posedge rst) begin
 	else if(mcs == FIX2FLOAT)
 		if(fix2flt_i_tready) begin
 			fix2flt_i_tvalid <= 1'd1;
-			fix2flt_i_tdata  <= direc ? (crt_tx_sync_baud << 32) : (crt_rx_sync_baud << 32); 
+			fix2flt_i_tdata  <= direc ? (crt_tx_sync_baud << 32) : (crt_rx_sync_baud << 32);
 			fix2flt_i_tuser  <= direc ? 5'h1f : 5'h1e;//rx_sync:0x1e, tx_sync: 0x1f
 		end
 		else begin
@@ -320,7 +320,7 @@ always @(posedge clk, posedge rst) begin
 	else if(cs[r1_chl_cnt] == FIX2FLOAT) begin
 		if(fix2flt_i_tready) begin
 			fix2flt_i_tvalid <= 1'd1;
-			fix2flt_i_tdata  <= crt_baud[r1_chl_cnt] << 32; 
+			fix2flt_i_tdata  <= crt_baud[r1_chl_cnt] << 32;
 			fix2flt_i_tuser  <= r1_chl_cnt;
 		end
 		else begin
@@ -419,7 +419,7 @@ always @(posedge clk, posedge rst) begin
 	else
 		LR_BAUD_VLD_post[i] <= LR_BAUD_VLD_post[i];
 end
-		
+
 always @(posedge clk, posedge rst) begin
 	if(rst)
 		cs[i] <= IDLE;
@@ -435,35 +435,35 @@ always@* begin
 				ns[i] <= FIX2FLOAT;
 			else
 				ns[i] <= IDLE;
-		
+
 		FIX2FLOAT : if((fix2flt_i_tvalid & fix2flt_i_tready) & (fix2flt_i_tuser == i))
 				ns[i] <= DIV;
 			else
 				ns[i] <= FIX2FLOAT;
-		
+
 		DIV : if((div_i_tvalid & div_i_tready) & (div_i_tuser == i))
 				ns[i] <= FINAL_CAL;
 			else
 				ns[i] <= DIV;
-		
+
 		FINAL_CAL : if((final_i_tvalid & final_i_tready) & (final_i_tuser == i))
 				ns[i] <= FINAL_CAL_DONE;
 			else
 				ns[i] <= FINAL_CAL;
-		
+
 		FINAL_CAL_DONE : if((final_o_tvalid & final_o_tready) & (final_o_tuser == i))
 				ns[i] <= CHL_RST;
 			else
 				ns[i] <= FINAL_CAL_DONE;
-				
+
 		CHL_RST : if(chl_clr_done)
 				ns[i] <= LOAD_NEW_STEP_LEN;
 			else
 				ns[i] <= CHL_RST;
-		
+
 		LOAD_NEW_STEP_LEN:
 				ns[i] <= IDLE;
-		
+
 		default:ns[i] <= IDLE;
 	endcase
 end
@@ -532,7 +532,7 @@ always @(posedge clk, posedge rst) begin
 		chl_clr_req[i*2+:2] <= 'd0;
 	else case(chl_clr_req[i*2+:2])
 		0:if(mcs == FIX2FLOAT)
-			if(i <= 11)	
+			if(i <= 11)
 				chl_clr_req[i*2+:2] <= direc ? 2'd0 : 2'd1;
 			else
 				chl_clr_req[i*2+:2] <= direc ? 2'd1 : 2'd0;
@@ -586,6 +586,6 @@ always @(posedge clk, posedge rst) begin
 	else
 		uart_driv_flag[i] <= 'd0;
 end
-end endgenerate 
+end endgenerate
 
 endmodule
