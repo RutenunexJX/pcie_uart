@@ -22,9 +22,9 @@ module axi_uart_tx #(
 
 	output	logic				uart_tx				,
 
-	input	tx_para_t			tx_para				,
-	input	tx_ctrl_t			tx_ctrl				,
-	output	tx_status_t			tx_status			,
+	input	uart_tx_para_t			tx_para				,
+	input	uart_tx_ctrl_t			tx_ctrl				,
+	output	uart_tx_status_t			tx_status			,
 
 	axi_full_if.slave_write		sw_axi_full_if		,
 
@@ -129,8 +129,8 @@ typedef	struct{
 tx_st_e		cs;
 tx_st_e		ns;
 tx_fifo_t	tx_fifo;
-tx_para_t	new_tx_para;
-tx_para_t	cur_tx_para;
+uart_tx_para_t	new_tx_para;
+uart_tx_para_t	cur_tx_para;
 flag_t		flag		= '{default:'0};
 
 // ================================================================================

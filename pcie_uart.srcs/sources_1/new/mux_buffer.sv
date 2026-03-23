@@ -7,9 +7,10 @@ module mux_buffer(
 	input	logic				rst					,
 
 	byte_stream_if.s			s_byte_stream_if	,
-	u64_stream_if.m				m_u64_stream_if		,
+	u64_stream_if.m				m_u64_stream_if
 
-	mux_buffer_debug_if.source	debug				  //
+	// debug
+	,mux_buffer_debug_if.source	debug
 );
 
 `define D `ifdef DEBUG_mux_buffer (*mark_debug = "true"*)(*keep = "true"*) `else `endif

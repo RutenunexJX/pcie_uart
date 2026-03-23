@@ -269,19 +269,130 @@ endinterface: u64_stream_if
 //   | |  | | |  _| _   |  __'. | '    ' | | |   ____
 //  _| |_.' /_| |__/ | _| |__) | \ \__/ /  \ `.___]  |
 // |______.'|________||_______/   `.__.'    `._____.'
-interface mux_buffer_debug_if;
-	logic	err_byte_stream_no_gap;
-	logic	err_fifo_overflow;
+
+`define P_ENA(name) ,parameter bit P_ENA_``name = P_DISABLE
+`define DIS(name) if(P_ENA_``name == P_DISABLE) assign name = '0;
+
+interface mux_buffer_debug_if #(
+	parameter	bit	P_GLB_ENA		= P_DISABLE,
+
+	parameter	bit P_ENA_ERRO		= P_DISABLE,
+	parameter	bit P_ENA_WARN		= P_DISABLE,
+	parameter	bit P_ENA_INFO		= P_DISABLE,
+	parameter	bit P_ENA_SNAPSHOT	= P_DISABLE,
+	parameter	bit P_ENA_CTRL		= P_DISABLE
+
+	// custom
+	`P_ENA(erro_byte_stream_no_gap)
+);
+	// signal template
+	logic	erro_;
+	logic	warn_;
+	logic	info_;
+	logic	snapshot_trig_;
+	logic	snapshot_data_;
+	logic	ctrl_;
+
+	// user begin
+	logic	erro_byte_stream_no_gap; `DIS(erro_byte_stream_no_gap)
+	logic	erro_fifo_overflow;
+
 
 	modport	source(
-		output err_byte_stream_no_gap, err_fifo_overflow
+		output erro_byte_stream_no_gap, erro_fifo_overflow
 	);
 
 	modport monitor(
-		input err_byte_stream_no_gap, err_fifo_overflow
+		input erro_byte_stream_no_gap, erro_fifo_overflow
 
 	);
-
 endinterface: mux_buffer_debug_if
+
+interface axi_mux_debug_if #(
+	parameter	bit	P_GLB_ENA		= P_DISABLE,
+
+	parameter	bit P_ENA_ERRO		= P_DISABLE,
+	parameter	bit P_ENA_WARN		= P_DISABLE,
+	parameter	bit P_ENA_INFO		= P_DISABLE,
+	parameter	bit P_ENA_SNAPSHOT	= P_DISABLE,
+	parameter	bit P_ENA_CTRL		= P_DISABLE
+
+	// custom
+	,parameter	bit	P_CUSTOM	= P_DISABLE
+);
+	// signal template
+	logic	erro_;
+	logic	warn_;
+	logic	info_;
+	logic	snapshot_trig_;
+	logic	snapshot_data_;
+	logic	ctrl_;
+
+	modport	source(
+		output erro_
+	);
+
+	modport monitor(
+		input erro_
+	);
+endinterface: axi_mux_debug_if
+
+interface uart_rx_debug_if #(
+	parameter	bit	P_GLB_ENA		= P_DISABLE,
+
+	parameter	bit P_ENA_ERRO		= P_DISABLE,
+	parameter	bit P_ENA_WARN		= P_DISABLE,
+	parameter	bit P_ENA_INFO		= P_DISABLE,
+	parameter	bit P_ENA_SNAPSHOT	= P_DISABLE,
+	parameter	bit P_ENA_CTRL		= P_DISABLE
+
+	// custom
+	,parameter	bit P_CUSTOM = P_DISABLE
+);
+	// signal template
+	logic	erro_;
+	logic	warn_;
+	logic	info_;
+	logic	snapshot_trig_;
+	logic	snapshot_data_;
+	logic	ctrl_;
+
+	modport	source(
+		output erro_
+	);
+
+	modport monitor(
+		input erro_
+	);
+endinterface: uart_rx_debug_if
+
+interface uart_tx_debug_if #(
+	parameter	bit	P_GLB_ENA		= P_DISABLE,
+
+	parameter	bit P_ENA_ERRO		= P_DISABLE,
+	parameter	bit P_ENA_WARN		= P_DISABLE,
+	parameter	bit P_ENA_INFO		= P_DISABLE,
+	parameter	bit P_ENA_SNAPSHOT	= P_DISABLE,
+	parameter	bit P_ENA_CTRL		= P_DISABLE
+
+	// custom
+	,parameter	bit	P_CUSTOM	= P_DISABLE
+);
+	// signal template
+	logic	erro_;
+	logic	warn_;
+	logic	info_;
+	logic	snapshot_trig_;
+	logic	snapshot_data_;
+	logic	ctrl_;
+
+	modport	source(
+		output erro_
+	);
+
+	modport monitor(
+		input erro_
+	);
+endinterface: uart_tx_debug_if
 
 `else `endif

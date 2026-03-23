@@ -1,59 +1,79 @@
 `timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////
+//
+// File Name           : axi_uart_top
+// Description         :
+// Author              : xqj
+// Date                : 2026-03-23 16:40:35
+// Version             : 1.0
+// Modification History:
+// Date                   Author    Version    Description
+// 2026-03-23 16:40:35    xqj       1.0        Initial Creation
+//
+//////////////////////////////////////////////////////////////////////////
 `include "_svh.svh"
-module axi_uart_top(
-	input	logic			clk					,
-	input	logic			rst					,
 
-	input	logic			uart_rx				,
-	output	logic			uart_tx				,
+module axi_uart_top #(
+	parameter	P_CHL_NUM = 12
+)(
+	input	logic							clk				,
+	input	logic							rst				,
 
-	input	rx_para_t		rx_para				,
-	input	tx_para_t		tx_para				,
+	input	logic		[P_CHL_NUM - 1:0]	uart_rx			,
+	output	logic		[P_CHL_NUM - 1:0]	uart_tx			,
 
-	input	rx_ctrl_t		rx_ctrl				,
-	input	tx_ctrl_t		tx_ctrl				,
+	input	uart_rx_para_t	[P_CHL_NUM - 1:0]	rx_para			,
+	input	uart_tx_para_t	[P_CHL_NUM - 1:0]	tx_para			,
 
-	output	rx_status_t		rx_status			,
-	output	tx_status_t		tx_status			,
+	input	uart_rx_ctrl_t	[P_CHL_NUM - 1:0]	rx_ctrl			,
+	input	uart_tx_ctrl_t	[P_CHL_NUM - 1:0]	tx_ctrl			,
 
-	axi_full_if.slave		s_axi_full_if		,
+	output	uart_rx_status_t	[P_CHL_NUM - 1:0]	rx_status		,
+	output	uart_tx_status_t	[P_CHL_NUM - 1:0]	tx_status		,
 
-	debug_rx_if.s			s_debug_rx_if		,
-	debug_tx_if.s			s_debug_tx_if		  //
+	axi_full_if.slave						s_axi_full_if	  //
+
+	// debug
+	,mux_buffer_debug_if.source				s_mux_buffer_debug_if[P_CHL_NUM - 1:0]
+	,axi_mux_debug_if.source				s_axi_mux_debug_if
+	,uart_rx_debug_if.source				s_uart_rx_debug_if[P_CHL_NUM - 1:0]
+	,uart_tx_debug_if.source				s_uart_tx_debug_if[P_CHL_NUM - 1:0]
+);
+byte_stream_if	_byte_stream_if();
+u64_stream_if	_u64_stream_if();
+
+
+
+// ================================================================================
+//                               GF_CHL begin
+// ================================================================================
+for(genvar i = 0; i < P_CHL_NUM; i = i + 1) begin: GF_CHL
+
+mux_buffer U_MUX_BUFFER(
+	.clk					(clk),
+	.rst					(rst),
+
+	.s_byte_stream_if		(_byte_stream_if),
+	.m_u64_stream_if		(_u64_stream_if),
+
+	.debug					(s_mux_buffer_debug_if[i])
 );
 
-axi_uart_rx AXI_UART_RX_U(
-	.clk				(	clk					),
-	.rst				(	rst					),
-
-	.uart_rx			(	uart_rx				),
-
-	.rx_para			(	rx_para				),
-	.rx_ctrl			(	rx_ctrl				),
-	.rx_status			(	rx_status			),
-
-	.sr_axi_full_if		(	s_axi_full_if		),
+uart_rx U_UART_RX(
+	.clk					(clk),
+	.rst					(rst)
 );
 
-axi_uart_tx #(
-	.P_PARA_VALIDITY_CHECK(P_DISABLE),
-	.P_DEBUG0('{
-		TX_PROGM_INTERFACE		: E_PROGM_INTERFACE_AXI_FULL,
-		ENA_TX_OVERFLOW_ERROR	: P_ENABLE,
-		ENA_TX_OVERFLOW_WARNING	: P_ENABLE,
-		default					: P_DISABLE})
-)AXI_UART_TX_U(
-	.clk				(	clk					),
-	.rst				(	rst					),
-
-	.uart_tx			(	uart_tx				),
-
-	.tx_para			(	tx_para				),
-	.tx_ctrl			(	tx_ctrl				),
-	.tx_status			(	tx_status			),
-
-	.sw_axi_full_if		(	s_axi_full_if		)
+uart_tx U_UART_TX(
+	.clk					(clk),
+	.rst					(rst)
 );
+
+end: GF_CHL
+// ================================================================================
+//                               GF_CHL end
+// ================================================================================
+
 
 endmodule
 

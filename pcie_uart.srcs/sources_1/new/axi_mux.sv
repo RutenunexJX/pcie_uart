@@ -9,11 +9,13 @@ module axi_mux #(
 
 	axi_full_if.slave_read		sr_axi_full_if	,
 
-	input	axi_mux_ctrl_t		axi_mux_ctrl	,
-	output	axi_mux_status_t	axi_mux_status	,
+//	input	axi_mux_ctrl_t		axi_mux_ctrl	,
+//	output	axi_mux_status_t	axi_mux_status	,
 
 	byte_stream_if.s 			s_byte_stream_if[P_CHL_NUM - 1:0]
 );
+
+u64_stream_if _u64_stream_if [P_CHL_NUM - 1:0]() ;
 
 // ================================================================================
 //                               axi logic
@@ -38,7 +40,7 @@ logic			arready;
 logic			ar_hs;
 assign			sr_axi_full_if.arready = arready;
 assign			ar_hs = sr_axi_full_if.arready & sr_axi_full_if.arvalid	;
-
+/*
 always_ff @(posedge clk, posedge rst) begin
 	if(rst)
 		arready <= 1'd0;
@@ -91,7 +93,7 @@ always_ff @(posedge clk, posedge rst) begin
 	else
 		rvalid <= 'd0;
 end
-
+*/
 always@(posedge clk, posedge rst) begin
 	if(rst)
 		ready_to_read <= 'd0;
@@ -103,4 +105,13 @@ always@(posedge clk, posedge rst) begin
 		ready_to_read <= ready_to_read;
 end
 
+for(genvar i = 0; i < P_CHL_NUM; i = i + 1) begin: GF_CHL
+	mux_buffer U_MUX_BUFFER(
+		.clk				(	clk					),
+		.rst				(	rst					),
+		.s_byte_stream_if	(	s_byte_stream_if[i]	),
+		.m_u64_stream_if	(	_u64_stream_if.s[i]	),
+		.debug(debug)
+	);
+end: GF_CHL
 endmodule

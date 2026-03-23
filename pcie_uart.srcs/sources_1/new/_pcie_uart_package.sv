@@ -119,7 +119,7 @@ typedef struct{
 	parity_check_e		parity_check;
 	stop_bit_e			stop_bit_width;
 	logic		[31:0]	fifo_timeout_thrd;
-}rx_para_t;
+}uart_rx_para_t;
 
 
 
@@ -136,7 +136,7 @@ typedef struct{
 	logic				global_rst;
 	logic		[15:0]	axi_rd_len;
 	logic		[15:0]	axi_intrp_thrd;
-}rx_ctrl_t;
+}uart_rx_ctrl_t;
 
 
 
@@ -150,7 +150,7 @@ typedef struct{
 // ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef struct{
 	logic		[15:0]	fifo_usedw;
-}rx_status_t;
+}uart_rx_status_t;
 
 
 
@@ -172,7 +172,7 @@ typedef struct{
 	logic		[9:0]	frame_interval_unit_ms;
 	logic		[9:0]	frame_interval_unit_us;
 	logic		[31:0]	frame_interval_unit_baud_rate;
-}tx_para_t;
+}uart_tx_para_t;
 
 
 
@@ -189,7 +189,7 @@ typedef struct{
 	logic				global_rst;
 	logic		[15:0]	axi_wr_max_len;
 	logic		[15:0]	axi_wr_eff_len;
-}tx_ctrl_t;
+}uart_tx_ctrl_t;
 
 
 
@@ -203,7 +203,7 @@ typedef struct{
 // ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 typedef struct{
 	logic		[15:0]	fifo_usedw;
-}tx_status_t;
+}uart_tx_status_t;
 
 //  _______     _        ______  ___  ____   ________  ______
 // |_   __ \   / \     .' ___  ||_  ||_  _| |_   __  ||_   _ `.

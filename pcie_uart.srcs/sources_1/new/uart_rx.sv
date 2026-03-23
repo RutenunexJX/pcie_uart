@@ -1,31 +1,34 @@
 `timescale 1ns / 1ps
 `include "_svh.svh"
-`define	DEBUG_axi_uart_rx
-module axi_uart_rx #(
+`define	DEBUG_uart_rx
+module uart_rx #(
 	parameter bit P_PARA_VALIDITY_CHECK = P_DISABLE
 )(
-	input	logic			clk					,
-	input	logic			rst					,
+	input	logic				clk				,
+	input	logic				rst				,
 
-	input	logic			uart_rx				,
+	input	logic				uart_rx			,
 
-	input	rx_para_t		rx_para				,
-	input	rx_ctrl_t		rx_ctrl				,
-	output	rx_status_t		rx_status			,
+	input	uart_rx_para_t		para			,
+	input	uart_rx_ctrl_t		ctrl			,
+	output	uart_rx_status_t	status			,
 
-	axi_full_if.slave_read	sr_axi_full_if		  //
+	byte_stream_if.m			m_byte_stream_if
+
+	// debug
+	,uart_rx_debug_if			debug
 );
-`define D `ifdef DEBUG_axi_uart_rx (*mark_debug = "true"*)(*keep = "true"*)`else `endif
+`define D `ifdef DEBUG_uart_rx (*mark_debug = "true"*)(*keep = "true"*)`else `endif
 `define RLAST_CDN (((r1_rff_rd_cnt + r1_rff_rd_strb_cnt) >= axi_rd_len) & (r1_rff_rd_cnt < axi_rd_len) & r1_rx_fifo_rd_en)
 
 localparam	P_FRAC_THRD = 24'd10_000_000;
 
-rx_para_t	new_rx_para;
-rx_para_t	cur_rx_para;
+uart_rx_para_t	new_para;
+uart_rx_para_t	cur_para;
 
 always_ff @(posedge clk, posedge rst) begin
 	if(rst)
-		new_rx_para <= '{
+		new_para <= '{
 			baud_rate_phase_acc_step_len		: 'd659706,
 			baud_rate_phase_acc_frac_step_len	: 'd9766656,
 			data_width							: 'd8,
@@ -34,16 +37,16 @@ always_ff @(posedge clk, posedge rst) begin
 			default								:'0
 		};
 	else if(P_PARA_VALIDITY_CHECK == P_ENABLE)
-		new_rx_para <= '{
-			baud_rate_phase_acc_step_len		: rx_para.baud_rate_phase_acc_step_len,
-			baud_rate_phase_acc_frac_step_len	: (rx_para.baud_rate_phase_acc_frac_step_len <= E_PARITY_CHECK_END)	? rx_para.baud_rate_phase_acc_frac_step_len	: '0,
-			data_width							: ((rx_para.data_width != 4'd0) & (rx_para.data_width <= 4'd8))		? rx_para.data_width						: 4'd8,
-			parity_check						: (rx_para.parity_check < E_PARITY_CHECK_END)						? rx_para.parity_check						: cur_rx_para.parity_check,
-			stop_bit_width						: (rx_para.stop_bit_width < E_STOP_BIT_END)							? rx_para.stop_bit_width					: E_STOP_BIT_1,
+		new_para <= '{
+			baud_rate_phase_acc_step_len		: para.baud_rate_phase_acc_step_len,
+			baud_rate_phase_acc_frac_step_len	: (para.baud_rate_phase_acc_frac_step_len <= E_PARITY_CHECK_END)? para.baud_rate_phase_acc_frac_step_len	: '0,
+			data_width							: ((para.data_width != 4'd0) & (para.data_width <= 4'd8))		? para.data_width							: 4'd8,
+			parity_check						: (para.parity_check < E_PARITY_CHECK_END)						? para.parity_check							: cur_para.parity_check,
+			stop_bit_width						: (para.stop_bit_width < E_STOP_BIT_END)						? para.stop_bit_width						: E_STOP_BIT_1,
 			default								: '0
 		};
 	else
-		new_rx_para <= new_rx_para;
+		new_para <= new_para;
 end
 
 //	input	[15:0]		axi_rd_len					,
@@ -83,7 +86,7 @@ assign frac_carry_bit = (frac_part >= P_FRAC_THRD);
 
 logic	parity_check_cdn;
 always_comb begin
-	case(cur_rx_para.parity_check)
+	case(cur_para.parity_check)
 		E_PARITY_CHECK_ODD:
 			parity_check_cdn = ^parity_check_data;
 
@@ -130,8 +133,11 @@ assign is_start_bit = ((cs == RX_IDLE) || (cs == RX_STOP_BIT)) & ({r_UART_RX[1],
 
 // ================================================================================
 //                               phase acc
+// step len = Trunc[(baud rate * 2^32) / (clk_freq / 2)]
+// frac step len = Frac[(baud rate * 2^32) / (clk_freq / 2)] * 10_000_000
 // ================================================================================
 always_ff @(posedge clk, posedge rst) begin
+
 	if(rst)
 		phase_sum <= 'd0;
 	else if(is_start_bit)
@@ -215,13 +221,13 @@ always@(posedge clk, posedge rst) begin
 	if(rst)
 		stop_bit_done <= 'd0;
 	else
-		stop_bit_done <= (rx_stop_bit_cnt == (cur_rx_para.stop_bit_width + 1)) & r1_rx_driv_flag;
+		stop_bit_done <= (rx_stop_bit_cnt == (cur_para.stop_bit_width + 1)) & r1_rx_driv_flag;
 end
 
 always@(posedge clk, posedge rst) begin
 	if(rst)
 		parity_check_data <= 'd0;
-	else if(cur_rx_para.parity_check != E_PARITY_CHECK_NONE)
+	else if(cur_para.parity_check != E_PARITY_CHECK_NONE)
 		parity_check_data <= (cs == RX_DATA) ? rx_fifo.din[(rx_fifo_wr_byte_num*8)+:8] : parity_check_data;
 	else
 		parity_check_data <= 'd0;
@@ -244,7 +250,7 @@ always_comb begin
 
 		RX_DATA:
 			if((rx_cnt == 8) & r1_rx_driv_flag & rx_driv_flag_sft)
-				if(cur_rx_para.parity_check == cur_rx_para.parity_check)
+				if(cur_para.parity_check == cur_para.parity_check)
 					ns = RX_STOP_BIT;
 				else
 					ns = RX_PARITY_CHECK;
@@ -281,8 +287,8 @@ end
 `undef D
 `endif
 
-`ifdef DEBUG_axi_rx_uart
-`undef DEBUG_axi_rx_uart
+`ifdef DEBUG_uart_rx
+`undef DEBUG_uart_rx
 `endif
 
 endmodule
