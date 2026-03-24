@@ -22,7 +22,7 @@ typedef enum logic [1:0] {
 	E_RESP_EXOKAY	= 2'b01,
 	E_RESP_SLVERR	= 2'b10,
 	E_RESP_DECERR	= 2'b11
-}resp_e;
+}rresp_e;
 
 typedef enum logic [1:0] {
 	E_BURST_FIXED = 2'b00,
